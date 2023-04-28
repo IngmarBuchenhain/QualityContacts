@@ -26,6 +26,13 @@ namespace QualityContacts.UI
             InitializeComponent();
             viewModel = new MainWindowViewModel(new Validator(), new Parser());
             this.DataContext = viewModel;
+
+            List<Contact> items = new List<Contact>();
+            items.Add(new Contact() { Name = "Complete this WPF tutorial", Description = "saf" });
+            items.Add(new Contact() { Name = "Learn C#", Description = "asf" });
+            items.Add(new Contact() { Name = "Wash the car", Description = "af" });
+
+            parsedContactsItemsControl.ItemsSource = items;
         }
 
         private MainWindowViewModel viewModel;
@@ -50,5 +57,26 @@ namespace QualityContacts.UI
         {
             viewModel.Validate();
         }
+
+        private void EnterSaveNewTitle(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+               
+                //textBlock1.Text = "You Entered: " + textBox1.Text;
+            }
+        }
+
+        private void ButtonClickSaveNewTitle(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Button clicked");
+            viewModel.NewTitle += "b";
+        }
+    }
+
+    public class Contact
+    {
+        public string Name { get; set; } = "Default Name";
+        public string Description { get; set; } = "Default Description";
     }
 }

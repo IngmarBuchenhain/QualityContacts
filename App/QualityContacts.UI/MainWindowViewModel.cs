@@ -15,11 +15,48 @@ namespace QualityContacts.UI
         {
             this.validator = validator;
             this.parser = parser;
+
+            for(int i = 0; i < 100; i++)
+            {
+                _titles += "Dr.\r\n";
+            }
         }
+
+        private string newTitle = String.Empty;
+
+        public string NewTitle
+        {
+            get
+            {
+                return this.newTitle;
+            }
+            set
+            {
+                Console.WriteLine("NewTitle");
+                this.newTitle = value;
+                NotifyPropertyChanged(nameof(NewTitle));
+            }
+        }
+
+        private readonly Titles titles = new Titles();
 
         private readonly IValidator validator;
 
         private readonly IParser parser;
+
+        private string _titles;
+
+        public string Titles
+        {
+            get
+            {
+                return _titles;
+            }
+            set
+            {
+
+            }
+        }
 
         public bool HasErrors
         {
@@ -147,6 +184,7 @@ return input;
 
         public void Validate()
         {
+            Console.WriteLine("Test");
             if (validator.Validate(Input).IsValid)
             {
                 Errors = "";
