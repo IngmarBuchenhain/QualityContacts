@@ -24,6 +24,20 @@ namespace QualityContacts.UI
 
         private string newTitle = String.Empty;
 
+        private bool showHelp = false;
+        public bool ShowHelp
+        {
+            get
+            {
+return showHelp;
+            }
+            set
+            {
+                showHelp = value;
+                NotifyPropertyChanged(nameof(ShowHelp));
+            }
+        }
+
         public string NewTitle
         {
             get

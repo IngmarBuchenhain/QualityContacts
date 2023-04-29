@@ -28,9 +28,15 @@ namespace QualityContacts.UI
             this.DataContext = viewModel;
 
             List<Contact> items = new List<Contact>();
-            items.Add(new Contact() { Name = "Complete this WPF tutorial", Description = "saf" });
-            items.Add(new Contact() { Name = "Learn C#", Description = "asf" });
-            items.Add(new Contact() { Name = "Wash the car", Description = "af" });
+            items.Add(new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" });
+            items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+            items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
+            items.Add(new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" });
+            items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+            items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
+            items.Add(new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" });
+            items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+            items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
 
             parsedContactsItemsControl.ItemsSource = items;
         }
@@ -39,7 +45,16 @@ namespace QualityContacts.UI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.SaveNumber();
+            if (viewModel.ShowHelp)
+            {
+                viewModel.ShowHelp = false;
+            }
+            else
+            {
+                viewModel.ShowHelp = true;
+            }
+
+            //viewModel.SaveNumber();
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -76,7 +91,11 @@ namespace QualityContacts.UI
 
     public class Contact
     {
-        public string Name { get; set; } = "Default Name";
-        public string Description { get; set; } = "Default Description";
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Gender { get; set; }
+        public string Salutation { get; set; }
+        public string Titles { get; set; }
+        public string LetterSalutation { get => $"Hallo {Salutation} {Titles} {FirstName} {LastName}"; set { } }
     }
 }

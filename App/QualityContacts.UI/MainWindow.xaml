@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:QualityContacts.UI" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="Quality Contacts - Version 1.0.0 - bereitgestellt durch 'Die Oldies'" 
-        Height="600" 
-        Width="1000" 
-        MinHeight="600" 
-        MinWidth="1000" 
-        MaxHeight="600" 
-        MaxWidth="1000">
+        Height="700" 
+        Width="1100" 
+        MinHeight="700" 
+        MinWidth="1100" 
+        MaxHeight="700" 
+        MaxWidth="1100">
     <Grid>
         <StackPanel 
             Orientation="Horizontal" 
@@ -22,17 +22,25 @@
                 Orientation="Vertical"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
-                Width="680">
+                Width="780">
 
                 <Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5"
                     Content="Kontakteingabe"  
                     FontSize="18"
-                    FontWeight="Bold"  
+                    FontWeight="Bold" 
+                    Foreground="DodgerBlue"
                     />
 
-                <Label 
+                <Expander Margin="0" Header="Hilfe und Beschreibung">
+                    <TextBlock 
+                        TextWrapping="WrapWithOverflow"
+                        Text="Hilfe- und Beschreibungstext, der noch eingegeben werden muss...">
+                    </TextBlock>
+                </Expander>
+
+                <!--<Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5">
                     
@@ -41,13 +49,17 @@
                         Text="Hilfe- und Beschreibungstext, der noch eingegeben werden muss...">
                     </TextBlock>
                     
-                </Label>
+                </Label>-->
+
+
+
 
                 <Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5"
                     Content="Neuen Kontakt erfassen:"                     
-                    FontWeight="Bold"  
+                    FontWeight="Bold"
+                    Foreground="DodgerBlue"
                     />
 
                 <StackPanel 
@@ -67,12 +79,14 @@
                     <Button 
                         Margin="0,0,5,0" 
                         Content="Kontakt splitten"
+                        Background="AliceBlue"
                         IsEnabled="{Binding LetParse}"
                         Click="Button_Click"                        
                         />
 
                     <Button 
                         Content="Eingabefeld zurücksetzen"
+                        Background="AliceBlue"
                         Click="Button_Click"                        
                         />
 
@@ -86,64 +100,201 @@
                 <Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5"
+                    Content="Neuen Kontakt prüfen:"                     
+                    FontWeight="Bold"  
+                    Foreground="DodgerBlue"
+                    />
+
+                <StackPanel 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,0">
+
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
+                    HorizontalAlignment="Left"
+                                Width="40"
+                    Padding="0,0,0,0"
+                                Margin="0,0,5,0" 
+                    Content="Anrede"                     
+                    Foreground="DodgerBlue"
+                    />
+
+                            <Label 
+                    HorizontalAlignment="Left"
+                                                    Width="60"
+                    Padding="0,0,0,0"
+                                Margin="0,0,5,0"
+                    Content="Geschlecht"                     
+                    Foreground="DodgerBlue"
+                    />
+
+                            <Label 
+                    HorizontalAlignment="Left"
+                                Width="160"
+                    Padding="0,0,0,0"
+                                Margin="0,0,5,0"
+                    Content="Titel"                     
+                    Foreground="DodgerBlue"
+                    />
+
+                            <Label 
+                    HorizontalAlignment="Left"
+                                Width="220"
+                    Padding="0,0,0,0"
+                                Margin="0,0,5,0"
+                    Content="Vorname(n)"                     
+                    Foreground="DodgerBlue"
+                    />
+
+                            <Label 
+                    HorizontalAlignment="Left"
+                    Padding="0,0,0,0"
+                    Content="Nachname(n)"                     
+                    Foreground="DodgerBlue"
+                    />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox 
+                        Width="40" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+
+                            <TextBox 
+                        Width="60" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+
+                            <TextBox 
+                        Width="160" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+
+                            <TextBox 
+                        Width="220" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+
+                            <TextBox 
+                        Width="217" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+                        </StackPanel>
+                        <Label 
+                    HorizontalAlignment="Left"
+                    Padding="0,5,0,0"
+                    Content="Briefanrede"                     
+                    Foreground="DodgerBlue"
+                    />
+                        <TextBox 
+                        Width="615" 
+                        Margin="0,0,5,0" 
+                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="TextBox_KeyDown"
+                        TextChanged="TextBox_TextChanged"
+                        />
+
+                    </StackPanel>
+
+                    
+
+                    <Button 
+                        Content="Speichern"
+                        Background="AliceBlue"
+                        Click="Button_Click"                        
+                        />
+
+                </StackPanel>
+
+                <Label 
+                    HorizontalAlignment="Left"
+                    Padding="0,10,0,5"
                     Content="Erfasste Kontakte:"                     
                     FontWeight="Bold"  
+                    Foreground="DodgerBlue"
                     />
 
                 <ScrollViewer 
-                    VerticalScrollBarVisibility="Auto">
+                    VerticalScrollBarVisibility="Auto"
+                    Height="200">
                     
                     <ItemsControl 
                         Name="parsedContactsItemsControl">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding Description}" />
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="40" 
+                    BorderThickness="0"
+                    Text="{Binding Salutation}"                                       
+                    IsReadOnly="True"                                        
+                    />
+                                        <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="20" 
+                    BorderThickness="0"
+                    Text="{Binding Gender}"                                       
+                    IsReadOnly="True"                                        
+                    />
+                                        <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="180" 
+                    BorderThickness="0"
+                    Text="{Binding Titles}"                                       
+                    IsReadOnly="True"                                        
+                    />
+                                        <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="180" 
+                    BorderThickness="0"
+                    Text="{Binding FirstName}"                                       
+                    IsReadOnly="True"                                        
+                    />
+                                        <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="200" 
+                    BorderThickness="0"
+                    Text="{Binding LastName}"                                       
+                    IsReadOnly="True"                                        
+                    />
+                                    </StackPanel>
+                                    <TextBox
+                    HorizontalAlignment="Left" 
+                    Width="600" 
+                    BorderThickness="0"
+                    Text="{Binding LetterSalutation}"                                       
+                    IsReadOnly="True"                                        
+                    />
+
+                                    <Separator/>
                                 </StackPanel>
+
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     
                 </ScrollViewer>
                 
-                
-                
-                <!-- START ZU LÖSCHENDER INHALT -->
 
-                <!--<StackPanel Orientation="Horizontal" Margin="20">
-
-                    <TextBlock Margin="20">Ländervorwahl:</TextBlock>
-                    <TextBox Margin="20" Background="Transparent"
-         BorderThickness="0"
-         IsReadOnly="True"
-         TextWrapping="Wrap"  Text="{Binding Landesvorwahl, Mode=OneWay}"></TextBox>
-                    <TextBlock Margin="20">Ortsvorwahl/Mobilvorwahl:</TextBlock>
-                    <TextBox Margin="20" Background="Transparent"
-         BorderThickness="0"
-         IsReadOnly="True"
-         TextWrapping="Wrap"  Text="{Binding Ortsvorwahl, Mode=OneWay}"></TextBox>
-                    <TextBlock Margin="20">Nummer:</TextBlock>
-                    <TextBox Margin="20" Background="Transparent"
-         BorderThickness="0"
-         IsReadOnly="True"
-         TextWrapping="Wrap"  Text="{Binding Nummer, Mode=OneWay}"></TextBox>
-                    <TextBlock Margin="2">Durchwahl:</TextBlock>
-                    <TextBox Margin="2" Background="Transparent"
-         BorderThickness="0"
-         IsReadOnly="True"
-         TextWrapping="Wrap" Text="{Binding Direct, Mode=OneWay}"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="2">Formatierte Nummer:</TextBlock>
-                    <TextBox Margin="2" Background="Transparent"
-         BorderThickness="0"
-         IsReadOnly="True"
-         TextWrapping="Wrap"  Text="{Binding FormattedPhoneNumber, Mode=OneWay}"></TextBox>
-                </StackPanel>-->
-                
-                
-                <!-- ENDE ZU LÖSCHENDER INHALT -->
 
             </StackPanel>
             
@@ -166,6 +317,7 @@
                     Content="Titel"  
                     FontSize="18"
                     FontWeight="Bold"  
+                    Foreground="DodgerBlue"
                     />
                 
                 <Label 
@@ -173,6 +325,7 @@
                     Padding="2,10,0,5"
                     Content="Neuen Titel in Datenbank aufnehmen:"                     
                     FontWeight="Bold"  
+                    Foreground="DodgerBlue"
                     />
                 
                 <StackPanel 
@@ -190,6 +343,7 @@
                     
                     <Button 
                         Content="Speichern"
+                        Background="AliceBlue"
                         Click="ButtonClickSaveNewTitle"                        
                         />
                     
@@ -200,11 +354,12 @@
                     Padding="2,10,0,5"
                     Content="Bekannte Titel:"                     
                     FontWeight="Bold"  
+                    Foreground="DodgerBlue"
                     />
                 
                 <TextBox
                     HorizontalAlignment="Left"
-                    Height="390" 
+                    Height="490" 
                     Width="217" 
                     BorderThickness="0"
                     Text="{Binding Titles}"                                       
