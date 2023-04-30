@@ -9,18 +9,18 @@ namespace QualityContacts.Services
         public ValidationResult(bool isValid, bool hasWarnings, List<ValidationError> errors, List<ValidationWarning> warnings)
         {
             this.IsValid = isValid;
-            this.hasWarnings = hasWarnings;
-            this.validationErrors = errors;
-            this.validationWarnings = warnings;
+            this.HasWarnings = hasWarnings;
+            this.ValidationErrors = errors;
+            this.ValidationWarnings = warnings;
         }
 
         public bool IsValid { get; init; }
 
-        public bool hasWarnings { get; init; }
+        public bool HasWarnings { get; init; }
 
-        public List<ValidationError> validationErrors { get; init; }
+        public IEnumerable<ValidationError> ValidationErrors { get; init; }
 
-        public List<ValidationWarning> validationWarnings { get; init; }
+        public IEnumerable<ValidationWarning> ValidationWarnings { get; init; }
     }
 }
 

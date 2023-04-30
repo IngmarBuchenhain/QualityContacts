@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QualityContacts.ServiceInterfaces.Models
+﻿namespace QualityContacts.ServiceInterfaces.Models
 {
+    /// <summary>
+    /// Representation of a contact. Provides access to different parts, like first name or titles.
+    /// </summary>
     public interface IContact
     {
         string FirstName { get; set; }
@@ -13,6 +10,6 @@ namespace QualityContacts.ServiceInterfaces.Models
         string Gender { get; set; }
         string Salutation { get; set; }
         string Titles { get; set; }
-        string LetterSalutation { get; set; }
+        string LetterSalutation { get; }
     }
 }

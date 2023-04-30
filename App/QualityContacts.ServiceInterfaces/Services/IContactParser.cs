@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QualityContacts.ServiceInterfaces.Models;
+﻿using QualityContacts.ServiceInterfaces.Models;
 
 namespace QualityContacts.ServiceInterfaces.Services
 {
+    /// <summary>
+    /// Provides methods for parsing a free input string with contact information to an <see cref="IContact"/>.
+    /// </summary>
     public interface IContactParser
     {
-        public IContact Parse(string input);
+        /// <summary>
+        /// Parses the given input string for contact information.
+        /// </summary>
+        /// <param name="input">The contact informations.</param>
+        /// <returns><see cref="IContact"/> containing the split input string.</returns>
         IContact ParseContactInput(string input);
     }
 }

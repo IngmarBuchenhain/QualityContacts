@@ -1,10 +1,11 @@
-﻿using System;
-namespace QualityContacts.ServiceInterfaces.ErrorHandling
+﻿namespace QualityContacts.ServiceInterfaces.ErrorHandling
 {
-	public enum ValidationError
-	{
-        ForbiddenCharacters,
-        NoPrefixGiven
+    /// <summary>
+    /// Typed errors which can occur during validation.
+    /// </summary>
+    public enum ValidationError
+    {
+        // TODO: Which errors can occur?
     }
 }
 

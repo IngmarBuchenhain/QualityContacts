@@ -382,7 +382,7 @@ namespace QualityContacts.UI
             {
                 EnableContactSaving = false;
 
-                foreach (var error in contactValidation.validationErrors)
+                foreach (var error in contactValidation.ValidationErrors)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
                     ContactValidationErrors += error + Environment.NewLine;
@@ -419,9 +419,9 @@ namespace QualityContacts.UI
 
                 EnableInputSplitting = true;
 
-                if (contactValidation.hasWarnings)
+                if (contactValidation.HasWarnings)
                 {
-                    foreach (var warning in contactValidation.validationWarnings)
+                    foreach (var warning in contactValidation.ValidationWarnings)
                     {
                         // TODO: After prototyping phase localization of errors should happen.
                         InputValidationWarnings += warning + Environment.NewLine;
@@ -436,13 +436,13 @@ namespace QualityContacts.UI
             {
                 EnableInputSplitting = false;
 
-                foreach (var error in contactValidation.validationErrors)
+                foreach (var error in contactValidation.ValidationErrors)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
                     InputValidationErrors += error + Environment.NewLine;
                 }
 
-                foreach (var warning in contactValidation.validationWarnings)
+                foreach (var warning in contactValidation.ValidationWarnings)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
                     InputValidationWarnings += warning + Environment.NewLine;
