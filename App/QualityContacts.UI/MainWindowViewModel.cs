@@ -16,7 +16,7 @@ namespace QualityContacts.UI
             this.validator = validator;
             this.parser = parser;
 
-            for(int i = 0; i < 100; i++)
+            for(int i = 0; i < 10; i++)
             {
                 _titles += "Dr.\r\n";
             }
@@ -201,36 +201,69 @@ return input;
             Console.WriteLine("Test");
             if (validator.Validate(Input).IsValid)
             {
-                Errors = "";
+                InputValidationErrors = "";
                 LetParse = true;
                 HasErrors = false;
             }
             else
             {
-                Errors = "Not a valid number";
+                InputValidationErrors = "Not a valid number";
                 LetParse = false;
                 HasErrors = true;
             }
         }
 
-        private string _errors = "";
+        private string _inputValidationErrors = String.Empty;
 
-        public string Errors
+        /// <summary>
+        /// String containing all validation errors for the free input.
+        /// </summary>
+        public string InputValidationErrors
         {
-            get => _errors;
+            get => _inputValidationErrors;
             private set
             {
-                _errors = value;
-                NotifyPropertyChanged(nameof(Errors));
+                _inputValidationErrors = value;
+                NotifyPropertyChanged(nameof(InputValidationErrors));
+                NotifyPropertyChanged(nameof(ShowInputValidationErrors));
             }
         }
 
-        protected void NotifyPropertyChanged(String info)
+        /// <summary>
+        /// Indicator whether input validation errors are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="InputValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowInputValidationErrors { get => !String.IsNullOrEmpty(InputValidationErrors); }
+
+        private string _contactValidationErrors = String.Empty;
+
+        /// <summary>
+        /// String containing all validation errors for the current contact.
+        /// </summary>
+        public string ContactValidationErrors
         {
-            if (PropertyChanged != null)
+            get => _contactValidationErrors;
+            private set
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
+                _contactValidationErrors = value;
+                NotifyPropertyChanged(nameof(ContactValidationErrors));
+                NotifyPropertyChanged(nameof(ShowContactValidationErrors));
             }
+        }
+
+        /// <summary>
+        /// Indicator whether contact validation errors are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="ContactValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowContactValidationErrors { get => !String.IsNullOrEmpty(ContactValidationErrors); }
+
+        /// <summary>
+        /// Helper for the MVVM-pattern to notifiy the view when properties changed.
+        /// </summary>
+        /// <param name="changedPropertyName">Name of the property which changed.</param>
+        protected void NotifyPropertyChanged(String changedPropertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(changedPropertyName));
         }
     }
 }
