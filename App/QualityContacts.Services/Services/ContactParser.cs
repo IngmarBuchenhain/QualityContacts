@@ -22,7 +22,7 @@ namespace QualityContacts.Services
         {
 
 
-            var contactParts = SplitStringToPossibleContactParts(input);
+            var contactParts = SplitStringToPossibleContactParts(input, ' ');
 
 
             return new Contact();
