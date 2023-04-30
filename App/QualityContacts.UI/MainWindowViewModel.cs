@@ -1,11 +1,6 @@
 ﻿using QualityContacts.ServiceInterfaces.Services;
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QualityContacts.UI
 {
@@ -16,7 +11,7 @@ namespace QualityContacts.UI
             this.validator = validator;
             this.parser = parser;
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 _titles += "Dr.\r\n";
             }
@@ -29,7 +24,7 @@ namespace QualityContacts.UI
         {
             get
             {
-return showHelp;
+                return showHelp;
             }
             set
             {
@@ -81,34 +76,9 @@ return showHelp;
 
         public string DirectDial { get => directDial; private set => directDial = value; }
 
-        private bool _letParse = false;
 
-        public bool LetParse
-        {
-            get
-            {
-                return _letParse;
-            }
-            private set
-            {
-                _letParse = value;
-                NotifyPropertyChanged(nameof(LetParse));
-            }
-        }
 
-        private string input = "";
-        public string Input
-        {
-            get
-            {
-return input;
-            }
-            set
-            {
-                input = value;
-                NotifyPropertyChanged(nameof(Input));
-            }
-        }
+
 
         private string _formattedPhoneNumber = " - ";
         private string directDial = " - ";
@@ -188,7 +158,7 @@ return input;
 
         public void SaveNumber()
         {
-            var phoneNumber = parser.Parse(Input);
+            var phoneNumber = parser.Parse(ContactInput);
             FormattedPhoneNumber = phoneNumber.FormattedPhoneNumber;
             Landesvorwahl = phoneNumber.CountryCode;
             Ortsvorwahl = phoneNumber.RegionCode;
@@ -199,17 +169,56 @@ return input;
         public void Validate()
         {
             Console.WriteLine("Test");
-            if (validator.Validate(Input).IsValid)
+            if (validator.Validate(ContactInput).IsValid)
             {
                 InputValidationErrors = "";
-                LetParse = true;
+                EnableInputSplitting = true;
                 HasErrors = false;
             }
             else
             {
                 InputValidationErrors = "Not a valid number";
-                LetParse = false;
+                EnableInputSplitting = false;
                 HasErrors = true;
+            }
+        }
+
+        private bool _enableContactSaving = false;
+
+        public bool EnableContactSaving
+        {
+            get => _enableContactSaving;
+            private set
+            {
+                _enableContactSaving = value;
+                NotifyPropertyChanged(nameof(EnableContactSaving));
+            }
+        }
+
+        private bool _enableInputSplitting = false;
+
+        public bool EnableInputSplitting
+        {
+            get => _enableInputSplitting;
+            private set
+            {
+                _enableInputSplitting = value;
+                NotifyPropertyChanged(nameof(EnableInputSplitting));
+            }
+        }
+
+        private string _contactInput = String.Empty;
+
+        /// <summary>
+        /// Free input of the user.
+        /// </summary>
+        public string ContactInput
+        {
+            get => _contactInput;
+            set
+            {
+                _contactInput = value;
+                NotifyPropertyChanged(nameof(ContactInput));
             }
         }
 

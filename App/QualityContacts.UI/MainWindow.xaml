@@ -59,26 +59,22 @@
                 <StackPanel 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Top"
-                    Margin="0,0,0,0">
+                    VerticalAlignment="Top">
 
                     <TextBox 
                         Width="688" 
                         Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
+                        Text="{Binding ContactInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="SplitContactEnterPressed"
+                        TextChanged="InputTextChanged"
                         />
 
                     <Button 
-                        Margin="0,0,5,0" 
                         Content="Kontakt splitten"
                         Background="AliceBlue"
-                        IsEnabled="{Binding LetParse}"
-                        Click="Button_Click"                        
+                        IsEnabled="{Binding EnableInputSplitting}"
+                        Click="SplitContactButtonClicked"                        
                         />
-
-
 
                 </StackPanel>
 
@@ -99,122 +95,129 @@
                 <StackPanel 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Top"
-                    Margin="0,0,0,0">
+                    VerticalAlignment="Top">
 
-                    <StackPanel Orientation="Vertical">
-                        <StackPanel Orientation="Horizontal">
+                    <StackPanel 
+                        Orientation="Vertical">
+                        
+                        <StackPanel 
+                            Orientation="Horizontal">
+                            
                             <Label 
-                    HorizontalAlignment="Left"
-                                                    Width="60"
-                    Padding="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                Width="60"
+                                Padding="0,0,0,0"
                                 Margin="0,0,5,0"
-                    Content="Geschlecht"                     
-                    Foreground="DodgerBlue"
-                    />
+                                Content="Geschlecht"                     
+                                Foreground="DodgerBlue"
+                                />
                             <Label 
-                    HorizontalAlignment="Left"
+                                HorizontalAlignment="Left"
                                 Width="40"
-                    Padding="0,0,0,0"
+                                Padding="0,0,0,0"
                                 Margin="0,0,5,0" 
-                    Content="Anrede"                     
-                    Foreground="DodgerBlue"
-                    />
-
-
+                                Content="Anrede"                     
+                                Foreground="DodgerBlue"
+                                />
 
                             <Label 
-                    HorizontalAlignment="Left"
+                                HorizontalAlignment="Left"
                                 Width="160"
-                    Padding="0,0,0,0"
+                                Padding="0,0,0,0"
                                 Margin="0,0,5,0"
-                    Content="Titel"                     
-                    Foreground="DodgerBlue"
-                    />
+                                Content="Titel"                     
+                                Foreground="DodgerBlue"
+                                />
 
                             <Label 
-                    HorizontalAlignment="Left"
+                                HorizontalAlignment="Left"
                                 Width="220"
-                    Padding="0,0,0,0"
+                                Padding="0,0,0,0"
                                 Margin="0,0,5,0"
-                    Content="Vorname(n)"                     
-                    Foreground="DodgerBlue"
-                    />
+                                Content="Vorname(n)"                     
+                                Foreground="DodgerBlue"
+                                />
 
                             <Label 
-                    HorizontalAlignment="Left"
-                    Padding="0,0,0,0"
-                    Content="Nachname(n)"                     
-                    Foreground="DodgerBlue"
-                    />
+                                HorizontalAlignment="Left"
+                                Padding="0,0,0,0"
+                                Content="Nachname(n)"                     
+                                Foreground="DodgerBlue"
+                                />
+                        
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        
+                        <StackPanel 
+                            Orientation="Horizontal">
+                            
                             <TextBox 
-                        Width="60" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
+                                Width="60" 
+                                Margin="0,0,5,0" 
+                                Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="SplitContactEnterPressed"
+                                TextChanged="InputTextChanged"
+                                />
+                            
                             <TextBox 
-                        Width="40" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
-
-
-
-                            <TextBox 
-                        Width="160" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
+                                Width="40" 
+                                Margin="0,0,5,0" 
+                                Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="SplitContactEnterPressed"
+                                TextChanged="InputTextChanged"
+                                />
 
                             <TextBox 
-                        Width="220" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
+                                Width="160" 
+                                Margin="0,0,5,0" 
+                                Text ="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="SplitContactEnterPressed"
+                                TextChanged="InputTextChanged"
+                                />
 
                             <TextBox 
-                        Width="219" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
+                                Width="220" 
+                                Margin="0,0,5,0" 
+                                Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="SplitContactEnterPressed"
+                                TextChanged="InputTextChanged"
+                                />
+
+                            <TextBox 
+                                Width="219" 
+                                Margin="0,0,5,0" 
+                                Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                KeyDown="SplitContactEnterPressed"
+                                TextChanged="InputTextChanged"
+                                />
+                        
                         </StackPanel>
+                        
                         <Label 
-                    HorizontalAlignment="Left"
-                    Padding="0,5,0,0"
-                    Content="Briefanrede"                     
-                    Foreground="DodgerBlue"
-                    />
+                            HorizontalAlignment="Left"
+                            Padding="0,5,0,0"
+                            Content="Briefanrede"                     
+                            Foreground="DodgerBlue"
+                            />
+                        
                         <TextBox 
-                        Width="719" 
-                        Margin="0,0,5,0" 
-                        Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        KeyDown="TextBox_KeyDown"
-                        TextChanged="TextBox_TextChanged"
-                        />
+                            Width="719" 
+                            Margin="0,0,5,0" 
+                            Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            KeyDown="SplitContactEnterPressed"
+                            TextChanged="InputTextChanged"
+                            />
 
                     </StackPanel>
-
-
 
                     <Button 
                         Content="Speichern"
                         Background="AliceBlue"
-                        Click="Button_Click"                        
+                        IsEnabled="{Binding EnableContactSaving}"
+                        Click="SaveContactButtonClicked"                        
                         />
 
                 </StackPanel>
+                
                 <TextBlock 
                     Text="{Binding ContactValidationErrors}" 
                     Foreground="Red"
@@ -234,58 +237,70 @@
                     Height="364">
 
                     <ItemsControl 
-                        Name="parsedContactsItemsControl" >
+                        Name="parsedContactsItemsControl">
+
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Vertical" >
-                                    <StackPanel Orientation="Horizontal">
+                                
+                                <StackPanel 
+                                    Orientation="Vertical">
+                                    
+                                    <StackPanel 
+                                        Orientation="Horizontal">
+                                        
                                         <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="65" 
-                    BorderThickness="0"
-                    Text="{Binding Gender}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                            HorizontalAlignment="Left" 
+                                            Width="65" 
+                                            BorderThickness="0"
+                                            Text="{Binding Gender}"                                       
+                                            IsReadOnly="True"                                        
+                                            />
+                                        
                                         <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="45" 
-                    BorderThickness="0"
-                    Text="{Binding Salutation}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                            HorizontalAlignment="Left" 
+                                            Width="45" 
+                                            BorderThickness="0"
+                                            Text="{Binding Salutation}"                                       
+                                            IsReadOnly="True"                                        
+                                            />
 
                                         <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="165" 
-                    BorderThickness="0"
-                    Text="{Binding Titles}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                            HorizontalAlignment="Left" 
+                                            Width="165" 
+                                            BorderThickness="0"
+                                            Text="{Binding Titles}"                                       
+                                            IsReadOnly="True"                                        
+                                            />
+                                        
                                         <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="230" 
-                    BorderThickness="0"
-                    Text="{Binding FirstName}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                            HorizontalAlignment="Left" 
+                                            Width="230" 
+                                            BorderThickness="0"
+                                            Text="{Binding FirstName}"                                       
+                                            IsReadOnly="True"                                        
+                                            />
+                                        
                                         <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="275" 
-                    BorderThickness="0"
-                    Text="{Binding LastName}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                            HorizontalAlignment="Left" 
+                                            Width="275" 
+                                            BorderThickness="0"
+                                            Text="{Binding LastName}"                                       
+                                            IsReadOnly="True"                                        
+                                            />
+                                        
                                     </StackPanel>
+                                    
                                     <TextBox
-                    HorizontalAlignment="Left" 
-                    Width="780" 
+                                        HorizontalAlignment="Left" 
+                                        Width="780" 
                                         Margin="0,2,0,0"
-                    BorderThickness="0"
-                    Text="{Binding LetterSalutation}"                                       
-                    IsReadOnly="True"                                        
-                    />
+                                        BorderThickness="0"
+                                        Text="{Binding LetterSalutation}"                                       
+                                        IsReadOnly="True"                                        
+                                        />
 
                                     <Separator Margin="0,5,0,10"/>
+                                    
                                 </StackPanel>
 
                             </DataTemplate>
@@ -293,8 +308,6 @@
                     </ItemsControl>
 
                 </ScrollViewer>
-
-
 
             </StackPanel>
 

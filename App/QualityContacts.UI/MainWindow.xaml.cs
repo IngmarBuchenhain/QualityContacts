@@ -41,7 +41,7 @@ namespace QualityContacts.UI
 
         private MainWindowViewModel viewModel;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SplitContactButtonClicked(object sender, RoutedEventArgs e)
         {
             if (viewModel.ShowHelp)
             {
@@ -55,7 +55,7 @@ namespace QualityContacts.UI
             //viewModel.SaveNumber();
         }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        private void SplitContactEnterPressed(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
@@ -66,8 +66,9 @@ namespace QualityContacts.UI
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void InputTextChanged(object sender, TextChangedEventArgs e)
         {
+            
             viewModel.Validate();
         }
 
@@ -85,6 +86,12 @@ namespace QualityContacts.UI
             Console.WriteLine("Button clicked");
             viewModel.NewTitle += "b";
         }
+
+        private void SaveContactButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Save contact");
+        }
+
     }
 
     public class Contact
