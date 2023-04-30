@@ -72,7 +72,12 @@ namespace QualityContacts.UI
             viewModel.Validate();
         }
 
-        private void EnterSaveNewTitle(object sender, KeyEventArgs e)
+        private void ContactTextChanged(object sender, TextChangedEventArgs e)
+        {
+            Console.WriteLine("Contact was edited by user");
+        }
+
+        private void SaveTitleEnterPressed(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
@@ -81,7 +86,7 @@ namespace QualityContacts.UI
             }
         }
 
-        private void ButtonClickSaveNewTitle(object sender, RoutedEventArgs e)
+        private void SaveTitleButtonClicked(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("Button clicked");
             viewModel.NewTitle += "b";

@@ -183,6 +183,11 @@ namespace QualityContacts.UI
             }
         }
 
+        private Contact _newContact = new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" };
+
+        public Contact NewContact { get { return _newContact; } }
+
+
         private bool _enableContactSaving = false;
 
         public bool EnableContactSaving
