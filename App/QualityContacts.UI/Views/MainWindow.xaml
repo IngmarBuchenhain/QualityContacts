@@ -26,6 +26,8 @@
             VerticalAlignment="Top" 
             Margin="20">
             
+<!-- Begin Contacts area -->
+            
             <StackPanel 
                 Orientation="Vertical"
                 HorizontalAlignment="Left" 
@@ -52,6 +54,8 @@
 
                 </Expander>
 
+<!-- Begin Contact Input area -->
+                
                 <Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5"
@@ -94,6 +98,10 @@
                     Foreground="Orange"
                     Visibility="{Binding ShowInputValidationWarnings, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
+
+<!-- End Contact Input area -->
+                
+<!-- Begin Contact Editing area -->
 
                 <Label 
                     HorizontalAlignment="Left"
@@ -235,6 +243,8 @@
                     Visibility="{Binding ShowContactValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
 
+<!-- End Contact Editing area -->
+
                 <Label 
                     HorizontalAlignment="Left"
                     Padding="0,10,0,5"
@@ -322,12 +332,16 @@
 
             </StackPanel>
 
+<!-- End Contacts area -->
+
             <Rectangle 
                 VerticalAlignment="Stretch" 
                 Width="1" 
                 Margin="20" 
                 Stroke="DarkGray" 
                 />
+
+<!-- Begin Titles area -->
 
             <StackPanel 
                 Orientation="Vertical" 
@@ -395,6 +409,9 @@
                     />
 
             </StackPanel>
+
+<!-- End Titles area -->
+
         </StackPanel>
     </Grid>
 </Window>

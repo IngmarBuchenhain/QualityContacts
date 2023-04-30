@@ -7,7 +7,7 @@ using QualityContacts.ServiceInterfaces.Models;
 
 namespace QualityContacts.ServiceInterfaces.Services
 {
-    public interface IParser
+    public interface IContactParser
     {
         public IContact Parse(string input);
         IContact ParseContactInput(string input);

@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QualityContacts.Services
 {
-    public class Parser : IParser
+    public class Parser : IContactParser
     {
         public IContact Parse(string input)
         {

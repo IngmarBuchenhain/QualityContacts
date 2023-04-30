@@ -10,15 +10,136 @@ namespace QualityContacts.UI
 {
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
+        #region Members, Events and Constructor
+
+        /// <summary>
+        /// Initializes the ViewModel with Backend-Services.
+        /// </summary>
         public MainWindowViewModel()
         {
+            // Only here the actual implementations of the Backend are used, so they can be easily replaced.
             _validator = new Validator();
             _parser = new Parser();
             _repository = new Repository();
         }
 
-        private string _newTitle = string.Empty;
+        /// <summary>
+        /// Instance of <see cref="IContactValidator"/> to get validation services.
+        /// </summary>
+        private readonly IContactValidator _validator;
 
+        /// <summary>
+        /// Instance of <see cref="IContactParser"/> to get parsing services.
+        /// </summary>
+        private readonly IContactParser _parser;
+
+        /// <summary>
+        /// Instance of <see cref="IContactRepository"/> to store and retrieve data.
+        /// </summary>
+        private readonly IContactRepository _repository;
+
+        /// <summary>
+        /// Helper for the MVVM pattern.
+        /// <inheritdoc/>
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="NewContact"/>-property.
+        /// </summary>
+        private IContact _newContact = new Contact();
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="NewTitle"/>-property.
+        /// </summary>
+        private string _newTitle = String.Empty;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="ContactInput"/>-property.
+        /// </summary>
+        private string _contactInput = String.Empty;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="EnableInputSplitting"/>-property.
+        /// </summary>
+        private bool _enableInputSplitting = true;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="EnableContactSaving"/>-property.
+        /// </summary>
+        private bool _enableContactSaving = true;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="InputValidationErrors"/>-property.
+        /// </summary>
+        private string _inputValidationErrors = String.Empty;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="InputValidationWarnings"/>-property.
+        /// </summary>
+        private string _inputValidationWarnings = String.Empty;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="ContactValidationErrors"/>-property.
+        /// </summary>
+        private string _contactValidationErrors = String.Empty;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="GenderError"/>-property.
+        /// </summary>
+        private bool _genderError = false;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="SalutationError"/>-property.
+        /// </summary>
+        private bool _salutationError = false;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="TitlesError"/>-property.
+        /// </summary>
+        private bool _titlesError = false;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="FirstNameError"/>-property.
+        /// </summary>
+        private bool _firstNameError = false;
+
+        /// <summary>
+        /// Do not use directly, if UI should be notified. See <see cref="LastNameError"/>-property.
+        /// </summary>
+        private bool _lastNameError = false;
+
+        #endregion Members, Events and Constructor
+
+        #region Public Properties
+
+        /// <summary>
+        /// The contact to be edited directly or after splitting the <see cref="ContactInput"/>.
+        /// </summary>
+        public IContact NewContact
+        {
+            get => _newContact;
+            private set
+            {
+                _newContact = value;
+                NotifyPropertyChanged(nameof(NewContact));
+            }
+        }
+
+        /// <summary>
+        /// All contacts which has been saved.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: Does not store contacts after exiting the app (during prototyping phase).
+        /// </remarks>
+        public ObservableCollection<IContact> StoredContacts
+        {
+            get => _repository.GetContacts();
+        }
+
+        /// <summary>
+        /// The new title which should be added to the known titles.
+        /// </summary>
         public string NewTitle
         {
             get
@@ -32,81 +153,30 @@ namespace QualityContacts.UI
             }
         }
 
-        private readonly IContactValidator _validator;
-
-        private readonly IParser _parser;
-
-        private readonly IRepository _repository;
-
+        /// <summary>
+        /// All default and saved titles.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: Does not store user titles after exiting the app (during prototyping phase).
+        /// </remarks>
         public string Titles
         {
             get
             {
                 string allTitlesList = String.Empty;
+
                 foreach (var title in _repository.GetTitles())
                 {
                     allTitlesList += title + Environment.NewLine;
                 }
+
                 return allTitlesList;
             }
             set { /* Intentionally left empty, because of WPF-Binding bug */ }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public ObservableCollection<IContact> StoredContacts
-        {
-            get
-            {
-                return _repository.GetContacts();
-            }
-        }
-
-
-        private IContact _newContact = new Contact();
-
-        public IContact NewContact
-        {
-            get
-            {
-                return _newContact;
-            }
-            private set
-            {
-                _newContact = value;
-                NotifyPropertyChanged(nameof(NewContact));
-            }
-        }
-
-
-        private bool _enableContactSaving = true;
-
-        public bool EnableContactSaving
-        {
-            get => _enableContactSaving;
-            private set
-            {
-                _enableContactSaving = value;
-                NotifyPropertyChanged(nameof(EnableContactSaving));
-            }
-        }
-
-        private bool _enableInputSplitting = true;
-
-        public bool EnableInputSplitting
-        {
-            get => _enableInputSplitting;
-            private set
-            {
-                _enableInputSplitting = value;
-                NotifyPropertyChanged(nameof(EnableInputSplitting));
-            }
-        }
-
-        private string _contactInput = string.Empty;
-
         /// <summary>
-        /// Free input of the user.
+        /// Free user input which can be splitted to a contact.
         /// </summary>
         public string ContactInput
         {
@@ -118,10 +188,34 @@ namespace QualityContacts.UI
             }
         }
 
-        private string _inputValidationErrors = string.Empty;
+        /// <summary>
+        /// Indicator whether splitting of <see cref="ContactInput"/> is enabled or not (due to validation errors).
+        /// </summary>
+        public bool EnableInputSplitting
+        {
+            get => _enableInputSplitting;
+            private set
+            {
+                _enableInputSplitting = value;
+                NotifyPropertyChanged(nameof(EnableInputSplitting));
+            }
+        }
 
         /// <summary>
-        /// String containing all validation errors for the free input.
+        /// Indicator whether saving of <see cref="NewContact"/> is enabled or not (due to validation errors).
+        /// </summary>
+        public bool EnableContactSaving
+        {
+            get => _enableContactSaving;
+            private set
+            {
+                _enableContactSaving = value;
+                NotifyPropertyChanged(nameof(EnableContactSaving));
+            }
+        }
+
+        /// <summary>
+        /// String containing all validation errors for the <see cref="ContactInput"/>.
         /// </summary>
         public string InputValidationErrors
         {
@@ -134,11 +228,14 @@ namespace QualityContacts.UI
             }
         }
 
-
-        private string _inputValidationWarnings = string.Empty;
+        /// <summary>
+        /// Indicator whether input validation errors are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="InputValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowInputValidationErrors { get => !string.IsNullOrEmpty(InputValidationErrors); }
 
         /// <summary>
-        /// String containing all validation errors for the free input.
+        /// String containing all validation warnings for the <see cref="ContactInput"/>.
         /// </summary>
         public string InputValidationWarnings
         {
@@ -151,18 +248,14 @@ namespace QualityContacts.UI
             }
         }
 
+        /// <summary>
+        /// Indicator whether input validation warnings are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="InputValidationWarnings"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
         public bool ShowInputValidationWarnings { get => !string.IsNullOrEmpty(InputValidationWarnings); }
 
         /// <summary>
-        /// Indicator whether input validation errors are present and should be shown by the UI.
-        /// </summary>
-        /// <value><see langword="true"/> if <see cref="InputValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
-        public bool ShowInputValidationErrors { get => !string.IsNullOrEmpty(InputValidationErrors); }
-
-        private string _contactValidationErrors = string.Empty;
-
-        /// <summary>
-        /// String containing all validation errors for the current contact.
+        /// String containing all validation errors for the current <see cref="NewContact"/>.
         /// </summary>
         public string ContactValidationErrors
         {
@@ -175,20 +268,15 @@ namespace QualityContacts.UI
             }
         }
 
-        private bool _salutationError = false;
+        /// <summary>
+        /// Indicator whether contact validation errors are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="ContactValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowContactValidationErrors { get => !string.IsNullOrEmpty(ContactValidationErrors); }
 
-        public bool SalutationError
-        {
-            get => _salutationError;
-            private set
-            {
-                _salutationError = value;
-                NotifyPropertyChanged(nameof(SalutationError));
-            }
-        }
-
-        private bool _genderError = false;
-
+        /// <summary>
+        /// Indicator whether a gender error is present for <see cref="NewContact"/>.
+        /// </summary>
         public bool GenderError
         {
             get => _genderError;
@@ -199,24 +287,39 @@ namespace QualityContacts.UI
             }
         }
 
-        private bool _titlesError = false;
+        /// <summary>
+        /// Indicator whether a salutation error is present for <see cref="NewContact"/>.
+        /// </summary>
+        public bool SalutationError
+        {
+            get => _salutationError;
+            private set
+            {
+                _salutationError = value;
+                NotifyPropertyChanged(nameof(SalutationError));
+            }
+        }
 
+        /// <summary>
+        /// Indicator whether a titles error is present for <see cref="NewContact"/>.
+        /// </summary>
         public bool TitlesError
         {
             get => _titlesError;
-            set
+            private set
             {
                 _titlesError = value;
                 NotifyPropertyChanged(nameof(TitlesError));
             }
         }
 
-        private bool _firstNameError = false;
-
+        /// <summary>
+        /// Indicator whether a firstname error is present for <see cref="NewContact"/>.
+        /// </summary>
         public bool FirstNameError
         {
             get => _firstNameError;
-            set
+            private set
             {
                 _firstNameError = value;
                 NotifyPropertyChanged(nameof(FirstNameError));
@@ -224,50 +327,47 @@ namespace QualityContacts.UI
 
         }
 
-        private bool _lastNameError = false;
-
+        /// <summary>
+        /// Indicator whether a lastname error is present for <see cref="NewContact"/>.
+        /// </summary>
         public bool LastNameError
         {
-            get => _lastNameError; 
-            set
+            get => _lastNameError;
+            private set
             {
                 _lastNameError = value;
                 NotifyPropertyChanged(nameof(LastNameError));
             }
         }
 
-        /// <summary>
-        /// Indicator whether contact validation errors are present and should be shown by the UI.
-        /// </summary>
-        /// <value><see langword="true"/> if <see cref="ContactValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
-        public bool ShowContactValidationErrors { get => !string.IsNullOrEmpty(ContactValidationErrors); }
+        #endregion Public Properties
+
+        #region Public/Internal Methods
 
         /// <summary>
-        /// Helper for the MVVM-pattern to notifiy the view when properties changed.
+        /// Save the current edited <see cref="NewContact"/> to the repository if no validation errors are present.<br/>
+        /// Resets the editing area.
         /// </summary>
-        /// <param name="changedPropertyName">Name of the property which changed.</param>
-        protected void NotifyPropertyChanged(string changedPropertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(changedPropertyName));
-        }
-
+        /// <remarks>
+        /// NOTE: During prototyping phase no saving to persistance store will be performed.
+        /// </remarks>
         internal void SaveNewContact()
         {
+            if (EnableContactSaving)
+            {
+                _repository.SaveNewContact(NewContact);
 
-            _repository.SaveNewContact(NewContact);
-            NotifyPropertyChanged(nameof(StoredContacts));
+                NotifyPropertyChanged(nameof(StoredContacts));
 
-            NewContact = new Contact();
+                // Reset the editing area.
+                NewContact = new Contact();
+                ContactInput = String.Empty;
+            }
         }
 
-        internal void SaveNewTitle()
-        {
-            _repository.SaveNewTitle(NewTitle);
-            NewTitle = String.Empty;
-            NotifyPropertyChanged(nameof(Titles));
-
-        }
-
+        /// <summary>
+        /// Validates the <see cref="NewContact"/> in the editing area and presents errors if present.
+        /// </summary>
         internal void ValidateNewContact()
         {
             IValidationResult contactValidation = _validator.Validate(NewContact);
@@ -284,17 +384,31 @@ namespace QualityContacts.UI
 
                 foreach (var error in contactValidation.validationErrors)
                 {
+                    // TODO: After prototyping phase localization of errors should happen.
                     ContactValidationErrors += error + Environment.NewLine;
                 }
             }
         }
 
+        /// <summary>
+        /// Splits the input in <see cref="ContactInput"/> into a <see cref="IContact"/> if no validation errors are present.<br/>
+        /// Presents the new contact in the editing area and resets the input field.
+        /// </summary>
         internal void SplitContactInput()
         {
-            var newContact = _parser.ParseContactInput(ContactInput);
-            NewContact = newContact;
+            if (EnableInputSplitting)
+            {
+                var newContact = _parser.ParseContactInput(ContactInput);
+
+                NewContact = newContact;
+
+                ContactInput = String.Empty;
+            }
         }
 
+        /// <summary>
+        /// Validates the <see cref="ContactInput"/> in the editing area and presents errors if present.
+        /// </summary>
         internal void ValidateContactInput()
         {
             IValidationResult contactValidation = _validator.Validate(ContactInput);
@@ -309,6 +423,7 @@ namespace QualityContacts.UI
                 {
                     foreach (var warning in contactValidation.validationWarnings)
                     {
+                        // TODO: After prototyping phase localization of errors should happen.
                         InputValidationWarnings += warning + Environment.NewLine;
                     }
                 }
@@ -323,16 +438,47 @@ namespace QualityContacts.UI
 
                 foreach (var error in contactValidation.validationErrors)
                 {
+                    // TODO: After prototyping phase localization of errors should happen.
                     InputValidationErrors += error + Environment.NewLine;
                 }
 
                 foreach (var warning in contactValidation.validationWarnings)
                 {
+                    // TODO: After prototyping phase localization of errors should happen.
                     InputValidationWarnings += warning + Environment.NewLine;
                 }
             }
         }
 
-       
+        /// <summary>
+        /// Save the current edited <see cref="NewTitle"/> to the repository if not already present.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: During prototyping phase no saving to persistance store will be performed.
+        /// </remarks>
+        internal void SaveNewTitle()
+        {
+            _repository.SaveNewTitle(NewTitle);
+
+            NotifyPropertyChanged(nameof(Titles));
+
+            // Reset the new title area.
+            NewTitle = String.Empty;
+        }
+
+        #endregion Public/Internal Methods
+
+        #region Private/Protected Methods
+
+        /// <summary>
+        /// Helper for the MVVM-pattern to notifiy the view when properties changed.
+        /// </summary>
+        /// <param name="changedPropertyName">Name of the property which changed.</param>
+        protected void NotifyPropertyChanged(string changedPropertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(changedPropertyName));
+        }
+
+        #endregion Private/Protected Methods
     }
 }

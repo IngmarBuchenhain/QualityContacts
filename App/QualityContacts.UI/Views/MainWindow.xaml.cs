@@ -13,10 +13,13 @@ namespace QualityContacts.UI
         {
             InitializeComponent();
 
+            // Set ViewModel for reuse.
             _viewModel = new MainWindowViewModel();
 
+            // Set DateContext for Binding.
             this.DataContext = _viewModel;
 
+            // Set Binding for stored contacts.
             storedContactsItemsControl.ItemsSource = _viewModel.StoredContacts;
         }
 
@@ -63,7 +66,5 @@ namespace QualityContacts.UI
         {
             _viewModel.SaveNewContact();
         }
-
     }
-
 }

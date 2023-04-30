@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QualityContacts.ServiceInterfaces.Services
 {
-    public interface IRepository
+    public interface IContactRepository
     {
         IContact GetNewContact();
         HashSet<string> GetTitles();

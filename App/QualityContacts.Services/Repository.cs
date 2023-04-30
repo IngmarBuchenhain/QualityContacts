@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace QualityContacts.Services
 {
-    public class Repository : IRepository
+    public class Repository : IContactRepository
     {
         public IContact GetNewContact()
         {
