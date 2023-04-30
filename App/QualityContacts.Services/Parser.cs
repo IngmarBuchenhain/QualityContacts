@@ -34,5 +34,10 @@ namespace QualityContacts.Services
 
             return result;
         }
+
+        public IContact ParseContactInput(string input)
+        {
+            return new Contact();
+        }
     }
 }

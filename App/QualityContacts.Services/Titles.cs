@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QualityContacts.UI
+namespace QualityContacts.Services
 {
     internal class Titles
     {
-        public Titles() {
-        
+        public Titles()
+        {
+
         }
 
         public List<string> DefaultTitles { get; set; }

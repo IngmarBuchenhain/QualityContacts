@@ -10,5 +10,6 @@ namespace QualityContacts.ServiceInterfaces.Services
     public interface IParser
     {
         public IContact Parse(string input);
+        IContact ParseContactInput(string input);
     }
 }

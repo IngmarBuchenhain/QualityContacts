@@ -8,16 +8,20 @@
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
     <Version>1.0.0</Version>
-    <ApplicationIcon>QualityContactsTransparentIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\QualityContactsTransparentIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="QualityContactsTransparentIcon.ico" />
+    <Content Include="Resources\QualityContactsTransparentIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QualityContacts.ServiceInterfaces\QualityContacts.ServiceInterfaces.csproj" />
     <ProjectReference Include="..\QualityContacts.Services\QualityContacts.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
   </ItemGroup>
 
 </Project>
