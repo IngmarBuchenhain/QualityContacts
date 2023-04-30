@@ -35,7 +35,7 @@
                 {
                     var phoneNumber = parser.Parse(number); //phoneNumberUtil.Parse(number, "DE");
 
-                    Console.WriteLine(phoneNumber.FormattedPhoneNumber);
+                    //Console.WriteLine(phoneNumber.FormattedPhoneNumber);
                 }
 
                

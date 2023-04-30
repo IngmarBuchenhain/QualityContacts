@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QualityContacts.Services
 {
-    public class PhoneNumber : IContact
+    public class PhoneNumber
     {
         public string CountryCode { get; set; } = "";
 

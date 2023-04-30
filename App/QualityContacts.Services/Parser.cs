@@ -14,23 +14,23 @@ namespace QualityContacts.Services
     {
         public IContact Parse(string input)
         {
-           var result = new PhoneNumber();
+           var result = new Contact();
            var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
 
 
-           var phoneNumber = phoneNumberUtil.Parse(input, "DE");
+           //var phoneNumber = phoneNumberUtil.Parse(input, "DE");
 
-            result.CountryCode = phoneNumber.CountryCode.ToString();
+           // result.CountryCode = phoneNumber.CountryCode.ToString();
 
-            result.ThePhoneNumber = phoneNumber.NationalNumber.ToString();
+           // result.ThePhoneNumber = phoneNumber.NationalNumber.ToString();
 
             
 
-            var length = input.Length;
-           // result.CountryCode = input.Substring(0, 1);
-            result.RegionCode = "";
-            //result.DirectDial = input.Substring(length - 1);
-            result.DirectDial = "";
+           // var length = input.Length;
+           //// result.CountryCode = input.Substring(0, 1);
+           // result.RegionCode = "";
+           // //result.DirectDial = input.Substring(length - 1);
+           // result.DirectDial = "";
 
             return result;
         }

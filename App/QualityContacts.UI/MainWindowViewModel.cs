@@ -1,20 +1,25 @@
-﻿using QualityContacts.ServiceInterfaces.Services;
+﻿using QualityContacts.ServiceInterfaces.Models;
+using QualityContacts.ServiceInterfaces.Services;
+using QualityContacts.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace QualityContacts.UI
 {
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        public MainWindowViewModel(IValidator validator, IParser parser)
+        public MainWindowViewModel()
         {
-            this.validator = validator;
-            this.parser = parser;
+            this.validator = new Validator();
+            this.parser = new Parser();
 
             for (int i = 0; i < 10; i++)
             {
                 _titles += "Dr.\r\n";
             }
+
+
         }
 
         private string newTitle = String.Empty;
@@ -63,7 +68,8 @@ namespace QualityContacts.UI
             }
             set
             {
-
+                _titles = value;
+                NotifyPropertyChanged(nameof(Titles));
             }
         }
 
@@ -158,15 +164,15 @@ namespace QualityContacts.UI
 
         public void SaveNumber()
         {
-            var phoneNumber = parser.Parse(ContactInput);
-            FormattedPhoneNumber = phoneNumber.FormattedPhoneNumber;
-            Landesvorwahl = phoneNumber.CountryCode;
-            Ortsvorwahl = phoneNumber.RegionCode;
-            Nummer = phoneNumber.ThePhoneNumber;
-            Direct = phoneNumber.DirectDial;
+            //var phoneNumber = parser.Parse(ContactInput);
+            //FormattedPhoneNumber = phoneNumber.FormattedPhoneNumber;
+            //Landesvorwahl = phoneNumber.CountryCode;
+            //Ortsvorwahl = phoneNumber.RegionCode;
+            //Nummer = phoneNumber.ThePhoneNumber;
+            //Direct = phoneNumber.DirectDial;
         }
 
-        public void Validate()
+        public void ValidateContactInput()
         {
             Console.WriteLine("Test");
             if (validator.Validate(ContactInput).IsValid)
@@ -183,12 +189,37 @@ namespace QualityContacts.UI
             }
         }
 
-        private Contact _newContact = new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" };
+        //private List<IContact> _storedContacts = new List<IContact>();
 
-        public Contact NewContact { get { return _newContact; } }
+        public ObservableCollection<IContact> StoredContacts { get; } = new ObservableCollection<IContact>();
+
+        //List<Contact> items = new List<Contact>();
+
+        //items.Add(new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" });
+        //    items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+        //    items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
+        //    items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+        //    items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
+        //    items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
+        //    items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
+
+        private IContact _newContact = new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" };
+
+        public IContact NewContact
+        {
+            get
+            {
+                return _newContact;
+            }
+            private set
+            {
+                _newContact = value;
+                NotifyPropertyChanged(nameof(NewContact));
+            }
+        }
 
 
-        private bool _enableContactSaving = false;
+        private bool _enableContactSaving = true;
 
         public bool EnableContactSaving
         {
@@ -278,6 +309,30 @@ namespace QualityContacts.UI
         protected void NotifyPropertyChanged(String changedPropertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(changedPropertyName));
+        }
+
+        internal void SaveNewContact()
+        {
+
+            StoredContacts.Insert(0, NewContact);
+
+
+            NewContact = new Contact();
+        }
+
+        internal void SaveNewTitle()
+        {
+            Titles += NewTitle + Environment.NewLine;
+        }
+
+        internal void ValidateContact()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void SplitContactInput()
+        {
+            throw new NotImplementedException();
         }
     }
 }

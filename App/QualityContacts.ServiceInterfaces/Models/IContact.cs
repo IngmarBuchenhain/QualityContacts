@@ -8,17 +8,11 @@ namespace QualityContacts.ServiceInterfaces.Models
 {
     public interface IContact
     {
-        
-
-
-
-
-
-
-        string CountryCode { get; }
-        string RegionCode { get; }
-        string ThePhoneNumber { get; }
-        string DirectDial { get; }
-        string FormattedPhoneNumber { get; }
+        string FirstName { get; set; }
+        string LastName { get; set; }
+        string Gender { get; set; }
+        string Salutation { get; set; }
+        string Titles { get; set; }
+        string LetterSalutation { get; set; }
     }
 }

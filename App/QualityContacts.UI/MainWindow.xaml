@@ -232,7 +232,7 @@
                     Height="364">
 
                     <ItemsControl 
-                        Name="parsedContactsItemsControl">
+                        Name="storedContactsItemsControl">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
