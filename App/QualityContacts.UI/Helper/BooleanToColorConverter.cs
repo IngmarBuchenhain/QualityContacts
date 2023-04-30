@@ -9,11 +9,11 @@ namespace QualityContacts.UI.Helper
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool boolValue && !boolValue)
+            if (value is bool boolValue && boolValue)
             {
                 return new SolidColorBrush(Colors.Red);
             }
-            return new SolidColorBrush(Colors.Black);
+            return new SolidColorBrush(Colors.LightGray);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

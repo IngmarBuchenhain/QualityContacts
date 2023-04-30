@@ -7,7 +7,7 @@ using QualityContacts.ServiceInterfaces.Services;
 
 namespace QualityContacts.Services
 {
-	public class Validator : IValidator
+	public class Validator : IContactValidator
 	{
 		public Validator()
 		{
@@ -53,6 +53,11 @@ namespace QualityContacts.Services
 
             ValidationResult result = new ValidationResult(isValid, hasWarnings, errors, warnings);
             return result;
+        }
+
+        public IValidationResult Validate(IContact contact)
+        {
+            throw new NotImplementedException();
         }
     }
 }

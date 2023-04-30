@@ -43,7 +43,7 @@ namespace QualityContacts.UI
 
         private void ContactTextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.ValidateContact();
+            _viewModel.ValidateNewContact();
         }
 
         private void SaveTitleEnterPressed(object sender, KeyEventArgs e)

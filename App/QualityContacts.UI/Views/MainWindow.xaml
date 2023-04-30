@@ -68,7 +68,7 @@
                     <TextBox 
                         Width="688" 
                         Margin="0,0,5,0" 
-                        BorderBrush="{Binding EnableInputSplitting, Converter={StaticResource BooleanToColorConverter}}"
+                        BorderBrush="{Binding ShowInputValidationErrors, Converter={StaticResource BooleanToColorConverter}}"
                         Text="{Binding ContactInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         KeyDown="SplitContactEnterPressed"
                         TextChanged="InputTextChanged"
@@ -87,6 +87,12 @@
                     Text="{Binding InputValidationErrors}" 
                     Foreground="Red"
                     Visibility="{Binding ShowInputValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
+
+                <TextBlock 
+                    Text="{Binding InputValidationWarnings}" 
+                    Foreground="Orange"
+                    Visibility="{Binding ShowInputValidationWarnings, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
 
                 <Label 
@@ -158,6 +164,7 @@
                             <TextBox 
                                 Width="60" 
                                 Margin="0,0,5,0" 
+                                BorderBrush="{Binding GenderError, Converter={StaticResource BooleanToColorConverter}}"
                                 Text="{Binding NewContact.Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
@@ -165,6 +172,7 @@
                             <TextBox 
                                 Width="40" 
                                 Margin="0,0,5,0" 
+                                BorderBrush="{Binding SalutationError, Converter={StaticResource BooleanToColorConverter}}"
                                 Text="{Binding NewContact.Salutation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
@@ -172,6 +180,7 @@
                             <TextBox 
                                 Width="160" 
                                 Margin="0,0,5,0" 
+                                BorderBrush="{Binding TitlesError, Converter={StaticResource BooleanToColorConverter}}"
                                 Text ="{Binding NewContact.Titles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
@@ -179,6 +188,7 @@
                             <TextBox 
                                 Width="220" 
                                 Margin="0,0,5,0" 
+                                BorderBrush="{Binding FirstNameError, Converter={StaticResource BooleanToColorConverter}}"
                                 Text="{Binding NewContact.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
@@ -186,6 +196,7 @@
                             <TextBox 
                                 Width="219" 
                                 Margin="0,0,5,0" 
+                                BorderBrush="{Binding LastNameError, Converter={StaticResource BooleanToColorConverter}}"
                                 Text="{Binding NewContact.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
@@ -350,6 +361,7 @@
                     <TextBox 
                         Width="154" 
                         Margin="0,0,5,0" 
+                        BorderBrush="LightGray"
                         Text="{Binding NewTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         KeyDown="SaveTitleEnterPressed"
                         />

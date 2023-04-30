@@ -1,4 +1,5 @@
-﻿using QualityContacts.ServiceInterfaces.Models;
+﻿using QualityContacts.ServiceInterfaces.ErrorHandling;
+using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services;
 using System;
@@ -31,7 +32,7 @@ namespace QualityContacts.UI
             }
         }
 
-        private readonly IValidator _validator;
+        private readonly IContactValidator _validator;
 
         private readonly IParser _parser;
 
@@ -133,6 +134,25 @@ namespace QualityContacts.UI
             }
         }
 
+
+        private string _inputValidationWarnings = string.Empty;
+
+        /// <summary>
+        /// String containing all validation errors for the free input.
+        /// </summary>
+        public string InputValidationWarnings
+        {
+            get => _inputValidationWarnings;
+            private set
+            {
+                _inputValidationWarnings = value;
+                NotifyPropertyChanged(nameof(InputValidationWarnings));
+                NotifyPropertyChanged(nameof(ShowInputValidationWarnings));
+            }
+        }
+
+        public bool ShowInputValidationWarnings { get => !string.IsNullOrEmpty(InputValidationWarnings); }
+
         /// <summary>
         /// Indicator whether input validation errors are present and should be shown by the UI.
         /// </summary>
@@ -152,6 +172,67 @@ namespace QualityContacts.UI
                 _contactValidationErrors = value;
                 NotifyPropertyChanged(nameof(ContactValidationErrors));
                 NotifyPropertyChanged(nameof(ShowContactValidationErrors));
+            }
+        }
+
+        private bool _salutationError = false;
+
+        public bool SalutationError
+        {
+            get => _salutationError;
+            private set
+            {
+                _salutationError = value;
+                NotifyPropertyChanged(nameof(SalutationError));
+            }
+        }
+
+        private bool _genderError = false;
+
+        public bool GenderError
+        {
+            get => _genderError;
+            private set
+            {
+                _genderError = value;
+                NotifyPropertyChanged(nameof(GenderError));
+            }
+        }
+
+        private bool _titlesError = false;
+
+        public bool TitlesError
+        {
+            get => _titlesError;
+            set
+            {
+                _titlesError = value;
+                NotifyPropertyChanged(nameof(TitlesError));
+            }
+        }
+
+        private bool _firstNameError = false;
+
+        public bool FirstNameError
+        {
+            get => _firstNameError;
+            set
+            {
+                _firstNameError = value;
+                NotifyPropertyChanged(nameof(FirstNameError));
+            }
+
+        }
+
+        private bool _lastNameError = false;
+
+        public bool LastNameError
+        {
+            get => _lastNameError; 
+            set
+            {
+                _lastNameError = value;
+                NotifyPropertyChanged(nameof(LastNameError));
             }
         }
 
@@ -187,9 +268,25 @@ namespace QualityContacts.UI
 
         }
 
-        internal void ValidateContact()
+        internal void ValidateNewContact()
         {
-            Console.WriteLine("TODO");
+            IValidationResult contactValidation = _validator.Validate(NewContact);
+
+            if (contactValidation.IsValid)
+            {
+                ContactValidationErrors = String.Empty;
+
+                EnableContactSaving = true;
+            }
+            else
+            {
+                EnableContactSaving = false;
+
+                foreach (var error in contactValidation.validationErrors)
+                {
+                    ContactValidationErrors += error + Environment.NewLine;
+                }
+            }
         }
 
         internal void SplitContactInput()
@@ -200,7 +297,42 @@ namespace QualityContacts.UI
 
         internal void ValidateContactInput()
         {
-            Console.WriteLine("TODO");
+            IValidationResult contactValidation = _validator.Validate(ContactInput);
+
+            if (contactValidation.IsValid)
+            {
+                InputValidationErrors = String.Empty;
+
+                EnableInputSplitting = true;
+
+                if (contactValidation.hasWarnings)
+                {
+                    foreach (var warning in contactValidation.validationWarnings)
+                    {
+                        InputValidationWarnings += warning + Environment.NewLine;
+                    }
+                }
+                else
+                {
+                    InputValidationWarnings = String.Empty;
+                }
+            }
+            else
+            {
+                EnableInputSplitting = false;
+
+                foreach (var error in contactValidation.validationErrors)
+                {
+                    InputValidationErrors += error + Environment.NewLine;
+                }
+
+                foreach (var warning in contactValidation.validationWarnings)
+                {
+                    InputValidationWarnings += warning + Environment.NewLine;
+                }
+            }
         }
+
+       
     }
 }
