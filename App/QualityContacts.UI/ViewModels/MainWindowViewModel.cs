@@ -18,9 +18,11 @@ namespace QualityContacts.UI
         public MainWindowViewModel()
         {
             // Only here the actual implementations of the Backend are used, so they can be easily replaced.
-            _validator = new Validator();
-            _parser = new Parser();
-            _repository = new Repository();
+            _validator = new ContactValidator();
+            _parser = new ContactParser();
+            _repository = new ContactRepository();
+
+            _newContact = _repository.GetNewContact();
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace QualityContacts.UI
         /// <summary>
         /// Do not use directly, if UI should be notified. See <see cref="NewContact"/>-property.
         /// </summary>
-        private IContact _newContact = new Contact();
+        private IContact _newContact;
 
         /// <summary>
         /// Do not use directly, if UI should be notified. See <see cref="NewTitle"/>-property.
@@ -360,7 +362,7 @@ namespace QualityContacts.UI
                 NotifyPropertyChanged(nameof(StoredContacts));
 
                 // Reset the editing area.
-                NewContact = new Contact();
+                NewContact = _repository.GetNewContact();
                 ContactInput = String.Empty;
             }
         }

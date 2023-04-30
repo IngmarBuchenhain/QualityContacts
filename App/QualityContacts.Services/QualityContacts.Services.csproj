@@ -10,8 +10,4 @@
   <ItemGroup>
     <ProjectReference Include="..\QualityContacts.ServiceInterfaces\QualityContacts.ServiceInterfaces.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.13.10" />
-  </ItemGroup>
 </Project>

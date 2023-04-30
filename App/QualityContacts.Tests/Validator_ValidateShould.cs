@@ -13,7 +13,7 @@ namespace QualityContacts.Tests
         [InlineData("1asdf")]
         public void Validate_InputIsNullOrEmpty_ReturnFalse(string value)
         {
-            var validator = new Validator();
+            var validator = new ContactValidator();
 
             IValidationResult result = validator.Validate(value);
 

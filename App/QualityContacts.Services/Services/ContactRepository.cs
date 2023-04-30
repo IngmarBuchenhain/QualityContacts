@@ -1,10 +1,11 @@
 ﻿using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.Services;
+using QualityContacts.Services.Models;
 using System.Collections.ObjectModel;
 
 namespace QualityContacts.Services
 {
-    public class Repository : IContactRepository
+    public class ContactRepository : IContactRepository
     {
         public IContact GetNewContact()
         {
@@ -18,7 +19,7 @@ namespace QualityContacts.Services
 
         public void SaveNewTitle(string title)
         {
-            if (!String.IsNullOrEmpty(title))
+            if (!string.IsNullOrEmpty(title))
             {
                 _titles.Add(title);
             }

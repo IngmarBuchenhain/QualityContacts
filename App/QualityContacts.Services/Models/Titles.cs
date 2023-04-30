@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QualityContacts.Services
+namespace QualityContacts.Services.Models
 {
     internal class Titles
     {

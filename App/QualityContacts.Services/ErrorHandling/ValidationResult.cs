@@ -1,17 +1,17 @@
 ﻿using System;
 using QualityContacts.ServiceInterfaces.ErrorHandling;
 
-namespace QualityContacts.Services
+namespace QualityContacts.Services.ErrorHandling
 {
     public class ValidationResult : IValidationResult
     {
 
         public ValidationResult(bool isValid, bool hasWarnings, List<ValidationError> errors, List<ValidationWarning> warnings)
         {
-            this.IsValid = isValid;
-            this.HasWarnings = hasWarnings;
-            this.ValidationErrors = errors;
-            this.ValidationWarnings = warnings;
+            IsValid = isValid;
+            HasWarnings = hasWarnings;
+            ValidationErrors = errors;
+            ValidationWarnings = warnings;
         }
 
         public bool IsValid { get; init; }
