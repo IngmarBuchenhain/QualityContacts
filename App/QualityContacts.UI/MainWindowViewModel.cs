@@ -11,8 +11,11 @@ namespace QualityContacts.UI
     {
         public MainWindowViewModel()
         {
-            this.validator = new Validator();
-            this.parser = new Parser();
+            this._validator = new Validator();
+            this._parser = new Parser();
+            this._repository = new Repository();
+
+            this.NewContact = this._repository.GetNewContact();
 
             for (int i = 0; i < 10; i++)
             {
@@ -54,9 +57,11 @@ namespace QualityContacts.UI
 
         private readonly Titles titles = new Titles();
 
-        private readonly IValidator validator;
+        private readonly IValidator _validator;
 
-        private readonly IParser parser;
+        private readonly IParser _parser;
+
+        private readonly IRepository _repository;
 
         private string _titles;
 
@@ -175,7 +180,7 @@ namespace QualityContacts.UI
         public void ValidateContactInput()
         {
             Console.WriteLine("Test");
-            if (validator.Validate(ContactInput).IsValid)
+            if (_validator.Validate(ContactInput).IsValid)
             {
                 InputValidationErrors = "";
                 EnableInputSplitting = true;
@@ -203,7 +208,7 @@ namespace QualityContacts.UI
         //    items.Add(new Contact() { FirstName = "Vera", LastName = "Hötzel", Gender = "W", Titles = "Prof.", Salutation = "Frau" });
         //    items.Add(new Contact() { FirstName = "Yannick", LastName = "Bauckhage", Gender = "D", Titles = "Prof. Dr.", Salutation = "" });
 
-        private IContact _newContact = new Contact() { FirstName = "Ingmar", LastName = "Bauckhage", Gender = "M", Titles = "Dr.", Salutation = "Herr" };
+        private IContact _newContact;
 
         public IContact NewContact
         {
