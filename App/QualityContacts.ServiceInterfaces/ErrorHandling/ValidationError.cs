@@ -6,6 +6,11 @@
     public enum ValidationError
     {
         // TODO: Which errors can occur?
+
+
+        FirstNameMissing,
+        LastNameMissing,
+        GenderMissing
     }
 }
 
