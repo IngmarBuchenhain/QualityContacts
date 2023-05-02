@@ -31,6 +31,7 @@ namespace QualityContacts.Services
 
         public IValidationResult Validate(IContact contact)
         {
+            bool isValid = true;
             var validationErrors = new HashSet<ValidationError>();
 
             // Check each property of the contact individually
@@ -38,18 +39,21 @@ namespace QualityContacts.Services
             if (String.IsNullOrEmpty(contact.FirstName))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
+                isValid = false;
             }
 
             if (String.IsNullOrEmpty(contact.LastName))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
+                isValid = false;
             }
             if (String.IsNullOrEmpty(contact.Gender))
             {
                 validationErrors.Add(ValidationError.GenderMissing);
+                isValid = false;
             }
 
-            throw new NotImplementedException();
+            return new ValidationResult(isValid, false, validationErrors, null);
         }
 
         [GeneratedRegex("^[a-zA-Z. -]*$")]

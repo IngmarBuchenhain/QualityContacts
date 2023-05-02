@@ -6,7 +6,7 @@ namespace QualityContacts.Services.ErrorHandling
     public class ValidationResult : IValidationResult
     {
 
-        public ValidationResult(bool isValid, bool hasWarnings, List<ValidationError> errors, List<ValidationWarning> warnings)
+        public ValidationResult(bool isValid, bool hasWarnings, IEnumerable<ValidationError> errors, IEnumerable<ValidationWarning> warnings)
         {
             IsValid = isValid;
             HasWarnings = hasWarnings;

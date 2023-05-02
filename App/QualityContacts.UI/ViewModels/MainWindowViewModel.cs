@@ -373,10 +373,12 @@ namespace QualityContacts.UI
         internal void ValidateNewContact()
         {
             IValidationResult contactValidation = _validator.Validate(NewContact);
+            ResetContactValidationErrorsAndWarnings();
 
             if (contactValidation.IsValid)
             {
-                ContactValidationErrors = String.Empty;
+     
+     
 
                 EnableContactSaving = true;
             }
@@ -387,7 +389,7 @@ namespace QualityContacts.UI
                 foreach (var error in contactValidation.ValidationErrors)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
-                    ContactValidationErrors += error + Environment.NewLine;
+                    ContactValidationErrors += MatchValidationErrorsToMessage(error) + Environment.NewLine;
                 }
             }
         }
@@ -426,7 +428,7 @@ namespace QualityContacts.UI
                     foreach (var warning in contactValidation.ValidationWarnings)
                     {
                         // TODO: After prototyping phase localization of errors should happen.
-                        InputValidationWarnings += warning + Environment.NewLine;
+                        InputValidationWarnings += MatchValidationWarningsToMessage(warning) + Environment.NewLine;
                     }
                 }
                 else
@@ -477,12 +479,10 @@ namespace QualityContacts.UI
         {
             switch (warning)
             {
-                case ValidationWarnings.UnusualCharacters:
+                case ValidationWarning.UnusualCharacters:
                     return "Eingabe enthält ungewöhnliche Zeichen für einen Name";
-                    break;
                 default:
                     return warning.ToString();
-                    break;
             }
         }
 
@@ -491,14 +491,28 @@ namespace QualityContacts.UI
             switch (error)
             {
                 case ValidationError.FirstNameMissing:
+                    FirstNameError = true;
                     return "Es muss ein Vorname angegeben werden!";
                 case ValidationError.LastNameMissing:
+                    LastNameError = true;
                     return "Es muss ein Nachname angegeben werden!";
-                case ValidationError.Gender:
+                case ValidationError.GenderMissing:
+                    GenderError = true;
                     return "Es muss ein Geschlecht angegeben werden!";
                 default:
                     return error.ToString();       
             }
+        }
+
+        private void ResetContactValidationErrorsAndWarnings()
+        {
+            ContactValidationErrors = String.Empty;
+
+            GenderError = false;
+            SalutationError = false;
+            FirstNameError = false;
+            LastNameError = false;
+            TitlesError = false;
         }
 
         /// <summary>
