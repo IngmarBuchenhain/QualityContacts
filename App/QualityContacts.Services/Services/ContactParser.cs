@@ -1,4 +1,5 @@
-﻿using QualityContacts.ServiceInterfaces.Models;
+﻿using System.Text.RegularExpressions;
+using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.Models;
 
@@ -22,7 +23,24 @@ namespace QualityContacts.Services
         {
 
 
+            if (string.IsNullOrEmpty(input)) return new Contact();
+
             var contactParts = SplitStringToPossibleContactParts(input, ' ');
+
+            var numberContactParts = contactParts.Count();
+
+            switch (numberContactParts) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
 
 
             return new Contact();
@@ -31,6 +49,8 @@ namespace QualityContacts.Services
         #endregion Public Methods
 
         #region Private Methods
+
+        
 
         private string[] SplitStringToPossibleContactParts(string input, char separator)
         {
@@ -44,5 +64,9 @@ namespace QualityContacts.Services
 
 
         #endregion Private Methods
+
+
+
+       
     }
 }

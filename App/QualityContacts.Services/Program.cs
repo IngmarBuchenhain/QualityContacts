@@ -8,6 +8,10 @@
 
             // Add debug tests here if needed.
 
+            var parser = new ContactParser();
+
+            parser.ParseContactInput("AB -Cabc. ");
+
             Console.WriteLine("Finished");
 
         }
