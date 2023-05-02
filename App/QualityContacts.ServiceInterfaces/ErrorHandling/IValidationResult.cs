@@ -8,22 +8,22 @@
         /// <summary>
         /// The validation was successful if <see langword="true"/>, otherwise not.
         /// </summary>
-        bool IsValid { get; init; }
+        bool IsValid { get;  }
 
         /// <summary>
         /// The validation may be successful, but minor warnings occured.
         /// </summary>
-        bool HasWarnings { get; init; }
+        bool HasWarnings { get; }
 
         /// <summary>
         /// All errors which occured during validation.
         /// </summary>
-        IEnumerable<ValidationError> ValidationErrors { get; init; }
+        IEnumerable<ValidationError> ValidationErrors { get; }
 
         /// <summary>
         /// All warnings which occured during validation.
         /// </summary>
-        IEnumerable<ValidationWarning> ValidationWarnings { get; init; }
+        IEnumerable<ValidationWarning> ValidationWarnings { get; }
     }
 }
 

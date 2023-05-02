@@ -14,13 +14,21 @@ namespace QualityContacts.Services.ErrorHandling
             ValidationWarnings = warnings;
         }
 
-        public bool IsValid { get; init; }
+        public ValidationResult()
+        {
+            IsValid = true;
+            HasWarnings = false;
+            ValidationErrors = new List<ValidationError>();
+            ValidationWarnings = new List<ValidationWarning>();
+        }
 
-        public bool HasWarnings { get; init; }
+        public bool IsValid { get; set; }
 
-        public IEnumerable<ValidationError> ValidationErrors { get; init; }
+        public bool HasWarnings { get; set; }
 
-        public IEnumerable<ValidationWarning> ValidationWarnings { get; init; }
+        public IEnumerable<ValidationError> ValidationErrors { get; set; }
+
+        public IEnumerable<ValidationWarning> ValidationWarnings { get; set; }
     }
 }
 

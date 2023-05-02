@@ -4,6 +4,7 @@ using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.ErrorHandling;
+using QualityContacts.Services.Models;
 
 namespace QualityContacts.Services
 {
@@ -26,7 +27,7 @@ namespace QualityContacts.Services
 
 
             Console.WriteLine("Not implemented");
-            return null;
+            return new ValidationResult(true, false, null, null);
         }
 
         public IValidationResult Validate(IContact contact)
@@ -54,6 +55,26 @@ namespace QualityContacts.Services
             }
 
             return new ValidationResult(isValid, false, validationErrors, null);
+        }
+
+        private ValidationResult ValidateFirstName(string firstName, ValidationResult? priorValidation = null)
+        {
+            if(priorValidation == null)
+            {
+                priorValidation = new ValidationResult();
+            }
+            if (String.IsNullOrEmpty(firstName))
+            {
+                priorValidation.ValidationErrors.Append(ValidationError.FirstNameMissing);
+                priorValidation.IsValid = false;
+                return priorValidation;
+            }
+            if (!CheckForSpecialCharacters().IsMatch(firstName))
+            {
+                priorValidation.ValidationWarnings.Append(ValidationWarning.UnusualCharacters);
+                
+            }
+            return priorValidation;
         }
 
         [GeneratedRegex("^[a-zA-Z. -]*$")]

@@ -28,14 +28,22 @@ namespace QualityContacts.Services
             var contactParts = SplitStringToPossibleContactParts(input, ' ');
 
             var numberContactParts = contactParts.Count();
-
+            var result = new Contact();
             switch (numberContactParts) {
                 case 1:
-                    break;
+                    
+                    result.LastName = contactParts[0];
+                    return result;
                 case 2:
-                    break;
+                    result.FirstName = contactParts[0];
+                    result.LastName = contactParts[1];
+                    return result;
                 case 3:
-                    break;
+                    result.Salutation = contactParts[0];
+                    result.FirstName = contactParts[1];
+                    result.LastName = contactParts[2];
+
+                    return result;
                 case 4:
                     break;
                 default:

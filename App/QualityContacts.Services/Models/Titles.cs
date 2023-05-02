@@ -17,6 +17,8 @@ namespace QualityContacts.Services.Models
 
         public HashSet<string> DefaultNobleTitles { get; set; } = new HashSet<string>();
 
+        public Dictionary<string, string> SalutationToGender { get; set; } = new Dictionary<string, string>();
+
         private void InitializeTitles()
         {
             // Default academic titles
@@ -37,6 +39,9 @@ namespace QualityContacts.Services.Models
 
             // Default noble titles
             DefaultNobleTitles.Add("");
+
+            // Default Genders
+            SalutationToGender.Add("Herr", Gender.Male.ToString());
         }
     }
 }
