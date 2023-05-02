@@ -447,7 +447,8 @@ namespace QualityContacts.UI
                 foreach (var warning in contactValidation.ValidationWarnings)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
-                    InputValidationWarnings += warning + Environment.NewLine;
+
+                    InputValidationWarnings += MatchValidationWarningsToMessage(warning) + Environment.NewLine;
                 }
             }
         }
@@ -471,6 +472,34 @@ namespace QualityContacts.UI
         #endregion Public/Internal Methods
 
         #region Private/Protected Methods
+
+        private string MatchValidationWarningsToMessage(ValidationWarning warning)
+        {
+            switch (warning)
+            {
+                case ValidationWarnings.UnusualCharacters:
+                    return "Eingabe enthält ungewöhnliche Zeichen für einen Name";
+                    break;
+                default:
+                    return warning.ToString();
+                    break;
+            }
+        }
+
+        private string MatchValidationErrorsToMessage(ValidationError error)
+        {
+            switch (error)
+            {
+                case ValidationError.FirstNameMissing:
+                    return "Es muss ein Vorname angegeben werden!";
+                case ValidationError.LastNameMissing:
+                    return "Es muss ein Nachname angegeben werden!";
+                case ValidationError.Gender:
+                    return "Es muss ein Geschlecht angegeben werden!";
+                default:
+                    return error.ToString();       
+            }
+        }
 
         /// <summary>
         /// Helper for the MVVM-pattern to notifiy the view when properties changed.
