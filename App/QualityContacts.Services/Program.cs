@@ -10,7 +10,7 @@
 
             var parser = new ContactParser();
 
-            parser.ParseContactInput("AB -Cabc. ");
+            parser.ParseContactFreeInput("AB -Cabc. ");
 
             Console.WriteLine("Finished");
 

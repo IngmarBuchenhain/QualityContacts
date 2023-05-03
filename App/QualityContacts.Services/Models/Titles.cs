@@ -13,6 +13,79 @@ namespace QualityContacts.Services.Models
             InitializeTitles();
         }
 
+        private IEnumerable<string> _registeredNobleTitles;
+
+        private IEnumerable<string> _registeredNoblePreSuffixes;
+
+        private IEnumerable<string> _registeredAcademicTitles;
+
+        internal IEnumerable<string> ExtractNobleTitles(string[] contactPartsToSearch)
+        {
+            List<string> extractedTitles = new List<string>();
+            foreach (string contactPart in contactPartsToSearch)
+            {
+                
+                var lowerContactPart = contactPart.ToLower();
+                foreach (string registeredNobleTitle in _registeredNobleTitles)
+                {
+                    if (lowerContactPart.Equals(registeredNobleTitle.ToLower()))
+                    {
+                        extractedTitles.Add(contactPart);
+
+                        
+                    }
+                }
+
+            }
+
+            return extractedTitles;
+        }
+
+        internal IEnumerable<string> ExtractNoblePreSuffixes(string[] contactPartsToSearch)
+        {
+            List<string> extractedTitles = new List<string>();
+            foreach (string contactPart in contactPartsToSearch)
+            {
+
+                var lowerContactPart = contactPart.ToLower();
+                foreach (string registeredNobleTitle in _registeredNoblePreSuffixes)
+                {
+                    if (lowerContactPart.Equals(registeredNobleTitle.ToLower()))
+                    {
+                        extractedTitles.Add(contactPart);
+                        // Add everything afterwards.
+
+
+                    }
+                }
+
+            }
+
+            return extractedTitles;
+        }
+
+        internal IEnumerable<string> ExtractAcademicTitles(string[] contactPartsToSearch)
+        {
+            List<string> extractedTitles = new List<string>();
+            foreach (string contactPart in contactPartsToSearch)
+            {
+
+                var lowerContactPart = contactPart.ToLower();
+                foreach (string registeredNobleTitle in _registeredAcademicTitles)
+                {
+                    if (lowerContactPart.Equals(registeredNobleTitle.ToLower()))
+                    {
+                        extractedTitles.Add(contactPart);
+
+
+                    }
+                }
+
+            }
+
+            return extractedTitles;
+        }
+
         public HashSet<string> DefaultAcademicTitles { get; set; } = new HashSet<string>();
 
         public HashSet<string> DefaultNobleTitles { get; set; } = new HashSet<string>();
@@ -40,8 +113,7 @@ namespace QualityContacts.Services.Models
             // Default noble titles
             DefaultNobleTitles.Add("");
 
-            // Default Genders
-            SalutationToGender.Add("Herr", Gender.Male.ToString());
+            
         }
     }
 }

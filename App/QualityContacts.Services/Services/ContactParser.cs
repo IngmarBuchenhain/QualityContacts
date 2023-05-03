@@ -17,64 +17,97 @@ namespace QualityContacts.Services
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="contactCandidate"><inheritdoc/></param>
         /// <returns><inheritdoc/></returns>
-        public IContact ParseContactInput(string input)
+        public IContact ParseContactFreeInput(string contactCandidate)
         {
+            // Initialize result
+            var newContact = new Contact();
 
+            // If no input is given, an empty contact is returned, which the user has to complete.
+            if (String.IsNullOrEmpty(contactCandidate)) return newContact;
 
-            if (string.IsNullOrEmpty(input)) return new Contact();
+            // Extract words from free input string. Assume words are separated by spaces.
+            string[] contactParts = SplitIntoWords(contactCandidate, ' ');
 
-            var contactParts = SplitStringToPossibleContactParts(input, ' ');
+            // Based on number of words in input, choose further parsing method.
 
-            var numberContactParts = contactParts.Count();
-            var result = new Contact();
-            switch (numberContactParts) {
-                case 1:
-                    
-                    result.LastName = contactParts[0];
-                    return result;
-                case 2:
-                    result.FirstName = contactParts[0];
-                    result.LastName = contactParts[1];
-                    return result;
-                case 3:
-                    result.Salutation = contactParts[0];
-                    result.FirstName = contactParts[1];
-                    result.LastName = contactParts[2];
+            // Case the input string only contained spaces.
+            if (contactParts.Length == 0) return newContact;
 
-                    return result;
-                case 4:
-                    break;
-                default:
-                    break;
+            // Special case with only one given word: We assume the given word is the last name!
+            if (contactParts.Length == 1)
+            {
+                newContact.LastName = contactParts[0];
+                return newContact;
+            } else
+            {
+                // In case of more then one word, check whether one word ends with ',', in this case this is the last name, otherwise assume the last word is the last name.
+                string possibleRevertedLastName;
+                if(TryFindRevertedLastName(out possibleRevertedLastName, contactParts))
+                {
+                    newContact.LastName = possibleRevertedLastName;
+                } else
+                {
+                    newContact.LastName = contactParts[contactParts.Length - 1];
+                }
+
+                // Get all titles
+                
+
+                return newContact;
             }
-
-
-            return new Contact();
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        
-
-        private string[] SplitStringToPossibleContactParts(string input, char separator)
+        /// <summary>
+        /// Loops through a given range of words and checks whether exactly one word ends with ',', if so it is returned as possible last name.
+        /// </summary>
+        /// <param name="extractedLastName">The possible last name.</param>
+        /// <param name="contactWords">Collection of words to check.</param>
+        /// <returns><see langword="true"/> if exactly one possible last name was found, otherwise <see langword="false"/>.</returns>
+        private static bool TryFindRevertedLastName(out string extractedLastName, string[] contactWords)
         {
-            var parts = input.Split(separator);
+            bool foundUnambiguouslyLastName = false;
+            extractedLastName = String.Empty;
 
-            
+            foreach (var word in contactWords)
+            {
+                if (word.Last().Equals(','))
+                {
+                    // If a last name already was found until now, reset and return ambiguousity.
+                    if (foundUnambiguouslyLastName)
+                    {
+                        extractedLastName = String.Empty;
+                        return false;
+                    } else
+                    {
+                        extractedLastName = word.Substring(0, word.Length - 1);
+                        foundUnambiguouslyLastName = true;
+                    }                   
+                }
+            }
 
-            return parts;
+            return foundUnambiguouslyLastName;
         }
 
+        /// <summary>
+        /// Split the given string into 'words' by the given separator.<br/>
+        /// </summary>
+        /// <param name="freeInput">Some string which should be separated into single words.</param>
+        /// <param name="separator"><see cref="Char"/> which separates words.</param>
+        /// <returns><see cref="Array"/> containing the single words, empty words are removed.</returns>
+        private static string[] SplitIntoWords(string freeInput, char separator)
+        {
+            var words = freeInput.Split(separator).Where(word => !string.IsNullOrEmpty(word)).ToArray();
 
+            return words;
+        }
 
         #endregion Private Methods
-
-
-
        
     }
 }

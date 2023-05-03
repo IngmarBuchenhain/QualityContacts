@@ -77,6 +77,22 @@ namespace QualityContacts.Services
             return priorValidation;
         }
 
+        private ValidationResult ValidateGender(string genderCandidate, ValidationResult? priorValidation = null)
+        {
+            if (priorValidation == null)
+            {
+                priorValidation = new ValidationResult();
+            }
+            if (String.IsNullOrEmpty(genderCandidate))
+            {
+                priorValidation.ValidationWarnings.Append(ValidationWarning.GenderMissing);
+                priorValidation.HasWarnings = true;
+                return priorValidation;
+            }
+
+            // Check for allowed genders
+        }
+
         [GeneratedRegex("^[a-zA-Z. -]*$")]
         private static partial Regex CheckForSpecialCharacters();
     }

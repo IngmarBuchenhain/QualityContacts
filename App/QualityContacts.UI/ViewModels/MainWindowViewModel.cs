@@ -394,6 +394,40 @@ namespace QualityContacts.UI
             }
         }
 
+        private void PrepareNewContactFieldsForValidation()
+        {
+            // For each of the contacts fields some convenient preparations are made to support the user using valid values.
+
+            NewContact.Gender.Trim().ToLower();
+
+            if (!String.IsNullOrEmpty(NewContact.Salutation) && !String.IsNullOrEmpty(NewContact.Salutation.Trim()))
+            {
+                string cleanedGender = NewContact.Salutation.Trim();
+
+                if (cleanedGender.Count() > 1)
+                {
+                    cleanedGender = String.Concat(cleanedGender[0].ToString().ToUpper(), cleanedGender.AsSpan(1));
+                    NewContact.Salutation = cleanedGender;
+                }
+                else
+                {
+                    NewContact.Salutation = cleanedGender.ToUpper();
+                }
+
+                
+
+
+            }
+
+            NewContact.Titles = NewContact.Titles.Trim();
+
+            NewContact.FirstName = NewContact.FirstName.Trim();
+
+            NewContact.LastName = NewContact.LastName.Trim();
+
+
+    }
+
         /// <summary>
         /// Splits the input in <see cref="ContactInput"/> into a <see cref="IContact"/> if no validation errors are present.<br/>
         /// Presents the new contact in the editing area and resets the input field.

@@ -9,7 +9,8 @@
         Ambiguous,
 
         /// <summary>The input contains characters which are unusual in a contact but is valid.</summary>
-        UnusualCharacters
+        UnusualCharacters,
+        GenderMissing
 
         // TODO: Add more possible warnings.
     }

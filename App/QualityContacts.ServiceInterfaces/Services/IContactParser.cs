@@ -8,10 +8,11 @@ namespace QualityContacts.ServiceInterfaces.Services
     public interface IContactParser
     {
         /// <summary>
-        /// Parses the given input string for contact information.
+        /// Parses the given input string for contact information.<br/>
+        /// The returned <see cref="IContact"/> may not be valid for saving and is only the best splitting the parser can perform.
         /// </summary>
-        /// <param name="input">The contact informations.</param>
-        /// <returns><see cref="IContact"/> containing the split input string.</returns>
-        IContact ParseContactInput(string input);
+        /// <param name="contactCandidate">The free input containing contact information.</param>
+        /// <returns><see cref="IContact"/> containing the information from the split free input <paramref name="contactCandidate"/>.</returns>
+        IContact ParseContactFreeInput(string contactCandidate);
     }
 }
