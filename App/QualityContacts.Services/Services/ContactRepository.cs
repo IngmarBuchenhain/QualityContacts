@@ -57,6 +57,11 @@ namespace QualityContacts.Services
             return REGISTERED_GENDERS;
         }
 
+        public string GetDefaultGender()
+        {
+            return EMPTY_GENDER;
+        }
+
         public IEnumerable<string> GetRegisteredSalutations()
         {
             return REGISTERED_SALUTATIONS;
@@ -97,6 +102,58 @@ namespace QualityContacts.Services
                 return value;
             }
             return Gender.None;
+        }
+
+        public string GetMaleLetterSalutation(Language language)
+        {
+            return language switch
+            {
+                Language.German => "Sehr geehrter Herr",
+                Language.English => "Dear Mr",
+                Language.Italian => "Egregio Signor",
+                Language.French => "Monsieur",
+                Language.Spanish => "Estimado Señor",
+                _ => "Sehr geehrter Herr",
+            };
+        }
+
+        public string GetFemaleLetterSalutation(Language language)
+        {
+            return language switch
+            {
+                Language.German => "Sehr geehrte Frau",
+                Language.English => "Dear Ms",
+                Language.Italian => "Gentile Signora",
+                Language.French => "Madame",
+                Language.Spanish => "Estimada Señora",
+                _ => "Sehr geehrter Frau",
+            };
+        }
+
+        public string GetDiverseLetterSalutation(Language language)
+        {
+            return language switch
+            {
+                Language.German => "Hallo",
+                Language.English => "Dear",
+                Language.Italian => "Ciao",
+                Language.French => "Bonjour",
+                Language.Spanish => "Hola",
+                _ => "Hallo",
+            };
+        }
+
+        public string GetDefaultLetterSalutation(Language language)
+        {
+            return language switch
+            {
+                Language.German => "Sehr geehrte Damen und Herren",
+                Language.English => "Dear Sirs",
+                Language.Italian => "Egregi Signori",
+                Language.French => "Messieursdames",
+                Language.Spanish => "Estimados Señores y Señoras",
+                _ => "Sehr geehrte Damen und Herren",
+            };
         }
 
         #endregion IContactRepository implementation
@@ -155,7 +212,7 @@ namespace QualityContacts.Services
 
         private static readonly HashSet<string> REGISTERED_GENDERS = new HashSet<string> { "männlich", "weiblich", "divers", "ohne" };
 
-        private static readonly HashSet<string> REGISTERED_SALUTATIONS = new HashSet<string> { "Herr", "Frau", "Mrs", "Mr", "Ms", "Signora", "Sig.", "Mme", "M", "Señora", "Señor" };
+        private static readonly HashSet<string> REGISTERED_SALUTATIONS = new HashSet<string> { "Herr", "Frau", "Mrs", "Mr", "Ms", "Signora", "Sig.", "Mme", "M", "Señora", "Señor", "" };
 
         private static readonly HashSet<string> REGISTERED_NOBLE_TITLES = new HashSet<string> { "Prinz", "Prinzessin", "Sir", "Dame", "Freiherrin", "Freiherr", "Baron", "Baronesse", "Ritter", "Graf", "Gräfin", "Fürst", "Fürstin", "Markgraf", "Pfalzgraf", "Landgraf", "Herzog", "Herzogin", "Kurfürst", "Großherzog", "Erzherzog", "König", "Königin" };
 

@@ -42,76 +42,45 @@ namespace QualityContacts.Services
             Language language = _contactRepository.GetLanguageForSalutation(contact.Salutation);
             Gender gender = _contactRepository.GetTypedGenderForGender(contact.Gender);
 
-            // TODO: IMPROVE
-            switch (gender)
+            return gender switch
             {
-                case Gender.Male:
-                    switch (language)
-                    {
-                        case Language.German:
-                            return "Sehr geehrter Herr";
-                        case Language.English:
-                            return "Dear Mr";
-                        case Language.Italian:
-                            return "Egregio Signor";
-                        case Language.French:
-                            return "Monsieur";
-                        case Language.Spanish:
-                            return "Estimado Señor";
-                        default:
-                            return "Sehr geehrter Herr";
-                    }
-                case Gender.Female:
-                    switch (language)
-                    {
-                        case Language.German:
-                            return "Sehr geehrte Frau";
-                        case Language.English:
-                            return "Dear Ms";
-                        case Language.Italian:
-                            return "Gentile Signora";
-                        case Language.French:
-                            return "Madame";
-                        case Language.Spanish:
-                            return "Estimada Señora";
-                        default:
-                            return "Sehr geehrter Frau";
-                    }
-                case Gender.Diverse:
-                    switch (language)
-                    {
-                        case Language.German:
-                            return "Hallo";
-                        case Language.English:
-                            return "Dear";
-                        case Language.Italian:
-                            return "Ciao";
-                        case Language.French:
-                            return "Bonjour";
-                        case Language.Spanish:
-                            return "Hola";
-                        default:
-                            return "Hallo";
-                    }
-                case Gender.None:
-                    switch (language)
-                    {
-                        case Language.German:
-                            return "Sehr geehrte Damen und Herren";
-                        case Language.English:
-                            return "Dear Sirs";
-                        case Language.Italian:
-                            return "Egregi Signori";
-                        case Language.French:
-                            return "Messieursdames";
-                        case Language.Spanish:
-                            return "Estimados Señores y Señoras";
-                        default:
-                            return "Sehr geehrte Damen und Herren";
-                    }
-                default:
-                    return "Hallo";
+                Gender.Male => _contactRepository.GetMaleLetterSalutation(language) + GenerateMainPartOfLetterSalutation(gender, contact.Titles, contact.FirstAndMiddleName, contact.LastName),
+                Gender.Female => _contactRepository.GetFemaleLetterSalutation(language) + GenerateMainPartOfLetterSalutation(gender, contact.Titles, contact.FirstAndMiddleName, contact.LastName),
+                Gender.Diverse => _contactRepository.GetDiverseLetterSalutation(language) + GenerateMainPartOfLetterSalutation(gender, contact.Titles, contact.FirstAndMiddleName, contact.LastName),
+                Gender.None => _contactRepository.GetDefaultLetterSalutation(language) + GenerateMainPartOfLetterSalutation(gender, contact.Titles, contact.FirstAndMiddleName, contact.LastName),
+                _ => throw new InvalidOperationException("No letter salutation can be generated for an invalid contact!"),
+            };
+        }
+
+        private string GenerateMainPartOfLetterSalutation(Gender gender, string titles, string firstAndMiddleNames, string lastName)
+        {
+            return gender switch
+            {
+                Gender.Male => GenerateTitlePartOfLetterSalutation(titles) + lastName,
+                Gender.Female => GenerateTitlePartOfLetterSalutation(titles) + lastName,
+                Gender.Diverse => GenerateTitlePartOfLetterSalutation(titles) + GenerateFirstNamePartOfLetterSalutation(firstAndMiddleNames) + lastName,
+                Gender.None => String.Empty,
+                _ => throw new InvalidOperationException("No letter salutation can be generated for an invalid contact!"),
+            };
+        }
+
+        private string GenerateTitlePartOfLetterSalutation(string titles)
+        {
+            var singleTitles = titles.Split(' ').Where(word => word.Length > 0);
+
+            if (singleTitles.Any())
+            {
+                return " " + singleTitles.First();
             }
+
+            return String.Empty;
+        }
+
+        private string GenerateFirstNamePartOfLetterSalutation(string firstAndMiddleNames)
+        {
+            if (String.IsNullOrEmpty(firstAndMiddleNames.Trim())) throw new InvalidOperationException("No letter salutation can be generated for an invalid contact!");
+
+            return " " + firstAndMiddleNames.Split(' ').Where(word => word.Length > 0).First();
         }
     }
 }

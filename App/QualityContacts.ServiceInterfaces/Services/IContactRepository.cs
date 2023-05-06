@@ -62,6 +62,11 @@ namespace QualityContacts.ServiceInterfaces.Services
         public IEnumerable<string> GetRegisteredGenders();
 
         /// <summary>
+        /// Returns the default gender.
+        /// </summary>
+        public string GetDefaultGender();
+
+        /// <summary>
         /// Load all registered noble titles.
         /// </summary>
         public IEnumerable<string> GetRegisteredNobleTitles();
@@ -88,5 +93,25 @@ namespace QualityContacts.ServiceInterfaces.Services
         /// </summary>
         /// <param name="gender">A gender for which the matching typed gender is needed.</param>
         public Gender GetTypedGenderForGender(string  gender);
+
+        /// <summary>
+        /// Returns the language specific letter salutation beginning for a male contact.
+        /// </summary>
+        public string GetMaleLetterSalutation(Language language);
+
+        /// <summary>
+        /// Returns the language specific letter salutation beginning for a female contact.
+        /// </summary>
+        public string GetFemaleLetterSalutation(Language language);
+
+        /// <summary>
+        /// Returns the language specific letter salutation beginning for a diverse contact.
+        /// </summary>
+        public string GetDiverseLetterSalutation(Language language);
+
+        /// <summary>
+        /// Returns the language specific letter salutation beginning for a contact without gender.
+        /// </summary>
+        public string GetDefaultLetterSalutation(Language language);
     }
 }
