@@ -1,4 +1,5 @@
 using QualityContacts.ServiceInterfaces;
+using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.Services;
 
 namespace QualityContacts.Tests
@@ -17,7 +18,7 @@ namespace QualityContacts.Tests
 
             IValidationResult result = validator.Validate(value);
 
-            Assert.False(result.isValid, $"{value} is no valid phone number input");
+            Assert.False(result.IsValid, $"{value} is no valid phone number input");
         }
     }
 }

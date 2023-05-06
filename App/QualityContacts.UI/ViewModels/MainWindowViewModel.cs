@@ -404,7 +404,7 @@ namespace QualityContacts.UI
             {
                 string cleanedGender = NewContact.Salutation.Trim();
 
-                if (cleanedGender.Count() > 1)
+                if (cleanedGender.Length > 1)
                 {
                     cleanedGender = String.Concat(cleanedGender[0].ToString().ToUpper(), cleanedGender.AsSpan(1));
                     NewContact.Salutation = cleanedGender;
@@ -436,7 +436,7 @@ namespace QualityContacts.UI
         {
             if (EnableInputSplitting)
             {
-                var newContact = _parser.ParseContactInput(ContactInput);
+                var newContact = _parser.ParseContactFreeInput(ContactInput);
 
                 NewContact = newContact;
 

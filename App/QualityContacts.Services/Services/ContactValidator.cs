@@ -91,6 +91,8 @@ namespace QualityContacts.Services
             }
 
             // Check for allowed genders
+            // TODO: Implement
+            return priorValidation;
         }
 
         [GeneratedRegex("^[a-zA-Z. -]*$")]
