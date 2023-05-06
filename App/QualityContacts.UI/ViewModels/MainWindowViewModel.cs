@@ -23,6 +23,9 @@ namespace QualityContacts.UI
             _repository = new ContactRepository();
 
             _newContact = _repository.GetNewContact();
+
+            ValidateContactInput();
+            ValidateNewContact();
         }
 
         /// <summary>
@@ -72,9 +75,9 @@ namespace QualityContacts.UI
         private bool _enableContactSaving = true;
 
         /// <summary>
-        /// Do not use directly, if UI should be notified. See <see cref="InputValidationErrors"/>-property.
+        /// Do not use directly, if UI should be notified. See <see cref="ContactValidationWarnings"/>-property.
         /// </summary>
-        private string _inputValidationErrors = String.Empty;
+        private string _contactValidationWarnings = String.Empty;
 
         /// <summary>
         /// Do not use directly, if UI should be notified. See <see cref="InputValidationWarnings"/>-property.
@@ -219,13 +222,13 @@ namespace QualityContacts.UI
         /// <summary>
         /// String containing all validation errors for the <see cref="ContactInput"/>.
         /// </summary>
-        public string InputValidationErrors
+        public string ContactValidationWarnings
         {
-            get => _inputValidationErrors;
+            get => _contactValidationWarnings;
             private set
             {
-                _inputValidationErrors = value;
-                NotifyPropertyChanged(nameof(InputValidationErrors));
+                _contactValidationWarnings = value;
+                NotifyPropertyChanged(nameof(ContactValidationWarnings));
                 NotifyPropertyChanged(nameof(ShowInputValidationErrors));
             }
         }
@@ -233,8 +236,8 @@ namespace QualityContacts.UI
         /// <summary>
         /// Indicator whether input validation errors are present and should be shown by the UI.
         /// </summary>
-        /// <value><see langword="true"/> if <see cref="InputValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
-        public bool ShowInputValidationErrors { get => !string.IsNullOrEmpty(InputValidationErrors); }
+        /// <value><see langword="true"/> if <see cref="ContactValidationWarnings"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowInputValidationErrors { get => !string.IsNullOrEmpty(ContactValidationWarnings); }
 
         /// <summary>
         /// String containing all validation warnings for the <see cref="ContactInput"/>.
@@ -381,6 +384,24 @@ namespace QualityContacts.UI
      
 
                 EnableContactSaving = true;
+                if (contactValidation.HasWarnings)
+                {
+                    
+                    foreach (var warning in contactValidation.ValidationWarnings)
+                    {
+                        // TODO: After prototyping phase localization of errors should happen.
+                        if (ContactValidationWarnings.Length == 0)
+                            ContactValidationWarnings += MatchValidationWarningsToMessage(warning);
+                        else
+                            ContactValidationWarnings += Environment.NewLine + MatchValidationWarningsToMessage(warning);
+                    }
+                    if(contactValidation.PossibleNewTitle.Length > 0)
+                    {
+                  
+                            NewTitle = contactValidation.PossibleNewTitle;
+                      
+                    }
+                }
             }
             else
             {
@@ -389,7 +410,25 @@ namespace QualityContacts.UI
                 foreach (var error in contactValidation.ValidationErrors)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
-                    ContactValidationErrors += MatchValidationErrorsToMessage(error) + Environment.NewLine;
+                    if (ContactValidationErrors.Length == 0)
+                        ContactValidationErrors += MatchValidationErrorsToMessage(error);
+                    else
+                        ContactValidationErrors += Environment.NewLine + MatchValidationErrorsToMessage(error);
+                }
+
+                foreach (var warning in contactValidation.ValidationWarnings)
+                {
+                    // TODO: After prototyping phase localization of errors should happen.
+                    if (ContactValidationWarnings.Length == 0)
+                        ContactValidationWarnings += MatchValidationWarningsToMessage(warning);
+                    else
+                        ContactValidationWarnings += Environment.NewLine + MatchValidationWarningsToMessage(warning);
+                }
+                if (contactValidation.PossibleNewTitle.Length > 0)
+                {
+    
+                        NewTitle = contactValidation.PossibleNewTitle;
+              
                 }
             }
         }
@@ -450,10 +489,11 @@ namespace QualityContacts.UI
         internal void ValidateContactInput()
         {
             IValidationResult contactValidation = _validator.Validate(ContactInput);
-
+            ContactValidationWarnings = String.Empty;
+            InputValidationWarnings = String.Empty;
             if (contactValidation.IsValid)
             {
-                InputValidationErrors = String.Empty;
+               
 
                 EnableInputSplitting = true;
 
@@ -477,7 +517,7 @@ namespace QualityContacts.UI
                 foreach (var error in contactValidation.ValidationErrors)
                 {
                     // TODO: After prototyping phase localization of errors should happen.
-                    InputValidationErrors += error + Environment.NewLine;
+                    ContactValidationWarnings += error + Environment.NewLine;
                 }
 
                 foreach (var warning in contactValidation.ValidationWarnings)
@@ -514,7 +554,9 @@ namespace QualityContacts.UI
             switch (warning)
             {
                 case ValidationWarning.UnusualCharacters:
-                    return "Eingabe enthält ungewöhnliche Zeichen für einen Name";
+                    return "Eingabe enthält ungewöhnliche Zeichen.";
+                case ValidationWarning.Incomplete:
+                    return "Eingabe enthält zu wenig Wörter, um gültig aufgetrennt zu werden.";
                 default:
                     return warning.ToString();
             }
@@ -530,7 +572,7 @@ namespace QualityContacts.UI
                 case ValidationError.LastNameMissing:
                     LastNameError = true;
                     return "Es muss ein Nachname angegeben werden!";
-                case ValidationError.GenderMissing:
+                case ValidationError.GenderNotRegistered:
                     GenderError = true;
                     return "Es muss ein Geschlecht angegeben werden!";
                 default:
@@ -541,6 +583,7 @@ namespace QualityContacts.UI
         private void ResetContactValidationErrorsAndWarnings()
         {
             ContactValidationErrors = String.Empty;
+            ContactValidationWarnings = String.Empty;
 
             GenderError = false;
             SalutationError = false;

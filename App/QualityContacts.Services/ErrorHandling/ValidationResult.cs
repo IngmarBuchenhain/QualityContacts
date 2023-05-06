@@ -6,12 +6,13 @@ namespace QualityContacts.Services.ErrorHandling
     public class ValidationResult : IValidationResult
     {
 
-        public ValidationResult(bool isValid, bool hasWarnings, IEnumerable<ValidationError> errors, IEnumerable<ValidationWarning> warnings)
+        public ValidationResult(bool isValid, bool hasWarnings, IEnumerable<ValidationError> errors, IEnumerable<ValidationWarning> warnings, string possibleNewTitles = "")
         {
             IsValid = isValid;
             HasWarnings = hasWarnings;
             ValidationErrors = errors;
             ValidationWarnings = warnings;
+            PossibleNewTitle = possibleNewTitles;
         }
 
         public ValidationResult()
@@ -29,6 +30,8 @@ namespace QualityContacts.Services.ErrorHandling
         public IEnumerable<ValidationError> ValidationErrors { get; set; }
 
         public IEnumerable<ValidationWarning> ValidationWarnings { get; set; }
+
+        public string PossibleNewTitle {get; set; }
     }
 }
 

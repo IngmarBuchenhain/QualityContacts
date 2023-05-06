@@ -51,26 +51,37 @@ namespace QualityContacts.Services
             // Iterate through all words, beginning with first and apply priorised rules
             int numberOfWords = contactParts.Length;
 
+            bool lastNameAlreadyFound = false;
+
             for ( int wordIndex = 0; wordIndex < numberOfWords; wordIndex++ )
             {
                 // Get current word
                 string currentWord = contactParts[wordIndex];
 
                 // RULE: It it is the last word, it is the last name
-                if (wordIndex == numberOfWords - 1)
+                if (wordIndex == numberOfWords - 1 && !lastNameAlreadyFound)
                 {
-                    // Append to last name, add space if needed
-                    bool alreadyLastNameExisting = newContact.LastName.Length > 0;
-                    if (alreadyLastNameExisting)
-                    {
-                        newContact.LastName += " " + currentWord;
-                    }
-                    else
-                    {
-                        newContact.LastName += currentWord;
-                    }
+    
+                        // Append to last name, add space if needed
+                        bool alreadyLastNameExisting = newContact.LastName.Length > 0;
+                        if (alreadyLastNameExisting)
+                        {
+                            newContact.LastName += " " + currentWord;
+                        }
+                        else
+                        {
+                            newContact.LastName += currentWord;
+                        }
+                    
                 } else if (wordIndex == 0)
                 {
+                    // RULE: If word ends with ',' assume this is the last name.
+                    if (currentWord.EndsWith(',')){
+                        lastNameAlreadyFound = true;
+                        newContact.LastName = currentWord.Substring(0, currentWord.Length - 1);
+                        continue;
+                    }
+
                     // RULE: The first word may be a salutation.
                     // Check this first
  
@@ -98,7 +109,7 @@ namespace QualityContacts.Services
 
                     foreach(string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
                     {
-                        if (currentWord.ToLower().Equals(academicTitle.ToLower()))
+                        if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {
                             newContact.Titles = academicTitle;
 
@@ -145,12 +156,42 @@ namespace QualityContacts.Services
                 } else
                 {
                     // RULE: Middle words may be titles or first/middle names
+                    // RULE: If word ends with ',' assume this is the last name.
+                    if (currentWord.EndsWith(','))
+                    {
+                        lastNameAlreadyFound = true;
+                        newContact.LastName = currentWord.Substring(0, currentWord.Length - 1);
+                        continue;
+                    }
+
+                    // RULE: The first word may be a salutation.
+                    // Check this first
+
+
+                    if (String.IsNullOrEmpty(newContact.Salutation)) {
+                        foreach (string salutation in _registeredSalutations)
+                        {
+                            if (currentWord.ToLower().Equals(salutation.ToLower()))
+                            {
+                                newContact.Salutation = currentWord;
+
+                                break;
+                            }
+                        }
+
+                        // If a salutation could be extracted, determine the gender.
+                        if (!String.IsNullOrEmpty(newContact.Salutation))
+                        {
+                            newContact.Gender = new ContactRepository().GetGender(newContact.Salutation);
+                            continue;
+                        }
+                    }
 
                     // Check for academic titles first
                     bool foundAcademicTitle = false;
                     foreach (string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
                     {
-                        if (currentWord.ToLower().Equals(academicTitle.ToLower()))
+                        if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {
                             foundAcademicTitle = true;
                             if (!String.IsNullOrEmpty(newContact.Titles))

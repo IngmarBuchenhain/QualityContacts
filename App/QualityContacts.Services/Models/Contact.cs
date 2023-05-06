@@ -21,6 +21,7 @@ namespace QualityContacts.Services.Models
             {
                 _gender = value;
                 NotifyPropertyChanged(nameof(LetterSalutation));
+                NotifyPropertyChanged(nameof(Gender));
             }
         }
         public string Salutation { get; set; } = string.Empty;

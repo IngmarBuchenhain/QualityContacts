@@ -5,7 +5,7 @@ namespace QualityContacts.Services.Models
 	{
         internal Salutation()
         {
-            _registeredSalutations = new ContactRepository().GetRegisteredGenders();
+            _registeredSalutations = new ContactRepository().GetRegisteredSalutations();
         }
 
         private IEnumerable<string> _registeredSalutations;

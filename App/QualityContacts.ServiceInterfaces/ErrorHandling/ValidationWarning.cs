@@ -10,7 +10,10 @@
 
         /// <summary>The input contains characters which are unusual in a contact but is valid.</summary>
         UnusualCharacters,
-        GenderMissing
+        GenderMissing,
+        Incomplete,
+        SalutationMissing,
+        TitleUnknown
 
         // TODO: Add more possible warnings.
     }

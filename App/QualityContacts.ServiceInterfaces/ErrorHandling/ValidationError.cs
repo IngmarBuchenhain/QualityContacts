@@ -10,7 +10,8 @@
 
         FirstNameMissing,
         LastNameMissing,
-        GenderMissing
+        GenderNotRegistered,
+        SalutationNotRegistered
     }
 }
 

@@ -16,6 +16,11 @@
         bool HasWarnings { get; }
 
         /// <summary>
+        /// If unknown academic titles were found, they can be found here.
+        /// </summary>
+        string PossibleNewTitle { get; }
+
+        /// <summary>
         /// All errors which occured during validation.
         /// </summary>
         IEnumerable<ValidationError> ValidationErrors { get; }
@@ -24,6 +29,7 @@
         /// All warnings which occured during validation.
         /// </summary>
         IEnumerable<ValidationWarning> ValidationWarnings { get; }
+
     }
 }
 

@@ -12,9 +12,10 @@ namespace QualityContacts.Services
     {
         public ContactValidator()
         {
+            _contactRepository = new ContactRepository();
         }
 
-
+        private ContactRepository _contactRepository;
 
         public IValidationResult Validate(string input)
         {
@@ -25,36 +26,63 @@ namespace QualityContacts.Services
                 validationWarnings.Add(ValidationWarning.UnusualCharacters);
             }
 
+            if (input.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray().Length < 3)
+            {
+                validationWarnings.Add(ValidationWarning.Incomplete);
+            }
 
-            Console.WriteLine("Not implemented");
-            return new ValidationResult(true, false, null, null);
+            
+            return new ValidationResult(true, validationWarnings.Count > 0, null, validationWarnings);
         }
 
         public IValidationResult Validate(IContact contact)
         {
             bool isValid = true;
             var validationErrors = new HashSet<ValidationError>();
+            var validationWarnings = new HashSet<ValidationWarning>();
+            contact.Gender = contact.Gender.Trim();
+            contact.Salutation = contact.Salutation.Trim();
+            if (String.IsNullOrEmpty(contact.Gender))
+            {
+                contact.Gender = "ohne";
+                validationWarnings.Add(ValidationWarning.GenderMissing);
+            }
+            if(!new Gender().ConformsToRegisteredGenders(contact.Gender)){
+                isValid = false;
+                validationErrors.Add(ValidationError.GenderNotRegistered);
+            }
+
+            if(!new Salutation().ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
+            {
+                isValid = false;
+                validationErrors.Add(ValidationError.SalutationNotRegistered);
+            }
+            if (string.IsNullOrEmpty(contact.Salutation))
+            {
+                validationWarnings.Add(ValidationWarning.SalutationMissing);
+            }
 
             // Check each property of the contact individually
+            string validationNewTitles = new Titles().ConformsToRegisteredAcademicTitles(contact.Titles);
+            if (validationNewTitles.Length > 0)
+            {
+                validationWarnings.Add(ValidationWarning.TitleUnknown);
+            }
 
-            if (String.IsNullOrEmpty(contact.FirstName))
+            if (String.IsNullOrEmpty(contact.FirstName.Trim()))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
                 isValid = false;
             }
 
-            if (String.IsNullOrEmpty(contact.LastName))
+            if (String.IsNullOrEmpty(contact.LastName.Trim()))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
                 isValid = false;
             }
-            if (String.IsNullOrEmpty(contact.Gender))
-            {
-                validationErrors.Add(ValidationError.GenderMissing);
-                isValid = false;
-            }
 
-            return new ValidationResult(isValid, false, validationErrors, null);
+
+            return new ValidationResult(isValid, validationWarnings.Count > 0, validationErrors, validationWarnings, validationNewTitles);
         }
 
         private ValidationResult ValidateFirstName(string firstName, ValidationResult? priorValidation = null)
@@ -95,8 +123,10 @@ namespace QualityContacts.Services
             return priorValidation;
         }
 
-        [GeneratedRegex("^[a-zA-Z. -]*$")]
+        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
         private static partial Regex CheckForSpecialCharacters();
+
+       
     }
 }
 

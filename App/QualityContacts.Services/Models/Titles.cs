@@ -11,6 +11,7 @@ namespace QualityContacts.Services.Models
         public Titles()
         {
             InitializeTitles();
+            _registeredAcademicTitles = new ContactRepository().GetRegisteredAcademicTitles();
         }
 
         private IEnumerable<string> _registeredNobleTitles;
@@ -18,6 +19,42 @@ namespace QualityContacts.Services.Models
         private IEnumerable<string> _registeredNoblePreSuffixes;
 
         private IEnumerable<string> _registeredAcademicTitles;
+
+        public string ConformsToRegisteredAcademicTitles(string titleCandidates)
+        {
+            var words = titleCandidates.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray();
+
+            string possibleNewTitles = String.Empty;
+            foreach (var word in words)
+            {
+                if (!ConformsToRegisteredTitles(word))
+                {
+                    if(possibleNewTitles.Length> 0)
+                    {
+                        possibleNewTitles += " " + word;
+                    }
+                    else
+                    {
+                        possibleNewTitles += word;
+                    }
+                    
+                }
+            }
+
+            return possibleNewTitles;
+        }
+
+        private bool ConformsToRegisteredTitles(string titleCandidate)
+        {
+            foreach(var title in _registeredAcademicTitles)
+            {
+                if (title.Equals(titleCandidate))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         internal IEnumerable<string> ExtractNobleTitles(string[] contactPartsToSearch)
         {
