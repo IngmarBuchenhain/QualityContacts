@@ -9,19 +9,19 @@ namespace QualityContacts.Services
     {
 
         public ContactRepository() {
-            AddToSalutationGenders("Herr", MALE_GENDER);
-            AddToSalutationGenders("Herrn", MALE_GENDER);
-            AddToSalutationGenders("Mr", MALE_GENDER);
-            AddToSalutationGenders("Señor", MALE_GENDER);
-            AddToSalutationGenders("M", MALE_GENDER);
+            AddToSalutationGenders("Herr", MALE_GENDER, GenderEnum.Male, Language.German);
+            AddToSalutationGenders("Herrn", MALE_GENDER, GenderEnum.Male, Language.German);
+            AddToSalutationGenders("Mr", MALE_GENDER, GenderEnum.Male, Language.English);
+            AddToSalutationGenders("Señor", MALE_GENDER, GenderEnum.Male, Language.Spanish);
+            AddToSalutationGenders("M", MALE_GENDER, GenderEnum.Male, Language.French);
 
-            AddToSalutationGenders("Frau", FEMALE_GENDER);
-            AddToSalutationGenders("Mrs", FEMALE_GENDER);
-            AddToSalutationGenders("Ms", FEMALE_GENDER);
-            AddToSalutationGenders("Signora", FEMALE_GENDER);
-            AddToSalutationGenders("Sig.", MALE_GENDER);
-            AddToSalutationGenders("Mme", FEMALE_GENDER);
-            AddToSalutationGenders("Señora", FEMALE_GENDER);
+            AddToSalutationGenders("Frau", FEMALE_GENDER, GenderEnum.Female, Language.German);
+            AddToSalutationGenders("Mrs", FEMALE_GENDER, GenderEnum.Female, Language.English);
+            AddToSalutationGenders("Ms", FEMALE_GENDER, GenderEnum.Female, Language.English);
+            AddToSalutationGenders("Signora", FEMALE_GENDER, GenderEnum.Female, Language.Italian);
+            AddToSalutationGenders("Sig.", MALE_GENDER, GenderEnum.Male, Language.Italian);
+            AddToSalutationGenders("Mme", FEMALE_GENDER, GenderEnum.Female, Language.French);
+            AddToSalutationGenders("Señora", FEMALE_GENDER, GenderEnum.Female, Language.Spanish);
 
             // Default academic titles
             REGISTERED_ACADEMIC_TITLES.Add("Dr.");
@@ -40,11 +40,26 @@ namespace QualityContacts.Services
             REGISTERED_ACADEMIC_TITLES.Add("M.S.");
         }
 
-        private void AddToSalutationGenders(string key, string value)
+        private void AddToSalutationGenders(string key, string value, GenderEnum gender, Language language)
         {
-            if (REGISTERED_SALUTATION_TO_GENDER.ContainsKey(key)) return;
+            if (!REGISTERED_SALUTATION_TO_GENDER.ContainsKey(key))
+            {
+                REGISTERED_SALUTATION_TO_GENDER.Add(key, value);
+            }
+            if (!REGISTERED_SALUTATION_TO_GENDEREnum.ContainsKey(value))
+            {
+                REGISTERED_SALUTATION_TO_GENDEREnum.Add(value, gender);
+            }
+            if (!REGISTERED_SALUTATION_TO_Language.ContainsKey(key))
+            {
+                REGISTERED_SALUTATION_TO_Language.Add(key, language);
+            }
 
-            REGISTERED_SALUTATION_TO_GENDER.Add(key, value);
+            if (!REGISTERED_SALUTATION_TO_GENDEREnum.ContainsKey("divers"))
+            {
+                REGISTERED_SALUTATION_TO_GENDEREnum.Add("divers", GenderEnum.Diverse);
+            }
+           
         }
 
         public IContact GetNewContact()
@@ -115,12 +130,117 @@ namespace QualityContacts.Services
         private ObservableCollection<IContact> _contacts = new ObservableCollection<IContact>();
 
         private static readonly Dictionary<string, string> REGISTERED_SALUTATION_TO_GENDER = new Dictionary<string, string>();
+        private static readonly Dictionary<string, GenderEnum> REGISTERED_SALUTATION_TO_GENDEREnum = new Dictionary<string, GenderEnum>();
+        private static readonly Dictionary<string, Language> REGISTERED_SALUTATION_TO_Language = new Dictionary<string, Language>();
 
         private const string MALE_GENDER = "männlich";
         private const string FEMALE_GENDER = "weiblich";
         private const string DIVERSE_GENDER = "divers";
         private const string EMPTY_GENDER = "ohne";
 
+        internal string GenerateLetterSalutation(string genderString, string salutation)
+        {
+            Language language = Language.German;
+            GenderEnum gender = GenderEnum.None;
+            if (REGISTERED_SALUTATION_TO_Language.ContainsKey(salutation))
+            {
+                language = REGISTERED_SALUTATION_TO_Language[salutation];
+            }
+            if(REGISTERED_SALUTATION_TO_GENDEREnum.ContainsKey(genderString))
+            {
+                gender = REGISTERED_SALUTATION_TO_GENDEREnum[genderString];
+            }
+
+
+            switch (gender)
+            {
+                case GenderEnum.Male:
+                    switch (language)
+                    {
+                        case Language.German:
+                            return "Sehr geehrter Herr";
+                        case Language.English:
+                            return "Dear Mr";
+                        case Language.Italian:
+                            return "Egregio Signor";
+                        case Language.French:
+                            return "Monsieur";
+                        case Language.Spanish:
+                            return "Estimado Señor";
+                        default:
+                            return "Sehr geehrter Herr";
+                    }
+                case GenderEnum.Female:
+                    switch (language)
+                    {
+                        case Language.German:
+                            return "Sehr geehrte Frau";
+                        case Language.English:
+                            return "Dear Ms";
+                        case Language.Italian:
+                            return "Gentile Signora";
+                        case Language.French:
+                            return "Madame";
+                        case Language.Spanish:
+                            return "Estimada Señora";
+                        default:
+                            return "Sehr geehrter Frau";
+                    }
+                case GenderEnum.Diverse:
+                    switch (language)
+                    {
+                        case Language.German:
+                            return "Hallo";
+                        case Language.English:
+                            return "Dear";
+                        case Language.Italian:
+                            return "Ciao";
+                        case Language.French:
+                            return "Bonjour";
+                        case Language.Spanish:
+                            return "Hola";
+                        default:
+                            return "Hallo";
+                    }
+                case GenderEnum.None:
+                    switch (language)
+                    {
+                        case Language.German:
+                            return "Sehr geehrte Damen und Herren";
+                        case Language.English:
+                            return "Dear Sirs";
+                        case Language.Italian:
+                           return "Egregi Signori";
+                        case Language.French:
+                            return "Messieursdames";
+                        case Language.Spanish:
+                            return "Estimados Señores y Señoras";
+                        default:
+                            return "Sehr geehrte Damen und Herren";
+                    }
+                default:
+                    return "Hallo";
+            }
+        }
+
+
+
+        public enum Language
+        {
+            German,
+            English,
+            Italian,
+            French,
+            Spanish
+        }
+
+       public enum GenderEnum
+        {
+            Male,
+            Female,
+            Diverse,
+            None
+        }
         private static readonly HashSet<string> REGISTERED_GENDERS = new HashSet<string> { "männlich", "weiblich", "divers", "ohne" };
 
         private static readonly HashSet<string> REGISTERED_SALUTATIONS = new HashSet<string> { "Herr", "Frau", "Mrs", "Mr", "Ms", "Signora", "Sig.", "Mme", "M", "Señora", "Señor" };

@@ -1,9 +1,11 @@
-﻿namespace QualityContacts.ServiceInterfaces.Models
+﻿using System.ComponentModel;
+
+namespace QualityContacts.ServiceInterfaces.Models
 {
     /// <summary>
     /// Representation of a contact. Provides access to different parts, like first name or titles.
     /// </summary>
-    public interface IContact
+    public interface IContact : INotifyPropertyChanged
     {
         string FirstName { get; set; }
         string LastName { get; set; }
