@@ -1,16 +1,16 @@
 ﻿namespace QualityContacts.ServiceInterfaces.ErrorHandling
 {
     /// <summary>
-    /// Typed errors which can occur during validation.
+    /// Typed errors which can occur during validation of a contact.
     /// </summary>
     public enum ValidationError
     {
-        // TODO: Which errors can occur?
-
-
         FirstNameMissing,
+
         LastNameMissing,
+
         GenderNotRegistered,
+
         SalutationNotRegistered
     }
 }

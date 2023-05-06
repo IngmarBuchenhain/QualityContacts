@@ -1,9 +1,10 @@
 ﻿using System;
-namespace QualityContacts.Services.Models
+
+namespace QualityContacts.Services
 {
-	internal class Salutation
-	{
-        internal Salutation()
+    internal class SalutationServices
+    {
+        internal SalutationServices()
         {
             _registeredSalutations = new ContactRepository().GetRegisteredSalutations();
         }
@@ -42,10 +43,10 @@ namespace QualityContacts.Services.Models
 
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
-        
+
     }
 }
 

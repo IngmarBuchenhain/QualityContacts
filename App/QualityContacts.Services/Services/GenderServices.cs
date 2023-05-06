@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QualityContacts.Services.Models
+namespace QualityContacts.Services
 {
-    internal class Gender
+    internal class GenderServices
     {
-        internal Gender()
+        internal GenderServices()
         {
             _registeredGenders = new ContactRepository().GetRegisteredGenders();
         }
@@ -17,12 +17,12 @@ namespace QualityContacts.Services.Models
 
         internal bool ConformsToRegisteredGenders(string genderCandidate)
         {
-            foreach(string registeredGender in _registeredGenders)
+            foreach (string registeredGender in _registeredGenders)
             {
                 if (registeredGender.Equals(genderCandidate))
                 {
 
-                    
+
                     return true;
                 }
             }
@@ -32,7 +32,7 @@ namespace QualityContacts.Services.Models
 
         internal string FindFirst(string[] contactPartsToSearch)
         {
-            foreach(string contactPart in contactPartsToSearch)
+            foreach (string contactPart in contactPartsToSearch)
             {
                 var lowerContactPart = contactPart.ToLower();
                 foreach (string registeredGender in _registeredGenders)
@@ -44,10 +44,10 @@ namespace QualityContacts.Services.Models
                         return lowerContactPart;
                     }
                 }
-                
+
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

@@ -4,13 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World, it's me!");
+            Console.WriteLine("Debug mode:");
 
             // Add debug tests here if needed.
-
-            var parser = new ContactParser();
-
-            parser.ParseContactFreeInput("AB -Cabc. ");
 
             Console.WriteLine("Finished");
 

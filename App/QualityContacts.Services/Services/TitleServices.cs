@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QualityContacts.Services.Models
+namespace QualityContacts.Services
 {
-    internal class Titles
+    internal class TitleServices
     {
-        public Titles()
+        public TitleServices()
         {
             InitializeTitles();
             _registeredAcademicTitles = new ContactRepository().GetRegisteredAcademicTitles();
@@ -24,12 +24,12 @@ namespace QualityContacts.Services.Models
         {
             var words = titleCandidates.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray();
 
-            string possibleNewTitles = String.Empty;
+            string possibleNewTitles = string.Empty;
             foreach (var word in words)
             {
                 if (!ConformsToRegisteredTitles(word))
                 {
-                    if(possibleNewTitles.Length> 0)
+                    if (possibleNewTitles.Length > 0)
                     {
                         possibleNewTitles += " " + word;
                     }
@@ -37,7 +37,7 @@ namespace QualityContacts.Services.Models
                     {
                         possibleNewTitles += word;
                     }
-                    
+
                 }
             }
 
@@ -46,7 +46,7 @@ namespace QualityContacts.Services.Models
 
         private bool ConformsToRegisteredTitles(string titleCandidate)
         {
-            foreach(var title in _registeredAcademicTitles)
+            foreach (var title in _registeredAcademicTitles)
             {
                 if (title.Equals(titleCandidate))
                 {
@@ -61,7 +61,7 @@ namespace QualityContacts.Services.Models
             List<string> extractedTitles = new List<string>();
             foreach (string contactPart in contactPartsToSearch)
             {
-                
+
                 var lowerContactPart = contactPart.ToLower();
                 foreach (string registeredNobleTitle in _registeredNobleTitles)
                 {
@@ -69,7 +69,7 @@ namespace QualityContacts.Services.Models
                     {
                         extractedTitles.Add(contactPart);
 
-                        
+
                     }
                 }
 
@@ -150,7 +150,7 @@ namespace QualityContacts.Services.Models
             // Default noble titles
             DefaultNobleTitles.Add("");
 
-            
+
         }
     }
 }

@@ -69,14 +69,14 @@ namespace QualityContacts.Services
 
         public HashSet<string> GetTitles()
         {
-            return _titles;
+            return REGISTERED_ACADEMIC_TITLES;
         }
 
         public void SaveNewTitle(string title)
         {
             if (!string.IsNullOrEmpty(title))
             {
-                _titles.Add(title);
+                REGISTERED_ACADEMIC_TITLES.Add(title);
             }
 
         }
@@ -111,7 +111,7 @@ namespace QualityContacts.Services
             return REGISTERED_NOBLE_PRÄ_SUFFIXES;
         }
 
-        internal string GetGender(string salutation)
+        public string GetRegisteredGenderForSalutation(string salutation)
         {
             if (REGISTERED_SALUTATION_TO_GENDER.ContainsKey(salutation))
             {

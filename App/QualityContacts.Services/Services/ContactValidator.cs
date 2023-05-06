@@ -32,7 +32,7 @@ namespace QualityContacts.Services
             }
 
             
-            return new ValidationResult(true, validationWarnings.Count > 0, null, validationWarnings);
+            return new ValidationResult(new List<ValidationError>(), validationWarnings);
         }
 
         public IValidationResult Validate(IContact contact)
@@ -47,12 +47,12 @@ namespace QualityContacts.Services
                 contact.Gender = "ohne";
                 validationWarnings.Add(ValidationWarning.GenderMissing);
             }
-            if(!new Gender().ConformsToRegisteredGenders(contact.Gender)){
+            if(!new GenderServices().ConformsToRegisteredGenders(contact.Gender)){
                 isValid = false;
                 validationErrors.Add(ValidationError.GenderNotRegistered);
             }
 
-            if(!new Salutation().ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
+            if(!new SalutationServices().ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
             {
                 isValid = false;
                 validationErrors.Add(ValidationError.SalutationNotRegistered);
@@ -63,13 +63,13 @@ namespace QualityContacts.Services
             }
 
             // Check each property of the contact individually
-            string validationNewTitles = new Titles().ConformsToRegisteredAcademicTitles(contact.Titles);
+            string validationNewTitles = new TitleServices().ConformsToRegisteredAcademicTitles(contact.Titles);
             if (validationNewTitles.Length > 0)
             {
                 validationWarnings.Add(ValidationWarning.TitleUnknown);
             }
 
-            if (String.IsNullOrEmpty(contact.FirstName.Trim()))
+            if (String.IsNullOrEmpty(contact.FirstAndMiddleName.Trim()))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
                 isValid = false;
@@ -82,51 +82,15 @@ namespace QualityContacts.Services
             }
 
 
-            return new ValidationResult(isValid, validationWarnings.Count > 0, validationErrors, validationWarnings, validationNewTitles);
+            return new ValidationResult(validationErrors, validationWarnings, validationNewTitles);
         }
 
-        private ValidationResult ValidateFirstName(string firstName, ValidationResult? priorValidation = null)
-        {
-            if(priorValidation == null)
-            {
-                priorValidation = new ValidationResult();
-            }
-            if (String.IsNullOrEmpty(firstName))
-            {
-                priorValidation.ValidationErrors.Append(ValidationError.FirstNameMissing);
-                priorValidation.IsValid = false;
-                return priorValidation;
-            }
-            if (!CheckForSpecialCharacters().IsMatch(firstName))
-            {
-                priorValidation.ValidationWarnings.Append(ValidationWarning.UnusualCharacters);
-                
-            }
-            return priorValidation;
-        }
 
-        private ValidationResult ValidateGender(string genderCandidate, ValidationResult? priorValidation = null)
-        {
-            if (priorValidation == null)
-            {
-                priorValidation = new ValidationResult();
-            }
-            if (String.IsNullOrEmpty(genderCandidate))
-            {
-                priorValidation.ValidationWarnings.Append(ValidationWarning.GenderMissing);
-                priorValidation.HasWarnings = true;
-                return priorValidation;
-            }
 
-            // Check for allowed genders
-            // TODO: Implement
-            return priorValidation;
-        }
 
         [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
         private static partial Regex CheckForSpecialCharacters();
 
-       
     }
 }
 

@@ -79,8 +79,7 @@
 
                     <Button 
                         Content="Kontakt splitten"
-                        Background="AliceBlue"
-                        IsEnabled="{Binding EnableInputSplitting}"
+                        Background="AliceBlue"                       
                         Click="SplitContactButtonClicked"                        
                         />
 
@@ -107,7 +106,8 @@
                 <StackPanel 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Top">
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,5">
 
                     <StackPanel 
                         Orientation="Vertical">
@@ -239,7 +239,7 @@
                 <TextBlock 
                     Text="{Binding ContactValidationWarnings}" 
                     Foreground="Orange"
-                    Visibility="{Binding ShowInputValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Visibility="{Binding ShowContactValidationWarnings, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
 
                 <!-- End Contact Editing area -->
@@ -257,7 +257,7 @@
                     Height="364">
 
                     <ItemsControl 
-                        Name="storedContactsItemsControl">
+                        Name="_storedContactsItemsControl">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

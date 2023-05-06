@@ -6,17 +6,17 @@
     public interface IValidationResult
     {
         /// <summary>
-        /// The validation was successful if <see langword="true"/>, otherwise not.
+        /// The validation has no errors, but may have warnings.
         /// </summary>
-        bool IsValid { get;  }
+        bool IsValid { get; }
 
         /// <summary>
-        /// The validation may be successful, but minor warnings occured.
+        /// The validation has warnings, but may be successful.
         /// </summary>
         bool HasWarnings { get; }
 
         /// <summary>
-        /// If unknown academic titles were found, they can be found here.
+        /// If unknown academic titles were found, they are stored here. Otherwise an empty string.
         /// </summary>
         string PossibleNewTitle { get; }
 

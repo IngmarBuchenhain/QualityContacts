@@ -50,5 +50,31 @@ namespace QualityContacts.ServiceInterfaces.Services
         /// NOTE: During prototyping phase no saving to persistance store will be performed.
         /// </remarks>
         HashSet<string> GetTitles();
+
+        /// <summary>
+        /// Load all registered salutations.
+        /// </summary>
+        public IEnumerable<string> GetRegisteredSalutations();
+
+        /// <summary>
+        /// Load all registered genders.
+        /// </summary>
+        public IEnumerable<string> GetRegisteredGenders();
+
+        /// <summary>
+        /// Load all registered noble titles.
+        /// </summary>
+        public IEnumerable<string> GetRegisteredNobleTitles();
+
+        /// <summary>
+        /// Load all registered prefixes and suffixes.
+        /// </summary>
+        public IEnumerable<string> GetRegisteredNoblePreSuffixes();
+
+        /// <summary>
+        /// Returns the registered gender for the given salutation.
+        /// </summary>
+        /// <param name="salutation">A salutation for which the matching gender is needed.</param>
+        public string GetRegisteredGenderForSalutation(string salutation);
     }
 }

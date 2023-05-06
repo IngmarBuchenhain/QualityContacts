@@ -22,12 +22,38 @@ namespace QualityContacts.Services
         private IEnumerable<string> _registeredSalutations;
         private ContactRepository _contactRepository = new ContactRepository();
 
-        
+
 
         #endregion Members and Constructors
 
         #region Public Methods
+        private string generateLetterSalutation()
+        {
+            return String.Empty;
+            //string result = string.Empty;
+            //var salutation = new ContactRepository().GenerateLetterSalutation(Gender, Salutation);
 
+            //switch (Gender)
+            //{
+            //    case "divers":
+            //        result = $"{salutation} {Titles} {FirstAndMiddleName} {LastName}";
+            //        break;
+            //    case "ohne":
+            //        result = salutation;
+            //        break;
+            //    case "männlich":
+            //        result = $"{salutation} {Titles} {LastName}";
+            //        break;
+            //    case "weiblich":
+            //        result = $"{salutation} {Titles} {LastName}";
+            //        break;
+            //    default:
+            //        result = salutation;
+            //        break;
+            //}
+
+            //return result;
+        }
 
         /// <summary>
         /// <inheritdoc/>
@@ -100,7 +126,7 @@ namespace QualityContacts.Services
                     // If a salutation could be extracted, determine the gender.
                     if (!String.IsNullOrEmpty(newContact.Salutation))
                     {
-                        newContact.Gender = new ContactRepository().GetGender(newContact.Salutation);
+                        newContact.Gender = new ContactRepository().GetRegisteredGenderForSalutation(newContact.Salutation);
                         continue;
                     }
 
@@ -152,7 +178,7 @@ namespace QualityContacts.Services
                     
 
                     // RULE: If no applies, it should be a first name.
-                    newContact.FirstName = currentWord;
+                    newContact.FirstAndMiddleName = currentWord;
                 } else
                 {
                     // RULE: Middle words may be titles or first/middle names
@@ -182,7 +208,7 @@ namespace QualityContacts.Services
                         // If a salutation could be extracted, determine the gender.
                         if (!String.IsNullOrEmpty(newContact.Salutation))
                         {
-                            newContact.Gender = new ContactRepository().GetGender(newContact.Salutation);
+                            newContact.Gender = new ContactRepository().GetRegisteredGenderForSalutation(newContact.Salutation);
                             continue;
                         }
                     }
@@ -256,12 +282,12 @@ namespace QualityContacts.Services
                     }
 
                     // If no applies, it should be a first or middle name.
-                    if (!String.IsNullOrEmpty(newContact.FirstName))
+                    if (!String.IsNullOrEmpty(newContact.FirstAndMiddleName))
                     {
-                        newContact.FirstName += " " + currentWord;
+                        newContact.FirstAndMiddleName += " " + currentWord;
                     } else
                     {
-                        newContact.FirstName = currentWord;
+                        newContact.FirstAndMiddleName = currentWord;
                     }
                 }
 

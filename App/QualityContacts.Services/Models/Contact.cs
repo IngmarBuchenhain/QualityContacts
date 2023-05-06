@@ -1,38 +1,117 @@
 ﻿using QualityContacts.ServiceInterfaces.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static QualityContacts.Services.ContactRepository;
 
 namespace QualityContacts.Services.Models
 {
+    /// <summary>
+    /// <inheritdoc cref="IContact"/>
+    /// </summary>
     public class Contact : IContact
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-      
+        #region Private members for public properties
+
+        private string _firstAndMiddleName = String.Empty;
+
+        private string _lastName = String.Empty;
+
+        private string _gender = String.Empty;
+
+        private string _salutation = String.Empty;
+
+        private string _titles = String.Empty;
+
+        private string _letterSalutation = String.Empty;
+
+        /// <summary>
+        /// Implementation of <see cref="INotifyPropertyChanged"/>.
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        #endregion Private members for public properties
+
+        #region Public Properties
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public string FirstAndMiddleName
+        {
+            get => _firstAndMiddleName;
+            set
+            {
+                _firstAndMiddleName = value;
+                OnPropertyChanged(nameof(FirstAndMiddleName));
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public string LastName
+        {
+            get => _lastName;
+            set
+            {
+                _lastName = value;
+                OnPropertyChanged(nameof(LastName));
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public string Gender
         {
             get => _gender;
             set
             {
                 _gender = value;
-                NotifyPropertyChanged(nameof(LetterSalutation));
-                NotifyPropertyChanged(nameof(Gender));
+                OnPropertyChanged(nameof(Gender));
             }
         }
-        public string Salutation { get; set; } = string.Empty;
-        public string Titles { get; set; } = string.Empty;
-        public string LetterSalutation { get => generateLetterSalutation(); set { } }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public string Salutation
+        {
+            get => _salutation;
+            set
+            {
+                _salutation = value;
+                OnPropertyChanged(nameof(Salutation));
+            }
+        }
 
-        private GenderEnum _genderEnum = GenderEnum.None;
-        private string _gender = string.Empty;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public string Titles
+        {
+            get => _titles;
+            set
+            {
+                _titles = value;
+                OnPropertyChanged(nameof(Titles));
+            }
+        }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public string LetterSalutation
+        {
+            get => _letterSalutation;
+            set
+            {
+                _letterSalutation = value;
+                NotifyPropertyChanged(nameof(LetterSalutation));
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Private/Protected Methods
 
         /// <summary>
         /// Helper for the MVVM-pattern to notifiy the view when properties changed.
@@ -43,31 +122,19 @@ namespace QualityContacts.Services.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(changedPropertyName));
         }
 
-        private string generateLetterSalutation()
+        /// <summary>
+        /// Helper to always refresh the letter salutation when a property changes.
+        /// </summary>
+        /// <param name="changedPropertyName"></param>
+        private void OnPropertyChanged(string changedPropertyName)
         {
-            string result = string.Empty;
-            var salutation = new ContactRepository().GenerateLetterSalutation(Gender, Salutation);
+            // Refresh the changed property
+            NotifyPropertyChanged(changedPropertyName);
 
-            switch (Gender)
-            {
-                case "divers":
-                    result = $"{salutation} {Titles} {FirstName} {LastName}";
-                    break;
-                case "ohne":
-                    result = salutation;
-                    break;
-                case "männlich":
-                    result = $"{salutation} {Titles} {LastName}";
-                    break;
-                case "weiblich":
-                    result = $"{salutation} {Titles} {LastName}";
-                    break;
-                default:
-                    result = salutation;
-                    break;
-            }
-
-            return result;
+            // Also refresh the letter salutation
+            NotifyPropertyChanged(nameof(LetterSalutation));
         }
+
+        #endregion Private/Protected Methods
     }
 }
