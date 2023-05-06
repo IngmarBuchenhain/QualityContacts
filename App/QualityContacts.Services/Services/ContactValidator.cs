@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.ServiceInterfaces.Models;
-using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.ErrorHandling;
-using QualityContacts.Services.Models;
+using System.Text.RegularExpressions;
 
 namespace QualityContacts.Services
 {
@@ -13,6 +11,8 @@ namespace QualityContacts.Services
     /// </summary>
     public partial class ContactValidator : IContactValidator
     {
+        #region Members and Constructors
+
         /// <summary>
         /// Creates a new <see cref="ContactValidator"/> instance with a given repository.
         /// </summary>
@@ -34,6 +34,13 @@ namespace QualityContacts.Services
 
         private readonly TitleServices _titleServices;
 
+        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
+        private static partial Regex CheckForSpecialCharacters();
+
+        #endregion Members and Constructors
+
+        #region Public Methods
+
         public IValidationResult Validate(string input)
         {
             HashSet<ValidationWarning> validationWarnings = new HashSet<ValidationWarning>();
@@ -48,13 +55,13 @@ namespace QualityContacts.Services
                 validationWarnings.Add(ValidationWarning.Incomplete);
             }
 
-            
+
             return new ValidationResult(new List<ValidationError>(), validationWarnings);
         }
 
         public IValidationResult Validate(IContact contact)
         {
-   
+
             var validationErrors = new HashSet<ValidationError>();
             var validationWarnings = new HashSet<ValidationWarning>();
             contact.Gender = contact.Gender.Trim();
@@ -64,14 +71,15 @@ namespace QualityContacts.Services
                 contact.Gender = "ohne";
                 validationWarnings.Add(ValidationWarning.GenderMissing);
             }
-            if(!_genderServices.ConformsToRegisteredGenders(contact.Gender)){
-      
+            if (!_genderServices.ConformsToRegisteredGenders(contact.Gender))
+            {
+
                 validationErrors.Add(ValidationError.GenderNotRegistered);
             }
 
-            if(!_salutationServices.ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
+            if (!_salutationServices.ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
             {
-         
+
                 validationErrors.Add(ValidationError.SalutationNotRegistered);
             }
             if (string.IsNullOrEmpty(contact.Salutation))
@@ -89,25 +97,20 @@ namespace QualityContacts.Services
             if (String.IsNullOrEmpty(contact.FirstAndMiddleName.Trim()))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
-            
+
             }
 
             if (String.IsNullOrEmpty(contact.LastName.Trim()))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
-        
+
             }
 
 
             return new ValidationResult(validationErrors, validationWarnings, validationNewTitles);
         }
 
-
-
-
-        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
-        private static partial Regex CheckForSpecialCharacters();
-
+        #endregion Public Methods
     }
 }
 

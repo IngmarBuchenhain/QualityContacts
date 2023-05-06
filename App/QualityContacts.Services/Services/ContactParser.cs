@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using QualityContacts.ServiceInterfaces.Models;
+﻿using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.Models;
 
@@ -13,6 +12,10 @@ namespace QualityContacts.Services
     {
         #region Members and Constructors
 
+        /// <summary>
+        /// Creates a new <see cref="ContactParser"/> instance with a given repository.
+        /// </summary>
+        /// <param name="contactRepository">The repository to use for persistance.</param>
         public ContactParser(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
@@ -21,7 +24,6 @@ namespace QualityContacts.Services
             _salutationServices = new SalutationServices(contactRepository);
             _titleServices = new TitleServices(contactRepository);
         }
-
 
         private readonly IContactRepository _contactRepository;
 
@@ -35,33 +37,6 @@ namespace QualityContacts.Services
         #endregion Members and Constructors
 
         #region Public Methods
-        private string generateLetterSalutation()
-        {
-            return String.Empty;
-            //string result = string.Empty;
-            //var salutation = new ContactRepository().GenerateLetterSalutation(Gender, Salutation);
-
-            //switch (Gender)
-            //{
-            //    case "divers":
-            //        result = $"{salutation} {Titles} {FirstAndMiddleName} {LastName}";
-            //        break;
-            //    case "ohne":
-            //        result = salutation;
-            //        break;
-            //    case "männlich":
-            //        result = $"{salutation} {Titles} {LastName}";
-            //        break;
-            //    case "weiblich":
-            //        result = $"{salutation} {Titles} {LastName}";
-            //        break;
-            //    default:
-            //        result = salutation;
-            //        break;
-            //}
-
-            //return result;
-        }
 
         /// <summary>
         /// <inheritdoc/>
@@ -77,8 +52,7 @@ namespace QualityContacts.Services
             if (String.IsNullOrEmpty(contactCandidate)) return newContact;
 
             // Extract words from free input string. Assume words are separated by spaces.
-            string[] contactParts = SplitIntoWords(contactCandidate, ' ');
-        
+            string[] contactParts = contactCandidate.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray();
             // Case the input string only contained spaces.
             if (contactParts.Length == 0) return newContact;
 
@@ -87,7 +61,7 @@ namespace QualityContacts.Services
 
             bool lastNameAlreadyFound = false;
 
-            for ( int wordIndex = 0; wordIndex < numberOfWords; wordIndex++ )
+            for (int wordIndex = 0; wordIndex < numberOfWords; wordIndex++)
             {
                 // Get current word
                 string currentWord = contactParts[wordIndex];
@@ -95,22 +69,24 @@ namespace QualityContacts.Services
                 // RULE: It it is the last word, it is the last name
                 if (wordIndex == numberOfWords - 1 && !lastNameAlreadyFound)
                 {
-    
-                        // Append to last name, add space if needed
-                        bool alreadyLastNameExisting = newContact.LastName.Length > 0;
-                        if (alreadyLastNameExisting)
-                        {
-                            newContact.LastName += " " + currentWord;
-                        }
-                        else
-                        {
-                            newContact.LastName += currentWord;
-                        }
-                    
-                } else if (wordIndex == 0)
+
+                    // Append to last name, add space if needed
+                    bool alreadyLastNameExisting = newContact.LastName.Length > 0;
+                    if (alreadyLastNameExisting)
+                    {
+                        newContact.LastName += " " + currentWord;
+                    }
+                    else
+                    {
+                        newContact.LastName += currentWord;
+                    }
+
+                }
+                else if (wordIndex == 0)
                 {
                     // RULE: If word ends with ',' assume this is the last name.
-                    if (currentWord.EndsWith(',')){
+                    if (currentWord.EndsWith(','))
+                    {
                         lastNameAlreadyFound = true;
                         newContact.LastName = currentWord.Substring(0, currentWord.Length - 1);
                         continue;
@@ -118,15 +94,15 @@ namespace QualityContacts.Services
 
                     // RULE: The first word may be a salutation.
                     // Check this first
- 
 
 
-                    foreach(string salutation in _contactRepository.GetRegisteredSalutations())
+
+                    foreach (string salutation in _contactRepository.GetRegisteredSalutations())
                     {
                         if (currentWord.ToLower().Equals(salutation.ToLower()))
                         {
                             newContact.Salutation = currentWord;
-       
+
                             break;
                         }
                     }
@@ -141,7 +117,7 @@ namespace QualityContacts.Services
                     // RULE: If no salutation check for academic title
                     // Check this second
 
-                    foreach(string academicTitle in _contactRepository.GetTitles())
+                    foreach (string academicTitle in _contactRepository.GetTitles())
                     {
                         if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {
@@ -156,7 +132,7 @@ namespace QualityContacts.Services
                     // RULE: If no academic title check for noble title
                     // Check this third
 
-                    foreach(string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
+                    foreach (string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
                     {
                         if (currentWord.ToLower().Equals(nobleTitle.ToLower()))
                         {
@@ -169,12 +145,12 @@ namespace QualityContacts.Services
 
                     if (!String.IsNullOrEmpty(newContact.LastName)) continue;
 
-                    foreach(string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
+                    foreach (string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
                     {
                         if (currentWord.ToLower().Equals(noblePreSuffix.ToLower()))
                         {
                             newContact.LastName = noblePreSuffix;
-                            for(int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
+                            for (int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
                             {
                                 newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
                             }
@@ -183,11 +159,12 @@ namespace QualityContacts.Services
                         }
                     }
 
-                    
+
 
                     // RULE: If no applies, it should be a first name.
                     newContact.FirstAndMiddleName = currentWord;
-                } else
+                }
+                else
                 {
                     // RULE: Middle words may be titles or first/middle names
                     // RULE: If word ends with ',' assume this is the last name.
@@ -202,7 +179,8 @@ namespace QualityContacts.Services
                     // Check this first
 
 
-                    if (String.IsNullOrEmpty(newContact.Salutation)) {
+                    if (String.IsNullOrEmpty(newContact.Salutation))
+                    {
                         foreach (string salutation in _contactRepository.GetRegisteredSalutations())
                         {
                             if (currentWord.ToLower().Equals(salutation.ToLower()))
@@ -236,7 +214,7 @@ namespace QualityContacts.Services
                             {
                                 newContact.Titles = academicTitle;
                             }
-                            
+
 
                             break;
                         }
@@ -258,7 +236,7 @@ namespace QualityContacts.Services
                             {
                                 newContact.LastName = nobleTitle;
                             }
-                            
+
                             break;
                         }
                     }
@@ -279,7 +257,7 @@ namespace QualityContacts.Services
                             {
                                 newContact.LastName = noblePreSuffix;
                             }
-                           
+
                             for (int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
                             {
                                 newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
@@ -293,91 +271,27 @@ namespace QualityContacts.Services
                     if (!String.IsNullOrEmpty(newContact.FirstAndMiddleName))
                     {
                         newContact.FirstAndMiddleName += " " + currentWord;
-                    } else
+                    }
+                    else
                     {
                         newContact.FirstAndMiddleName = currentWord;
                     }
                 }
 
 
-                
+
             }
 
             return newContact;
 
-            //// Special case with only one given word: We assume the given word is the last name!
-            //if (contactParts.Length == 1)
-            //{
-            //    newContact.LastName = contactParts[0];
-            //    return newContact;
-            //} else
-            //{
-            //    // In case of more then one word, check whether one word ends with ',', in this case this is the last name, otherwise assume the last word is the last name.
-            //    string possibleRevertedLastName;
-            //    if(TryFindRevertedLastName(out possibleRevertedLastName, contactParts))
-            //    {
-            //        newContact.LastName = possibleRevertedLastName;
-            //    } else
-            //    {
-            //        newContact.LastName = contactParts[contactParts.Length - 1];
-            //    }
 
-            //    // Get all titles
-
-
-            //    return newContact;
-            //}
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        /// <summary>
-        /// Loops through a given range of words and checks whether exactly one word ends with ',', if so it is returned as possible last name.
-        /// </summary>
-        /// <param name="extractedLastName">The possible last name.</param>
-        /// <param name="contactWords">Collection of words to check.</param>
-        /// <returns><see langword="true"/> if exactly one possible last name was found, otherwise <see langword="false"/>.</returns>
-        private static bool TryFindRevertedLastName(out string extractedLastName, string[] contactWords)
-        {
-            bool foundUnambiguouslyLastName = false;
-            extractedLastName = String.Empty;
 
-            foreach (var word in contactWords)
-            {
-                if (word.Last().Equals(','))
-                {
-                    // If a last name already was found until now, reset and return ambiguousity.
-                    if (foundUnambiguouslyLastName)
-                    {
-                        extractedLastName = String.Empty;
-                        return false;
-                    } else
-                    {
-                        extractedLastName = word.Substring(0, word.Length - 1);
-                        foundUnambiguouslyLastName = true;
-                    }                   
-                }
-            }
-
-            return foundUnambiguouslyLastName;
-        }
-
-        /// <summary>
-        /// Split the given string into 'words' by the given separator.<br/>
-        /// </summary>
-        /// <param name="freeInput">Some string which should be separated into single words.</param>
-        /// <param name="separator"><see cref="Char"/> which separates words.</param>
-        /// <returns><see cref="Array"/> containing the single words, empty words are removed.</returns>
-        private static string[] SplitIntoWords(string freeInput, char separator)
-        {
-            var words = freeInput.Split(separator).Where(word => !string.IsNullOrEmpty(word)).ToArray();
-
-            return words;
-        }
-
-        #endregion Private Methods
-       
+        #endregion Private Methods       
     }
 }
