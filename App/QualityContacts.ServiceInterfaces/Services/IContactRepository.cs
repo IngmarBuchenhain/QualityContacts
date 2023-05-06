@@ -76,5 +76,17 @@ namespace QualityContacts.ServiceInterfaces.Services
         /// </summary>
         /// <param name="salutation">A salutation for which the matching gender is needed.</param>
         public string GetRegisteredGenderForSalutation(string salutation);
+
+        /// <summary>
+        /// Returns the typed language for the given salutation.
+        /// </summary>
+        /// <param name="salutation">A salutation for which the matching language is needed.</param>
+        public Language GetLanguageForSalutation(string salutation);
+
+        /// <summary>
+        /// Returns the typed gender for the given gender.
+        /// </summary>
+        /// <param name="gender">A gender for which the matching typed gender is needed.</param>
+        public Gender GetTypedGenderForGender(string  gender);
     }
 }

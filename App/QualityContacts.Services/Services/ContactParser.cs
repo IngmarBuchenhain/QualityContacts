@@ -13,15 +13,23 @@ namespace QualityContacts.Services
     {
         #region Members and Constructors
 
-
-        public ContactParser()
+        public ContactParser(IContactRepository contactRepository)
         {
-            _registeredSalutations = new ContactRepository().GetRegisteredSalutations();
+            _contactRepository = contactRepository;
+
+            _genderServices = new GenderServices(contactRepository);
+            _salutationServices = new SalutationServices(contactRepository);
+            _titleServices = new TitleServices(contactRepository);
         }
 
-        private IEnumerable<string> _registeredSalutations;
-        private ContactRepository _contactRepository = new ContactRepository();
 
+        private readonly IContactRepository _contactRepository;
+
+        private readonly GenderServices _genderServices;
+
+        private readonly SalutationServices _salutationServices;
+
+        private readonly TitleServices _titleServices;
 
 
         #endregion Members and Constructors
@@ -113,7 +121,7 @@ namespace QualityContacts.Services
  
 
 
-                    foreach(string salutation in _registeredSalutations)
+                    foreach(string salutation in _contactRepository.GetRegisteredSalutations())
                     {
                         if (currentWord.ToLower().Equals(salutation.ToLower()))
                         {
@@ -133,7 +141,7 @@ namespace QualityContacts.Services
                     // RULE: If no salutation check for academic title
                     // Check this second
 
-                    foreach(string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
+                    foreach(string academicTitle in _contactRepository.GetTitles())
                     {
                         if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {
@@ -195,7 +203,7 @@ namespace QualityContacts.Services
 
 
                     if (String.IsNullOrEmpty(newContact.Salutation)) {
-                        foreach (string salutation in _registeredSalutations)
+                        foreach (string salutation in _contactRepository.GetRegisteredSalutations())
                         {
                             if (currentWord.ToLower().Equals(salutation.ToLower()))
                             {
@@ -215,7 +223,7 @@ namespace QualityContacts.Services
 
                     // Check for academic titles first
                     bool foundAcademicTitle = false;
-                    foreach (string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
+                    foreach (string academicTitle in _contactRepository.GetTitles())
                     {
                         if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {

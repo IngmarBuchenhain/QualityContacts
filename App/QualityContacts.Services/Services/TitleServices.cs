@@ -5,16 +5,21 @@ namespace QualityContacts.Services
     /// <summary>
     /// Service for title orientated methods.
     /// </summary>
-    public static class TitleServices
+    public class TitleServices
     {
+        public TitleServices(IContactRepository contactRepository)
+        {
+            _contactRepository = contactRepository;
+        }
+
         // Access to registered genders.
-        private static readonly IContactRepository _contactRepository = new ContactRepository();
+        private readonly IContactRepository _contactRepository;
 
         /// <summary>
         /// Splits the given string by ' ' and returns all single words which does not conform to a registered academic title.
         /// </summary>
         /// <returns>A single string containing all unknown titles separated by ' '.</returns>
-        public static string ExtractPossibleNewAcademicTitles(string titleCandidates)
+        public string ExtractPossibleNewAcademicTitles(string titleCandidates)
         {
             var singleTitles = titleCandidates.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray();
 
@@ -40,7 +45,7 @@ namespace QualityContacts.Services
         /// <summary>
         /// Validates whether the given string conforms to a registered academic title.
         /// </summary>
-        public static bool ConformsToRegisteredAcademicTitles(string titleCandidate)
+        public bool ConformsToRegisteredAcademicTitles(string titleCandidate)
         {
             foreach (var title in _contactRepository.GetTitles())
             {

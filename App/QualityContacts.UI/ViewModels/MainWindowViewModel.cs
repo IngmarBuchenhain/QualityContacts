@@ -18,9 +18,9 @@ namespace QualityContacts.UI
         public MainWindowViewModel()
         {
             // Only here the actual implementations of the Backend are used, so they can be easily replaced.
-            _validator = new ContactValidator();
-            _parser = new ContactParser();
             _repository = new ContactRepository();
+            _validator = new ContactValidator(_repository);
+            _parser = new ContactParser(_repository);
 
             // Create an empty contact for the UI.
             _newContact = _repository.GetNewContact();

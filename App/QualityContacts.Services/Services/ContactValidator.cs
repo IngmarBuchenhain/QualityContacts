@@ -8,14 +8,31 @@ using QualityContacts.Services.Models;
 
 namespace QualityContacts.Services
 {
+    /// <summary>
+    /// <inheritdoc cref="IContactValidator"/>
+    /// </summary>
     public partial class ContactValidator : IContactValidator
     {
-        public ContactValidator()
+        /// <summary>
+        /// Creates a new <see cref="ContactValidator"/> instance with a given repository.
+        /// </summary>
+        /// <param name="contactRepository">The repository to use for persistance.</param>
+        public ContactValidator(IContactRepository contactRepository)
         {
-            _contactRepository = new ContactRepository();
+            _contactRepository = contactRepository;
+
+            _genderServices = new GenderServices(contactRepository);
+            _salutationServices = new SalutationServices(contactRepository);
+            _titleServices = new TitleServices(contactRepository);
         }
 
-        private ContactRepository _contactRepository;
+        private readonly IContactRepository _contactRepository;
+
+        private readonly GenderServices _genderServices;
+
+        private readonly SalutationServices _salutationServices;
+
+        private readonly TitleServices _titleServices;
 
         public IValidationResult Validate(string input)
         {
@@ -37,7 +54,7 @@ namespace QualityContacts.Services
 
         public IValidationResult Validate(IContact contact)
         {
-            bool isValid = true;
+   
             var validationErrors = new HashSet<ValidationError>();
             var validationWarnings = new HashSet<ValidationWarning>();
             contact.Gender = contact.Gender.Trim();
@@ -47,14 +64,14 @@ namespace QualityContacts.Services
                 contact.Gender = "ohne";
                 validationWarnings.Add(ValidationWarning.GenderMissing);
             }
-            if(!GenderServices.ConformsToRegisteredGenders(contact.Gender)){
-                isValid = false;
+            if(!_genderServices.ConformsToRegisteredGenders(contact.Gender)){
+      
                 validationErrors.Add(ValidationError.GenderNotRegistered);
             }
 
-            if(!SalutationServices.ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
+            if(!_salutationServices.ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
             {
-                isValid = false;
+         
                 validationErrors.Add(ValidationError.SalutationNotRegistered);
             }
             if (string.IsNullOrEmpty(contact.Salutation))
@@ -63,7 +80,7 @@ namespace QualityContacts.Services
             }
 
             // Check each property of the contact individually
-            string validationNewTitles = TitleServices.ExtractPossibleNewAcademicTitles(contact.Titles);
+            string validationNewTitles = _titleServices.ExtractPossibleNewAcademicTitles(contact.Titles);
             if (validationNewTitles.Length > 0)
             {
                 validationWarnings.Add(ValidationWarning.TitleUnknown);
@@ -72,13 +89,13 @@ namespace QualityContacts.Services
             if (String.IsNullOrEmpty(contact.FirstAndMiddleName.Trim()))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
-                isValid = false;
+            
             }
 
             if (String.IsNullOrEmpty(contact.LastName.Trim()))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
-                isValid = false;
+        
             }
 
 
