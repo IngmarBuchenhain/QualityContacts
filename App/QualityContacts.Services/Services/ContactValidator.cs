@@ -47,12 +47,12 @@ namespace QualityContacts.Services
                 contact.Gender = "ohne";
                 validationWarnings.Add(ValidationWarning.GenderMissing);
             }
-            if(!new GenderServices().ConformsToRegisteredGenders(contact.Gender)){
+            if(!GenderServices.ConformsToRegisteredGenders(contact.Gender)){
                 isValid = false;
                 validationErrors.Add(ValidationError.GenderNotRegistered);
             }
 
-            if(!new SalutationServices().ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
+            if(!SalutationServices.ConformsToRegisteredSalutations(contact.Salutation) && !String.IsNullOrEmpty(contact.Salutation))
             {
                 isValid = false;
                 validationErrors.Add(ValidationError.SalutationNotRegistered);
@@ -63,7 +63,7 @@ namespace QualityContacts.Services
             }
 
             // Check each property of the contact individually
-            string validationNewTitles = new TitleServices().ConformsToRegisteredAcademicTitles(contact.Titles);
+            string validationNewTitles = TitleServices.ExtractPossibleNewAcademicTitles(contact.Titles);
             if (validationNewTitles.Length > 0)
             {
                 validationWarnings.Add(ValidationWarning.TitleUnknown);

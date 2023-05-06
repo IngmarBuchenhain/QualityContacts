@@ -1,53 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QualityContacts.ServiceInterfaces.Services;
 
 namespace QualityContacts.Services
 {
-    internal class GenderServices
+    /// <summary>
+    /// Service for gender orientated methods.
+    /// </summary>
+    public static class GenderServices
     {
-        internal GenderServices()
-        {
-            _registeredGenders = new ContactRepository().GetRegisteredGenders();
-        }
+        // Access to registered genders.
+        private static readonly IContactRepository _contactRepository = new ContactRepository();
 
-        private IEnumerable<string> _registeredGenders;
-
-        internal bool ConformsToRegisteredGenders(string genderCandidate)
+        /// <summary>
+        /// Validates whether the given string conforms to a registered gender.
+        /// </summary>
+        public static bool ConformsToRegisteredGenders(string genderCandidate)
         {
-            foreach (string registeredGender in _registeredGenders)
+            foreach (string registeredGender in _contactRepository.GetRegisteredGenders())
             {
                 if (registeredGender.Equals(genderCandidate))
                 {
-
-
                     return true;
                 }
             }
-
             return false;
-        }
-
-        internal string FindFirst(string[] contactPartsToSearch)
-        {
-            foreach (string contactPart in contactPartsToSearch)
-            {
-                var lowerContactPart = contactPart.ToLower();
-                foreach (string registeredGender in _registeredGenders)
-                {
-                    if (lowerContactPart.Contains(registeredGender))
-                    {
-
-
-                        return lowerContactPart;
-                    }
-                }
-
-            }
-
-            return string.Empty;
         }
     }
 }

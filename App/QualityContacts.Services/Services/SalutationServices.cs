@@ -1,52 +1,29 @@
-﻿using System;
+﻿using QualityContacts.ServiceInterfaces.Services;
 
 namespace QualityContacts.Services
 {
-    internal class SalutationServices
+    /// <summary>
+    /// Service for salutation orientated methods.
+    /// </summary>
+    public static class SalutationServices
     {
-        internal SalutationServices()
-        {
-            _registeredSalutations = new ContactRepository().GetRegisteredSalutations();
-        }
+        // Access to registered genders.
+        private static readonly IContactRepository _contactRepository = new ContactRepository();
 
-        private IEnumerable<string> _registeredSalutations;
-
-        internal bool ConformsToRegisteredSalutations(string salutationCandidate)
+        /// <summary>
+        /// Validates whether the given string conforms to a registered salutation.
+        /// </summary>
+        public static bool ConformsToRegisteredSalutations(string salutationCandidate)
         {
-            foreach (string registeredSalutation in _registeredSalutations)
+            foreach (string registeredSalutation in _contactRepository.GetRegisteredSalutations())
             {
                 if (registeredSalutation.Equals(salutationCandidate))
                 {
-
-
                     return true;
                 }
             }
-
             return false;
         }
-
-        internal string FindFirst(string[] contactPartsToSearch)
-        {
-            foreach (string contactPart in contactPartsToSearch)
-            {
-                var lowerContactPart = contactPart.ToLower();
-                foreach (string registeredSalutation in _registeredSalutations)
-                {
-                    if (lowerContactPart.Contains(registeredSalutation.ToLower()))
-                    {
-
-
-                        return contactPart;
-                    }
-                }
-
-            }
-
-            return string.Empty;
-        }
-
-
     }
 }
 
