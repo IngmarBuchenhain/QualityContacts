@@ -19,7 +19,7 @@ namespace QualityContacts.Services
             AddToSalutationGenders("Mrs", FEMALE_GENDER);
             AddToSalutationGenders("Ms", FEMALE_GENDER);
             AddToSalutationGenders("Signora", FEMALE_GENDER);
-            AddToSalutationGenders("Sig.", FEMALE_GENDER);
+            AddToSalutationGenders("Sig.", MALE_GENDER);
             AddToSalutationGenders("Mme", FEMALE_GENDER);
             AddToSalutationGenders("Señora", FEMALE_GENDER);
 

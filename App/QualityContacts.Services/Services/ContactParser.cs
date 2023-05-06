@@ -111,7 +111,34 @@ namespace QualityContacts.Services
                     // RULE: If no academic title check for noble title
                     // Check this third
 
-                    // TODO: Implement
+                    foreach(string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
+                    {
+                        if (currentWord.ToLower().Equals(nobleTitle.ToLower()))
+                        {
+                            newContact.LastName = nobleTitle;
+                            break;
+                        }
+                    }
+
+
+
+                    if (!String.IsNullOrEmpty(newContact.LastName)) continue;
+
+                    foreach(string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
+                    {
+                        if (currentWord.ToLower().Equals(noblePreSuffix.ToLower()))
+                        {
+                            newContact.LastName = noblePreSuffix;
+                            for(int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
+                            {
+                                newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
+                            }
+
+                            return newContact;
+                        }
+                    }
+
+                    
 
                     // RULE: If no applies, it should be a first name.
                     newContact.FirstName = currentWord;
@@ -142,6 +169,50 @@ namespace QualityContacts.Services
                     if (foundAcademicTitle) continue;
 
                     // If no academic title, check for noble titles
+                    bool foundNobleTitle = false;
+                    foreach (string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
+                    {
+                        if (currentWord.ToLower().Equals(nobleTitle.ToLower()))
+                        {
+                            foundNobleTitle = true;
+                            if (!String.IsNullOrEmpty(newContact.LastName))
+                            {
+                                newContact.LastName += " " + nobleTitle;
+                            }
+                            else
+                            {
+                                newContact.LastName = nobleTitle;
+                            }
+                            
+                            break;
+                        }
+                    }
+
+
+
+                    if (foundNobleTitle) continue;
+
+                    foreach (string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
+                    {
+                        if (currentWord.ToLower().Equals(noblePreSuffix.ToLower()))
+                        {
+                            if (!String.IsNullOrEmpty(newContact.LastName))
+                            {
+                                newContact.LastName += " " + noblePreSuffix;
+                            }
+                            else
+                            {
+                                newContact.LastName = noblePreSuffix;
+                            }
+                           
+                            for (int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
+                            {
+                                newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
+                            }
+
+                            return newContact;
+                        }
+                    }
 
                     // If no applies, it should be a first or middle name.
                     if (!String.IsNullOrEmpty(newContact.FirstName))
