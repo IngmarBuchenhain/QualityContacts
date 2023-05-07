@@ -101,7 +101,7 @@ namespace QualityContacts.Services
                     {
                         foreach (string salutation in _contactRepository.GetRegisteredSalutations())
                         {
-                            var trimmedCurrentWord = currentWord.Replace(".", "");
+                            var trimmedCurrentWord = currentWord.Substring(0, currentWord.Length - 1) + currentWord.Substring(currentWord.Length - 1).Replace(".", "");
                             if (trimmedCurrentWord.ToLower().Equals(salutation.ToLower()) || (trimmedCurrentWord.ToLower() + ".").Equals(salutation.ToLower()))
                             {
                                 newContact.Salutation = salutation;

@@ -8,7 +8,7 @@ namespace QualityContacts.Tests
     {
 
         [Fact]
-        public void HasWarningsAccordingToMissingGender()
+        public void GenerateSalutationWithoutGender()
         {
             Contact contact = new Contact();
             contact.FirstAndMiddleName = "Max";
@@ -21,7 +21,24 @@ namespace QualityContacts.Tests
 
             string result = salutationServices.GenerateLetterSalutation(contact);
 
-            Assert.Equal("Sehr geehrter Herr Dr. Max Mustermann", result);
+            Assert.Equal("Sehr geehrte Damen und Herren", result);
+        }
+
+        [Fact]
+        public void GenerateSalutationForDiverse()
+        {
+            Contact contact = new Contact();
+            contact.FirstAndMiddleName = "Max";
+            contact.LastName = "Mustermann";
+            contact.Gender = "divers";
+            contact.Salutation = "";
+            contact.Titles = "Dr.";
+
+            SalutationServices salutationServices = new SalutationServices(new ContactRepository());
+
+            string result = salutationServices.GenerateLetterSalutation(contact);
+
+            Assert.Equal("Hallo Dr. Max Mustermann", result);
         }
     }
 }

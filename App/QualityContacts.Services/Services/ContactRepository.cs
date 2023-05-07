@@ -212,13 +212,13 @@ namespace QualityContacts.Services
 
         private static readonly HashSet<string> REGISTERED_GENDERS = new HashSet<string> { "männlich", "weiblich", "divers", "ohne" };
 
-        private static readonly HashSet<string> REGISTERED_SALUTATIONS = new HashSet<string> { "Herr", "Frau", "Mrs", "Mr", "Ms", "Signora", "Sig.", "Mme", "M", "Señora", "Señor", "" };
+        private static readonly HashSet<string> REGISTERED_SALUTATIONS = new HashSet<string> { "Herr", "Frau", "Mrs", "Mr", "Ms", "Signora", "Signor", "Sig.", "Mme", "M", "Señora", "Señor", "" };
 
         private static readonly HashSet<string> REGISTERED_NOBLE_TITLES = new HashSet<string> { "Prinz", "Prinzessin", "Sir", "Dame", "Freiherrin", "Freiherr", "Baron", "Baronesse", "Ritter", "Graf", "Gräfin", "Fürst", "Fürstin", "Markgraf", "Pfalzgraf", "Landgraf", "Herzog", "Herzogin", "Kurfürst", "Großherzog", "Erzherzog", "König", "Königin" };
 
         private static readonly HashSet<string> REGISTERED_NOBLE_PRE_SUFFIXES = new HashSet<string> { "von", "vom", "van", "de", "zu", "zur" };
 
-        private static readonly HashSet<string> REGISTERED_ACADEMIC_TITLES = new HashSet<string> { "Professorin", "Professor", "Prof.", "Dr.", "Dr.-Ing.", "rer.", "nat.", "mult.", "h.c.", "Dipl.-Ing.", "Dipl.", "Ing.", "B.S.", "M.S.", "B.A.", "M.A" };
+        private static readonly HashSet<string> REGISTERED_ACADEMIC_TITLES = new HashSet<string> { "Professorin", "Professor", "Prof.", "Dr.", "Dr.-Ing.", "rer.", "nat.", "mult.", "h.c.", "Dipl.-Ing.", "Dipl.", "Ing.", "B.S.", "M.S.", "B.A.", "M.A." };
 
         #endregion Dummy Data (from DB after prototyping phase)
     }
