@@ -51,7 +51,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void HasWarningsAccordingToMissingFirstName()
+        public void IsNotValidAccordingToMissingFirstName()
         {
             Contact contact = new Contact();
             contact.LastName = "Mustermann";
@@ -63,11 +63,11 @@ namespace QualityContacts.Tests
 
             IValidationResult result = contactValidator.Validate(contact);
 
-            Assert.True(result.HasWarnings);
+            Assert.False(result.IsValid);
         }
 
         [Fact]
-        public void HasWarningsAccordingToMissingLastName()
+        public void IsNotValidAccordingToMissingLastName()
         {
             Contact contact = new Contact();
             contact.FirstAndMiddleName = "Max";
@@ -79,7 +79,7 @@ namespace QualityContacts.Tests
 
             IValidationResult result = contactValidator.Validate(contact);
 
-            Assert.True(result.HasWarnings);
+            Assert.False(result.IsValid);
         }
     }
 }
