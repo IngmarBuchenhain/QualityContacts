@@ -6,6 +6,8 @@ namespace QualityContacts.Tests
     public class ContactParserTest
     {
 
+        // ### Surename tests ###
+
         [Theory]
         [InlineData("Mustermann")]
         [InlineData("Mustermann, Max")]
@@ -65,6 +67,8 @@ namespace QualityContacts.Tests
             Assert.Equal("Mustermann-Schnarrenberger", newContact.LastName);
         }
 
+        // ### Surename tests ###
+
         [Theory]
         [InlineData("Max Mustermann")]
         [InlineData("Dr. Max Mustermann")]
@@ -97,8 +101,10 @@ namespace QualityContacts.Tests
 
             IContact newContact = contactParser.ParseContactFreeInput("Mustermann");
 
-            Assert.Equal("", newContact.FirstName);
+            Assert.Equal("", newContact.FirstAndMiddleName);
         }
+
+        // ### Salutation tests ###
 
         [Fact]
         public void GetMaleSalutationGerman()
