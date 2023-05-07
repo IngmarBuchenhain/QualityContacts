@@ -58,6 +58,236 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
+        public void GetCorrectSurenameWithPrinz()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Prinz Mustermann");
+
+            Assert.Equal("Prinz Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithPrinzessin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Prinzessin Musterfrau");
+
+            Assert.Equal("Prinzessin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithSir()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Sir Mustermann");
+
+            Assert.Equal("Sir Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithDame()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Dame Musterfrau");
+
+            Assert.Equal("Dame Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithFreiherr()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Freiherr Mustermann");
+
+            Assert.Equal("Freiherr Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithFreiherin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Freiherrin Musterfrau");
+
+            Assert.Equal("Freiherrin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithBaron()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Baron Mustermann");
+
+            Assert.Equal("Baron Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithBaronesse()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Baronesse Musterfrau");
+
+            Assert.Equal("Baronesse Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithRitter()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Ritter Mustermann");
+
+            Assert.Equal("Ritter Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithGraf()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Graf Mustermann");
+
+            Assert.Equal("Graf Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithGraefin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Gräfin Musterfrau");
+
+            Assert.Equal("Gräfin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithFuerst()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Fürst Mustermann");
+
+            Assert.Equal("Fürst Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithFuerstin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Fürstin Musterfrau");
+
+            Assert.Equal("Fürstin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithMarkgraf()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Markgraf Mustermann");
+
+            Assert.Equal("Markgraf Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithPfalzgraf()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Pfalzgraf Mustermann");
+
+            Assert.Equal("Pfalzgraf Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithLandgraf()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Landgraf Mustermann");
+
+            Assert.Equal("landgraf Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithHerzog()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Herzog Mustermann");
+
+            Assert.Equal("Herzog Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithHerzogin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Herzogin Musterfrau");
+
+            Assert.Equal("Herzogin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithKurfuerst()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Kurfürst Mustermann");
+
+            Assert.Equal("Kurfürst Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithGrossherzog()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Großherzog Mustermann");
+
+            Assert.Equal("Großherzog Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithErzherzog()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Erzherzog Mustermann");
+
+            Assert.Equal("Erzherzog Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithKoenig()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("König Mustermann");
+
+            Assert.Equal("König Mustermann", newContact.LastName);
+        }
+
+        [Fact]
+        public void GetCorrectSurenameWithKoenigin()
+        {
+            ContactParser contactParser = new ContactParser(new ContactRepository());
+
+            IContact newContact = contactParser.ParseContactFreeInput("Königin Musterfrau");
+
+            Assert.Equal("Königin Musterfrau", newContact.LastName);
+        }
+
+        [Fact]
         public void GetCorrectDoubleName()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
@@ -186,7 +416,7 @@ namespace QualityContacts.Tests
             Assert.Equal("Mme", newContact.Salutation);
         }
 
-        // ### Gender Tests ###
+        // ### Academic title tests ###
 
         [Fact]
         public void GetCorrectDrTitle()
@@ -348,7 +578,7 @@ namespace QualityContacts.Tests
             Assert.Equal("M.A.", newContact.Titles);
         }
 
-        // ### Gender Tests ###
+        // ### Gender tests ###
 
         [Fact]
         public void GetCorrectMaleGender()
@@ -371,13 +601,13 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetCorrectDiverseGender()
+        public void GetCorrectWithoutGender()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
             IContact newContact = contactParser.ParseContactFreeInput("Max Mustermann");
 
-            Assert.Equal("diverse", newContact.Gender);
+            Assert.Equal("ohne", newContact.Gender);
         }
     }
 }
