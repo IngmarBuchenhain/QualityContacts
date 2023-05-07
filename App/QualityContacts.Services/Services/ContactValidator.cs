@@ -38,6 +38,10 @@ namespace QualityContacts.Services
         [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
         private static partial Regex ExpectedCharacters();
 
+        // Regex to check for unusual characters.
+        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù -]*$", RegexOptions.IgnoreCase)]
+        private static partial Regex ExpectedContactCharacters();
+
         #endregion Members and Constructors
 
         #region Public Methods
@@ -67,11 +71,11 @@ namespace QualityContacts.Services
             var validationWarnings = new HashSet<ValidationWarning>();
 
             // Convenience to the user. Prepare for validation:
-            contact.Gender = contact.Gender.Trim().ToLower();
+            contact.Gender = contact.Gender.Trim();
             contact.Salutation = contact.Salutation.Trim();
 
             // Gender
-            if (String.IsNullOrEmpty(contact.Gender))
+            if (String.IsNullOrEmpty(contact.Gender) || contact.Gender.Equals(_contactRepository.GetDefaultGender()))
             {
                 contact.Gender = _contactRepository.GetDefaultGender();
                 validationWarnings.Add(ValidationWarning.GenderMissing);
@@ -85,10 +89,6 @@ namespace QualityContacts.Services
             if (string.IsNullOrEmpty(contact.Salutation))
             {
                 validationWarnings.Add(ValidationWarning.SalutationMissing);
-            }
-            else
-            {
-                contact.Salutation = contact.Salutation.First().ToString().ToUpper() + (contact.Salutation.Length > 1 ? contact.Salutation.Substring(1).ToLower() : String.Empty);
             }
 
             if (!_salutationServices.ConformsToRegisteredSalutations(contact.Salutation))
@@ -109,17 +109,51 @@ namespace QualityContacts.Services
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
             }
+            else if (!ExpectedContactCharacters().IsMatch(contact.FirstAndMiddleName) || NameFieldContainsSalutation(contact.FirstAndMiddleName))
+            {
+                validationWarnings.Add(ValidationWarning.Ambiguous);
+            }
 
             // Last name
             if (String.IsNullOrEmpty(contact.LastName.Trim()))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
             }
+            else if (!ExpectedContactCharacters().IsMatch(contact.LastName) || NameFieldContainsSalutation(contact.LastName))
+            {
+                validationWarnings.Add(ValidationWarning.Ambiguous);
+            }
+
+            try
+            {
+                contact.LetterSalutation = _salutationServices.GenerateLetterSalutation(contact);
+            }
+            catch (Exception)
+            {
+                contact.LetterSalutation = "Es konnte keine Briefanrede generiert werden!";
+            }
 
             return new ValidationResult(validationErrors, validationWarnings, validationNewTitles);
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        private bool NameFieldContainsSalutation(string nameField)
+        {
+            foreach (string namePart in nameField.Split(' ').Where(word => !string.IsNullOrEmpty(word)))
+            {
+                if (_salutationServices.ConformsToRegisteredSalutations(namePart))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion Private Methods
+
     }
 }
 

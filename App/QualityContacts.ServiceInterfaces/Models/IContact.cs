@@ -35,6 +35,6 @@ namespace QualityContacts.ServiceInterfaces.Models
         /// <summary>
         /// The letter salutation of the contact.
         /// </summary>
-        string LetterSalutation { get; }
+        string LetterSalutation { get; set; }
     }
 }

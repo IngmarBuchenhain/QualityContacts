@@ -540,7 +540,7 @@ namespace QualityContacts.UI
             {
                 ValidationError.FirstNameMissing => "Es muss ein Vorname angegeben werden!",
                 ValidationError.LastNameMissing => "Es muss ein Nachname angegeben werden!",
-                ValidationError.GenderNotRegistered => "Es wurde ein ungültiges Geschlecht angegeben!",
+                ValidationError.GenderNotRegistered => "Es wurde ein ungültiges Geschlecht angegeben! Erlaubt sind \"männlich\", \"weiblich\", \"divers\" und \"ohne\".",
                 ValidationError.SalutationNotRegistered => "Es wurde eine ungültige Anrede angegeben!",
                 _ => error.ToString(),
             };

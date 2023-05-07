@@ -190,7 +190,7 @@
                                 Width="220" 
                                 Margin="0,0,5,0" 
                                 BorderBrush="{Binding FirstNameError, Converter={StaticResource BooleanToColorConverter}}"
-                                Text="{Binding NewContact.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding NewContact.FirstAndMiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
 
@@ -254,7 +254,7 @@
 
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
-                    Height="364">
+                    Height="300">
 
                     <ItemsControl 
                         Name="_storedContactsItemsControl">
@@ -296,7 +296,7 @@
                                             HorizontalAlignment="Left" 
                                             Width="230" 
                                             BorderThickness="0"
-                                            Text="{Binding FirstName}"                                       
+                                            Text="{Binding FirstAndMiddleName}"                                       
                                             IsReadOnly="True"                                        
                                             />
                                         

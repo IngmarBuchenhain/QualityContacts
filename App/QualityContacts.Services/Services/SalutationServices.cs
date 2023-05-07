@@ -56,9 +56,9 @@ namespace QualityContacts.Services
         {
             return gender switch
             {
-                Gender.Male => GenerateTitlePartOfLetterSalutation(titles) + lastName,
-                Gender.Female => GenerateTitlePartOfLetterSalutation(titles) + lastName,
-                Gender.Diverse => GenerateTitlePartOfLetterSalutation(titles) + GenerateFirstNamePartOfLetterSalutation(firstAndMiddleNames) + lastName,
+                Gender.Male => GenerateTitlePartOfLetterSalutation(titles) + " " + lastName,
+                Gender.Female => GenerateTitlePartOfLetterSalutation(titles) + " " + lastName,
+                Gender.Diverse => GenerateTitlePartOfLetterSalutation(titles) + GenerateFirstNamePartOfLetterSalutation(firstAndMiddleNames) + " " + lastName,
                 Gender.None => String.Empty,
                 _ => throw new InvalidOperationException("No letter salutation can be generated for an invalid contact!"),
             };
