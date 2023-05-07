@@ -77,17 +77,17 @@ namespace QualityContacts.Tests
 
             IContact newContact = contactParser.ParseContactFreeInput(input);
 
-            Assert.Equal("Max", newContact.FirstName);
+            Assert.Equal("Max", newContact.FirstAndMiddleName);
         }
 
         [Fact]
-        public void GetCorrectFirstnames()
+        public void GetCorrectFirstAndMiddlenames()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
             IContact newContact = contactParser.ParseContactFreeInput("Max Heinrich Mustermann");
 
-            Assert.Equal("Max", newContact.FirstName);
+            Assert.Equal("Max Heinrich", newContact.FirstAndMiddleName);
         }
 
         [Fact]
@@ -180,6 +180,8 @@ namespace QualityContacts.Tests
             Assert.Equal("Mme", newContact.Salutation);
         }
 
+        // ### Gender Tests ###
+
         [Fact]
         public void GetCorrectDrTitle()
         {
@@ -271,7 +273,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetCorrectDiplTitle()
+        public void GetCorrectDiplIngTitle()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
@@ -311,7 +313,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetCorrectBSTitle()
+        public void GetCorrectBATitle()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
@@ -331,7 +333,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetCorrectMSTitle()
+        public void GetCorrectMATitle()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
