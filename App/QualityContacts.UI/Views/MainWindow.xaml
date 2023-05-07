@@ -45,11 +45,11 @@
 
                 <Expander 
                     Margin="0" 
-                    Header="TODO: Hilfe und Beschreibung">
+                    Header="Hilfe und Beschreibung">
 
                     <TextBlock 
                         TextWrapping="WrapWithOverflow"
-                        Text="Hilfe- und Beschreibungstext, der noch eingegeben werden muss..."
+                        Text="Um einen neuen Kontakt zu erfassen, kann Freitext eingegeben werden, aus dem anschließend ein Kontakt generiert wird. Dieser kann anschließend bearbeitet werden, falls die Erkennung nicht wie gewünscht war.&#x0a;Erlaubte Geschlechter: 'männlich', 'weiblich' und 'divers'. Wenn kein Geschlecht eingegeben wird, wird 'ohne' eingetragen.&#x0a;Erlaubte Anreden: 'Herr', 'Frau', 'Mr' und weitere (siehe Dokumentation)&#x0a;Im Feld Titel kann alles eingegeben werden. Wenn dort nicht registrierte Titel erkannt werden, werden diese im Bereich 'Titel' angezeigt, sodass sie direkt registriert werden können, wenn gewünscht.&#x0a;Vorname und Nachname sind Pflicht! Adelstitel werden dem Nachnamen zugeordnet.&#x0a;Beim Auftrennen wird eine Briefanrede und das Geschlecht aus der Anrede (falls vorhanden) generiert. Die Briefanrede kann bei Bedarf angepasst werden, diese wird jedoch jedes Mal neu generiert, wenn ein Kontaktfeld bearbeitet wurde. Bei der Briefanrede wird versucht, nur den höchsten Titel zu verwenden. Das Geschlecht wird nur beim Auftrennen automatisch bestimmt."
                         />
 
                 </Expander>
@@ -213,10 +213,8 @@
                         
                         <TextBox 
                             Width="719" 
-                            Margin="-2,0,5,0" 
-                            Text="{Binding NewContact.LetterSalutation}"
-                            BorderThickness="0"
-                            IsReadOnly="True"
+                            Margin="0,0,5,0" 
+                            Text="{Binding NewContact.LetterSalutation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             />
 
                     </StackPanel>
