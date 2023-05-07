@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using QualityContacts.ServiceInterfaces.Models;
+﻿using QualityContacts.ServiceInterfaces.Models;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.Models;
 
@@ -13,21 +12,31 @@ namespace QualityContacts.Services
     {
         #region Members and Constructors
 
-
-        public ContactParser()
+        /// <summary>
+        /// Creates a new <see cref="ContactParser"/> instance with a given repository.
+        /// </summary>
+        /// <param name="contactRepository">The repository to use for persistance.</param>
+        public ContactParser(IContactRepository contactRepository)
         {
-            _registeredSalutations = new ContactRepository().GetRegisteredSalutations();
+            _contactRepository = contactRepository;
+
+            _genderServices = new GenderServices(contactRepository);
+            _salutationServices = new SalutationServices(contactRepository);
+            _titleServices = new TitleServices(contactRepository);
         }
 
-        private IEnumerable<string> _registeredSalutations;
-        private ContactRepository _contactRepository = new ContactRepository();
+        private readonly IContactRepository _contactRepository;
 
-        
+        private readonly GenderServices _genderServices;
+
+        private readonly SalutationServices _salutationServices;
+
+        private readonly TitleServices _titleServices;
+
 
         #endregion Members and Constructors
 
         #region Public Methods
-
 
         /// <summary>
         /// <inheritdoc/>
@@ -43,266 +52,192 @@ namespace QualityContacts.Services
             if (String.IsNullOrEmpty(contactCandidate)) return newContact;
 
             // Extract words from free input string. Assume words are separated by spaces.
-            string[] contactParts = SplitIntoWords(contactCandidate, ' ');
-        
+            string[] contactParts = contactCandidate.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray();
+
             // Case the input string only contained spaces.
             if (contactParts.Length == 0) return newContact;
 
             // Iterate through all words, beginning with first and apply priorised rules
             int numberOfWords = contactParts.Length;
 
-            for ( int wordIndex = 0; wordIndex < numberOfWords; wordIndex++ )
+            // Indicator whether we found the last name before other names (ending with ',')
+            bool lastNameAlreadyFound = false;
+
+            // Academic titles collection, which can be sorted at the end.
+            List<string> titles = new List<string>();
+
+            for (int wordIndex = 0; wordIndex < numberOfWords; wordIndex++)
             {
                 // Get current word
                 string currentWord = contactParts[wordIndex];
 
-                // RULE: It it is the last word, it is the last name
-                if (wordIndex == numberOfWords - 1)
+                // RULE: If it is the last word, it is the last name, except we already found an inverted last name.
+                if (wordIndex == numberOfWords - 1 && !lastNameAlreadyFound)
                 {
                     // Append to last name, add space if needed
-                    bool alreadyLastNameExisting = newContact.LastName.Length > 0;
-                    if (alreadyLastNameExisting)
-                    {
-                        newContact.LastName += " " + currentWord;
-                    }
-                    else
+                    if (String.IsNullOrEmpty(newContact.LastName))
                     {
                         newContact.LastName += currentWord;
                     }
-                } else if (wordIndex == 0)
-                {
-                    // RULE: The first word may be a salutation.
-                    // Check this first
- 
-
-
-                    foreach(string salutation in _registeredSalutations)
+                    else
                     {
-                        if (currentWord.ToLower().Equals(salutation.ToLower()))
-                        {
-                            newContact.Salutation = currentWord;
-       
-                            break;
-                        }
+                        newContact.LastName += " " + currentWord;
                     }
 
-                    // If a salutation could be extracted, determine the gender.
-                    if (!String.IsNullOrEmpty(newContact.Salutation))
+                }
+                // RULE: If it is NOT the last word or the last name is already found, check for all other contact parts.
+                else
+                {
+                    // RULE: If word ends with ',' assume this is the last name, if we did
+                    if (!lastNameAlreadyFound && currentWord.EndsWith(','))
                     {
-                        newContact.Gender = new ContactRepository().GetGender(newContact.Salutation);
+                        lastNameAlreadyFound = true;
+                        newContact.LastName = currentWord[..^1];
                         continue;
                     }
 
-                    // RULE: If no salutation check for academic title
-                    // Check this second
-
-                    foreach(string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
+                    // RULE: If no salutation found yet, check for it
+                    if (String.IsNullOrEmpty(newContact.Salutation))
                     {
-                        if (currentWord.ToLower().Equals(academicTitle.ToLower()))
+                        foreach (string salutation in _contactRepository.GetRegisteredSalutations())
                         {
-                            newContact.Titles = academicTitle;
-
-                            break;
-                        }
-                    }
-
-                    if (!String.IsNullOrEmpty(newContact.Titles)) continue;
-
-                    // RULE: If no academic title check for noble title
-                    // Check this third
-
-                    foreach(string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
-                    {
-                        if (currentWord.ToLower().Equals(nobleTitle.ToLower()))
-                        {
-                            newContact.LastName = nobleTitle;
-                            break;
-                        }
-                    }
-
-
-
-                    if (!String.IsNullOrEmpty(newContact.LastName)) continue;
-
-                    foreach(string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
-                    {
-                        if (currentWord.ToLower().Equals(noblePreSuffix.ToLower()))
-                        {
-                            newContact.LastName = noblePreSuffix;
-                            for(int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
+                            var trimmedCurrentWord = currentWord.Replace(".", "");
+                            if (trimmedCurrentWord.ToLower().Equals(salutation.ToLower()) || (trimmedCurrentWord.ToLower() + ".").Equals(salutation.ToLower()))
                             {
-                                newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
+                                newContact.Salutation = salutation;
+                                break;
                             }
+                        }
 
-                            return newContact;
+                        // If a salutation could be extracted, determine the gender.
+                        if (!String.IsNullOrEmpty(newContact.Salutation))
+                        {
+                            newContact.Gender = _contactRepository.GetRegisteredGenderForSalutation(newContact.Salutation);
+                            continue;
                         }
                     }
 
-                    
-
-                    // RULE: If no applies, it should be a first name.
-                    newContact.FirstName = currentWord;
-                } else
-                {
-                    // RULE: Middle words may be titles or first/middle names
-
-                    // Check for academic titles first
+                    // RULE: Check for academic titles if no last name and salutation were found.
                     bool foundAcademicTitle = false;
-                    foreach (string academicTitle in _contactRepository.GetRegisteredAcademicTitles())
+
+                    foreach (string academicTitle in _contactRepository.GetTitles())
                     {
-                        if (currentWord.ToLower().Equals(academicTitle.ToLower()))
+                        if (currentWord.ToLower().Equals(academicTitle.ToLower()) || (currentWord.ToLower() + ".").Equals(academicTitle.ToLower()))
                         {
                             foundAcademicTitle = true;
-                            if (!String.IsNullOrEmpty(newContact.Titles))
-                            {
-                                newContact.Titles += " " + academicTitle;
-                            }
-                            else
-                            {
-                                newContact.Titles = academicTitle;
-                            }
-                            
+
+                            titles.Add(academicTitle);
 
                             break;
                         }
                     }
+
                     if (foundAcademicTitle) continue;
 
-                    // If no academic title, check for noble titles
+                    // RULE: If no academic title, check for noble titles
                     bool foundNobleTitle = false;
+
                     foreach (string nobleTitle in _contactRepository.GetRegisteredNobleTitles())
                     {
                         if (currentWord.ToLower().Equals(nobleTitle.ToLower()))
                         {
                             foundNobleTitle = true;
-                            if (!String.IsNullOrEmpty(newContact.LastName))
-                            {
-                                newContact.LastName += " " + nobleTitle;
-                            }
-                            else
+                            if (String.IsNullOrEmpty(newContact.LastName))
                             {
                                 newContact.LastName = nobleTitle;
                             }
-                            
+                            else
+                            {
+                                newContact.LastName += " " + nobleTitle;
+                            }
                             break;
                         }
                     }
 
-
-
                     if (foundNobleTitle) continue;
+
+                    bool foundNoblePreSuffix = false;
 
                     foreach (string noblePreSuffix in _contactRepository.GetRegisteredNoblePreSuffixes())
                     {
                         if (currentWord.ToLower().Equals(noblePreSuffix.ToLower()))
                         {
-                            if (!String.IsNullOrEmpty(newContact.LastName))
-                            {
-                                newContact.LastName += " " + noblePreSuffix;
-                            }
-                            else
+                            foundNoblePreSuffix = true;
+                            if (String.IsNullOrEmpty(newContact.LastName))
                             {
                                 newContact.LastName = noblePreSuffix;
                             }
-                           
+                            else
+                            {
+                                newContact.LastName += " " + noblePreSuffix;
+                            }
+
                             for (int wordIndexFromPreSuffix = wordIndex + 1; wordIndexFromPreSuffix < numberOfWords; wordIndexFromPreSuffix++)
                             {
                                 newContact.LastName += " " + contactParts[wordIndexFromPreSuffix];
                             }
 
-                            return newContact;
+                            break;
                         }
                     }
 
-                    // If no applies, it should be a first or middle name.
-                    if (!String.IsNullOrEmpty(newContact.FirstName))
+                    if (foundNoblePreSuffix) break;
+
+                    // RULE: If no other rule applies, assume it to be a first or middle name.
+                    if (String.IsNullOrEmpty(newContact.FirstAndMiddleName))
                     {
-                        newContact.FirstName += " " + currentWord;
-                    } else
+                        newContact.FirstAndMiddleName = currentWord;
+                    }
+                    else
                     {
-                        newContact.FirstName = currentWord;
+                        newContact.FirstAndMiddleName += " " + currentWord;
                     }
                 }
+            }
 
+            // Sort academic titles
+            newContact.Titles = GenerateSortedAcademicTitles(titles);
 
-                
+            // Generate letter salutation
+            try
+            {
+                newContact.LetterSalutation = _salutationServices.GenerateLetterSalutation(newContact);
+            }
+            catch (Exception)
+            {
+                newContact.LetterSalutation = "Es konnte keine Briefanrede generiert werden!";
             }
 
             return newContact;
-
-            //// Special case with only one given word: We assume the given word is the last name!
-            //if (contactParts.Length == 1)
-            //{
-            //    newContact.LastName = contactParts[0];
-            //    return newContact;
-            //} else
-            //{
-            //    // In case of more then one word, check whether one word ends with ',', in this case this is the last name, otherwise assume the last word is the last name.
-            //    string possibleRevertedLastName;
-            //    if(TryFindRevertedLastName(out possibleRevertedLastName, contactParts))
-            //    {
-            //        newContact.LastName = possibleRevertedLastName;
-            //    } else
-            //    {
-            //        newContact.LastName = contactParts[contactParts.Length - 1];
-            //    }
-
-            //    // Get all titles
-
-
-            //    return newContact;
-            //}
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        /// <summary>
-        /// Loops through a given range of words and checks whether exactly one word ends with ',', if so it is returned as possible last name.
-        /// </summary>
-        /// <param name="extractedLastName">The possible last name.</param>
-        /// <param name="contactWords">Collection of words to check.</param>
-        /// <returns><see langword="true"/> if exactly one possible last name was found, otherwise <see langword="false"/>.</returns>
-        private static bool TryFindRevertedLastName(out string extractedLastName, string[] contactWords)
+        private string GenerateSortedAcademicTitles(List<string> academicTitles)
         {
-            bool foundUnambiguouslyLastName = false;
-            extractedLastName = String.Empty;
+            if (academicTitles == null || academicTitles.Count == 0) return string.Empty;
 
-            foreach (var word in contactWords)
+            string sortedTitles = String.Empty;
+
+            foreach (string title in _contactRepository.GetTitles())
             {
-                if (word.Last().Equals(','))
+                var mostImportantTitles = academicTitles.FindAll(word => word.Equals(title));
+                if (mostImportantTitles.Any())
                 {
-                    // If a last name already was found until now, reset and return ambiguousity.
-                    if (foundUnambiguouslyLastName)
+                    academicTitles.RemoveAll(word => word.Equals(title));
+
+                    foreach (var foundTitle in mostImportantTitles)
                     {
-                        extractedLastName = String.Empty;
-                        return false;
-                    } else
-                    {
-                        extractedLastName = word.Substring(0, word.Length - 1);
-                        foundUnambiguouslyLastName = true;
-                    }                   
+                        sortedTitles += foundTitle + " ";
+                    }
                 }
             }
 
-            return foundUnambiguouslyLastName;
+            return sortedTitles.Trim();
         }
 
-        /// <summary>
-        /// Split the given string into 'words' by the given separator.<br/>
-        /// </summary>
-        /// <param name="freeInput">Some string which should be separated into single words.</param>
-        /// <param name="separator"><see cref="Char"/> which separates words.</param>
-        /// <returns><see cref="Array"/> containing the single words, empty words are removed.</returns>
-        private static string[] SplitIntoWords(string freeInput, char separator)
-        {
-            var words = freeInput.Split(separator).Where(word => !string.IsNullOrEmpty(word)).ToArray();
-
-            return words;
-        }
-
-        #endregion Private Methods
-       
+        #endregion Private Methods       
     }
 }

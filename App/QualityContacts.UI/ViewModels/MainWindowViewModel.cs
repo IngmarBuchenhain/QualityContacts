@@ -18,11 +18,16 @@ namespace QualityContacts.UI
         public MainWindowViewModel()
         {
             // Only here the actual implementations of the Backend are used, so they can be easily replaced.
-            _validator = new ContactValidator();
-            _parser = new ContactParser();
             _repository = new ContactRepository();
+            _validator = new ContactValidator(_repository);
+            _parser = new ContactParser(_repository);
 
+            // Create an empty contact for the UI.
             _newContact = _repository.GetNewContact();
+
+            // Generate hints for user for missing/wrong contact parts.
+            ValidateContactInput();
+            ValidateNewContact();
         }
 
         /// <summary>
@@ -62,19 +67,14 @@ namespace QualityContacts.UI
         private string _contactInput = String.Empty;
 
         /// <summary>
-        /// Do not use directly, if UI should be notified. See <see cref="EnableInputSplitting"/>-property.
-        /// </summary>
-        private bool _enableInputSplitting = true;
-
-        /// <summary>
         /// Do not use directly, if UI should be notified. See <see cref="EnableContactSaving"/>-property.
         /// </summary>
         private bool _enableContactSaving = true;
 
         /// <summary>
-        /// Do not use directly, if UI should be notified. See <see cref="InputValidationErrors"/>-property.
+        /// Do not use directly, if UI should be notified. See <see cref="ContactValidationWarnings"/>-property.
         /// </summary>
-        private string _inputValidationErrors = String.Empty;
+        private string _contactValidationWarnings = String.Empty;
 
         /// <summary>
         /// Do not use directly, if UI should be notified. See <see cref="InputValidationWarnings"/>-property.
@@ -191,19 +191,6 @@ namespace QualityContacts.UI
         }
 
         /// <summary>
-        /// Indicator whether splitting of <see cref="ContactInput"/> is enabled or not (due to validation errors).
-        /// </summary>
-        public bool EnableInputSplitting
-        {
-            get => _enableInputSplitting;
-            private set
-            {
-                _enableInputSplitting = value;
-                NotifyPropertyChanged(nameof(EnableInputSplitting));
-            }
-        }
-
-        /// <summary>
         /// Indicator whether saving of <see cref="NewContact"/> is enabled or not (due to validation errors).
         /// </summary>
         public bool EnableContactSaving
@@ -215,26 +202,6 @@ namespace QualityContacts.UI
                 NotifyPropertyChanged(nameof(EnableContactSaving));
             }
         }
-
-        /// <summary>
-        /// String containing all validation errors for the <see cref="ContactInput"/>.
-        /// </summary>
-        public string InputValidationErrors
-        {
-            get => _inputValidationErrors;
-            private set
-            {
-                _inputValidationErrors = value;
-                NotifyPropertyChanged(nameof(InputValidationErrors));
-                NotifyPropertyChanged(nameof(ShowInputValidationErrors));
-            }
-        }
-
-        /// <summary>
-        /// Indicator whether input validation errors are present and should be shown by the UI.
-        /// </summary>
-        /// <value><see langword="true"/> if <see cref="InputValidationErrors"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
-        public bool ShowInputValidationErrors { get => !string.IsNullOrEmpty(InputValidationErrors); }
 
         /// <summary>
         /// String containing all validation warnings for the <see cref="ContactInput"/>.
@@ -255,6 +222,26 @@ namespace QualityContacts.UI
         /// </summary>
         /// <value><see langword="true"/> if <see cref="InputValidationWarnings"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
         public bool ShowInputValidationWarnings { get => !string.IsNullOrEmpty(InputValidationWarnings); }
+
+        /// <summary>
+        /// String containing all validation warnings for the <see cref="NewContact"/>.
+        /// </summary>
+        public string ContactValidationWarnings
+        {
+            get => _contactValidationWarnings;
+            private set
+            {
+                _contactValidationWarnings = value;
+                NotifyPropertyChanged(nameof(ContactValidationWarnings));
+                NotifyPropertyChanged(nameof(ShowContactValidationWarnings));
+            }
+        }
+
+        /// <summary>
+        /// Indicator whether contact validation warnings are present and should be shown by the UI.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="ContactValidationWarnings"/> is not <see langword="null"/> or empty, otherwise <see langword="false"/>.</value>
+        public bool ShowContactValidationWarnings { get => !string.IsNullOrEmpty(ContactValidationWarnings); }
 
         /// <summary>
         /// String containing all validation errors for the current <see cref="NewContact"/>.
@@ -347,6 +334,23 @@ namespace QualityContacts.UI
         #region Public/Internal Methods
 
         /// <summary>
+        /// Splits the input in <see cref="ContactInput"/> into a <see cref="IContact"/> at best guess.<br/>
+        /// Presents the new contact in the editing area and resets the input field.
+        /// </summary>
+        internal void SplitContactInput()
+        {
+            var newContact = _parser.ParseContactFreeInput(ContactInput);
+
+            NewContact = newContact;            
+
+            ContactInput = String.Empty;
+
+            // Generate hints for user for missing/wrong contact parts.
+            ValidateContactInput();
+            ValidateNewContact();
+        }
+
+        /// <summary>
         /// Save the current edited <see cref="NewContact"/> to the repository if no validation errors are present.<br/>
         /// Resets the editing area.
         /// </summary>
@@ -364,128 +368,10 @@ namespace QualityContacts.UI
                 // Reset the editing area.
                 NewContact = _repository.GetNewContact();
                 ContactInput = String.Empty;
-            }
-        }
 
-        /// <summary>
-        /// Validates the <see cref="NewContact"/> in the editing area and presents errors if present.
-        /// </summary>
-        internal void ValidateNewContact()
-        {
-            IValidationResult contactValidation = _validator.Validate(NewContact);
-            ResetContactValidationErrorsAndWarnings();
-
-            if (contactValidation.IsValid)
-            {
-     
-     
-
-                EnableContactSaving = true;
-            }
-            else
-            {
-                EnableContactSaving = false;
-
-                foreach (var error in contactValidation.ValidationErrors)
-                {
-                    // TODO: After prototyping phase localization of errors should happen.
-                    ContactValidationErrors += MatchValidationErrorsToMessage(error) + Environment.NewLine;
-                }
-            }
-        }
-
-        private void PrepareNewContactFieldsForValidation()
-        {
-            // For each of the contacts fields some convenient preparations are made to support the user using valid values.
-
-            NewContact.Gender.Trim().ToLower();
-
-            if (!String.IsNullOrEmpty(NewContact.Salutation) && !String.IsNullOrEmpty(NewContact.Salutation.Trim()))
-            {
-                string cleanedGender = NewContact.Salutation.Trim();
-
-                if (cleanedGender.Length > 1)
-                {
-                    cleanedGender = String.Concat(cleanedGender[0].ToString().ToUpper(), cleanedGender.AsSpan(1));
-                    NewContact.Salutation = cleanedGender;
-                }
-                else
-                {
-                    NewContact.Salutation = cleanedGender.ToUpper();
-                }
-
-                
-
-
-            }
-
-            NewContact.Titles = NewContact.Titles.Trim();
-
-            NewContact.FirstName = NewContact.FirstName.Trim();
-
-            NewContact.LastName = NewContact.LastName.Trim();
-
-
-    }
-
-        /// <summary>
-        /// Splits the input in <see cref="ContactInput"/> into a <see cref="IContact"/> if no validation errors are present.<br/>
-        /// Presents the new contact in the editing area and resets the input field.
-        /// </summary>
-        internal void SplitContactInput()
-        {
-            if (EnableInputSplitting)
-            {
-                var newContact = _parser.ParseContactFreeInput(ContactInput);
-
-                NewContact = newContact;
-
-                ContactInput = String.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Validates the <see cref="ContactInput"/> in the editing area and presents errors if present.
-        /// </summary>
-        internal void ValidateContactInput()
-        {
-            IValidationResult contactValidation = _validator.Validate(ContactInput);
-
-            if (contactValidation.IsValid)
-            {
-                InputValidationErrors = String.Empty;
-
-                EnableInputSplitting = true;
-
-                if (contactValidation.HasWarnings)
-                {
-                    foreach (var warning in contactValidation.ValidationWarnings)
-                    {
-                        // TODO: After prototyping phase localization of errors should happen.
-                        InputValidationWarnings += MatchValidationWarningsToMessage(warning) + Environment.NewLine;
-                    }
-                }
-                else
-                {
-                    InputValidationWarnings = String.Empty;
-                }
-            }
-            else
-            {
-                EnableInputSplitting = false;
-
-                foreach (var error in contactValidation.ValidationErrors)
-                {
-                    // TODO: After prototyping phase localization of errors should happen.
-                    InputValidationErrors += error + Environment.NewLine;
-                }
-
-                foreach (var warning in contactValidation.ValidationWarnings)
-                {
-                    // TODO: After prototyping phase localization of errors should happen.
-
-                    InputValidationWarnings += MatchValidationWarningsToMessage(warning) + Environment.NewLine;
-                }
+                // Generate hints for user for missing/wrong contact parts.
+                ValidateContactInput();
+                ValidateNewContact();
             }
         }
 
@@ -505,42 +391,176 @@ namespace QualityContacts.UI
             NewTitle = String.Empty;
         }
 
+        /// <summary>
+        /// Validates the <see cref="NewContact"/> in the editing area and presents errors/warnings if present.
+        /// </summary>
+        internal void ValidateNewContact()
+        {
+            // Apply validation
+            IValidationResult contactValidation = _validator.Validate(NewContact);
+
+            // Reset error/warning indicators
+            ResetContactValidationErrorsAndWarnings();
+
+            if (contactValidation.IsValid)
+            {
+                EnableContactSaving = true;
+
+                foreach (var warning in contactValidation.ValidationWarnings)
+                {
+                    if (ContactValidationWarnings.Length == 0)
+                    {
+                        ContactValidationWarnings += MatchValidationWarningsToMessage(warning);
+                    }
+                    else
+                        ContactValidationWarnings += Environment.NewLine + MatchValidationWarningsToMessage(warning);
+                }
+                if (contactValidation.PossibleNewTitle.Length > 0)
+                {
+                    NewTitle = contactValidation.PossibleNewTitle;
+                }
+            }
+            else
+            {
+                EnableContactSaving = false;
+
+                // Errors
+                foreach (var error in contactValidation.ValidationErrors)
+                {
+                    // Set error indications
+                    switch (error)
+                    {
+                        case ValidationError.FirstNameMissing:
+                            FirstNameError = true;
+                            break;
+                        case ValidationError.LastNameMissing:
+                            LastNameError = true;
+                            break;
+                        case ValidationError.GenderNotRegistered:
+                            GenderError = true;
+                            break;
+                        case ValidationError.SalutationNotRegistered:
+                            SalutationError = true;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Set error messages
+                    if (ContactValidationErrors.Length == 0)
+                    {
+                        ContactValidationErrors += MatchValidationErrorsToMessage(error);
+                    }
+                    else
+                        ContactValidationErrors += Environment.NewLine + MatchValidationErrorsToMessage(error);
+                }
+
+                // Warnings
+                foreach (var warning in contactValidation.ValidationWarnings)
+                {
+                    if (ContactValidationWarnings.Length == 0)
+                    {
+                        ContactValidationWarnings += MatchValidationWarningsToMessage(warning);
+                    }
+                    else
+                        ContactValidationWarnings += Environment.NewLine + MatchValidationWarningsToMessage(warning);
+                }
+
+                if (contactValidation.PossibleNewTitle.Length > 0)
+                {
+                    NewTitle = contactValidation.PossibleNewTitle;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates the <see cref="ContactInput"/> in the editing area and presents warnings if present.
+        /// </summary>
+        internal void ValidateContactInput()
+        {
+            // Apply validation
+            IValidationResult contactValidation = _validator.Validate(ContactInput);
+
+            // Reset warning indicators
+            ResetContactInputValidationWarnings();
+
+            if (contactValidation.IsValid)
+            {
+                // Present the warnings.
+                foreach (var warning in contactValidation.ValidationWarnings)
+                {
+                    if (InputValidationWarnings.Length == 0)
+                    {
+                        InputValidationWarnings += MatchValidationWarningsToMessage(warning);
+                    }
+                    else
+                    {
+                        InputValidationWarnings += Environment.NewLine + MatchValidationWarningsToMessage(warning);
+                    }
+                }
+            }
+            else
+            {
+                // Only warnings currently, so exit the app.
+                throw new NotImplementedException("No contact input string errors are supported right now!");
+            }
+        }
+
         #endregion Public/Internal Methods
 
         #region Private/Protected Methods
 
-        private string MatchValidationWarningsToMessage(ValidationWarning warning)
+        /// <summary>
+        /// Matches <see cref="ValidationWarning"/>s to an appropriate message for the UI.
+        /// </summary>
+        /// <param name="warning">The warning to match an UI-text to.</param>
+        /// <returns>An user presentable text message.</returns>
+        private static string MatchValidationWarningsToMessage(ValidationWarning warning)
         {
-            switch (warning)
+            return warning switch
             {
-                case ValidationWarning.UnusualCharacters:
-                    return "Eingabe enthält ungewöhnliche Zeichen für einen Name";
-                default:
-                    return warning.ToString();
-            }
+                ValidationWarning.UnusualCharacters => "Eingabe enthält ungewöhnliche Zeichen.",
+                ValidationWarning.Incomplete => "Eingabe enthält zu wenig Wörter, um gültig aufgetrennt zu werden.",
+                ValidationWarning.Ambiguous => "Eingabe/Kontakt konnte nicht eindeutig getrennt werden.",
+                ValidationWarning.GenderMissing => "Es wurde kein Geschlecht angegeben.",
+                ValidationWarning.SalutationMissing => "Es wurde keine Anrede angegeben.",
+                ValidationWarning.TitleUnknown => "Es wurde ein unbekannter Titel verwendet. Dieser kann in die Datenbank aufgenommen werden.",
+                _ => warning.ToString(),
+            };
         }
 
-        private string MatchValidationErrorsToMessage(ValidationError error)
+        /// <summary>
+        /// Matches <see cref="ValidationError"/>s to an appropriate message for the UI.
+        /// </summary>
+        /// <param name="error">The error to match an UI-text to.</param>
+        /// <returns>An user presentable text message.</returns>
+        private static string MatchValidationErrorsToMessage(ValidationError error)
         {
-            switch (error)
+            return error switch
             {
-                case ValidationError.FirstNameMissing:
-                    FirstNameError = true;
-                    return "Es muss ein Vorname angegeben werden!";
-                case ValidationError.LastNameMissing:
-                    LastNameError = true;
-                    return "Es muss ein Nachname angegeben werden!";
-                case ValidationError.GenderMissing:
-                    GenderError = true;
-                    return "Es muss ein Geschlecht angegeben werden!";
-                default:
-                    return error.ToString();       
-            }
+                ValidationError.FirstNameMissing => "Es muss ein Vorname angegeben werden!",
+                ValidationError.LastNameMissing => "Es muss ein Nachname angegeben werden!",
+                ValidationError.GenderNotRegistered => "Es wurde ein ungültiges Geschlecht angegeben! Erlaubt sind \"männlich\", \"weiblich\", \"divers\" und \"ohne\".",
+                ValidationError.SalutationNotRegistered => "Es wurde eine ungültige Anrede angegeben!",
+                _ => error.ToString(),
+            };
         }
 
+        /// <summary>
+        /// Reset the warning indicators for the free contact input string.
+        /// </summary>
+        private void ResetContactInputValidationWarnings()
+        {
+            InputValidationWarnings = String.Empty;
+        }
+
+        /// <summary>
+        /// Reset the error/warning indicators for the new contact.
+        /// </summary>
         private void ResetContactValidationErrorsAndWarnings()
         {
             ContactValidationErrors = String.Empty;
+            ContactValidationWarnings = String.Empty;
 
             GenderError = false;
             SalutationError = false;

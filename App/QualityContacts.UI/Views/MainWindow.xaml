@@ -72,7 +72,6 @@
                     <TextBox 
                         Width="688" 
                         Margin="0,0,5,0" 
-                        BorderBrush="{Binding ShowInputValidationErrors, Converter={StaticResource BooleanToColorConverter}}"
                         Text="{Binding ContactInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         KeyDown="SplitContactEnterPressed"
                         TextChanged="InputTextChanged"
@@ -80,18 +79,11 @@
 
                     <Button 
                         Content="Kontakt splitten"
-                        Background="AliceBlue"
-                        IsEnabled="{Binding EnableInputSplitting}"
+                        Background="AliceBlue"                       
                         Click="SplitContactButtonClicked"                        
                         />
 
                 </StackPanel>
-
-                <TextBlock 
-                    Text="{Binding InputValidationErrors}" 
-                    Foreground="Red"
-                    Visibility="{Binding ShowInputValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    />
 
                 <TextBlock 
                     Text="{Binding InputValidationWarnings}" 
@@ -114,7 +106,8 @@
                 <StackPanel 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Top">
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,5">
 
                     <StackPanel 
                         Orientation="Vertical">
@@ -197,7 +190,7 @@
                                 Width="220" 
                                 Margin="0,0,5,0" 
                                 BorderBrush="{Binding FirstNameError, Converter={StaticResource BooleanToColorConverter}}"
-                                Text="{Binding NewContact.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding NewContact.FirstAndMiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="ContactTextChanged"
                                 />
 
@@ -242,8 +235,14 @@
                     Foreground="Red"
                     Visibility="{Binding ShowContactValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
+                
+                <TextBlock 
+                    Text="{Binding ContactValidationWarnings}" 
+                    Foreground="Orange"
+                    Visibility="{Binding ShowContactValidationWarnings, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
 
-<!-- End Contact Editing area -->
+                <!-- End Contact Editing area -->
 
                 <Label 
                     HorizontalAlignment="Left"
@@ -255,10 +254,10 @@
 
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
-                    Height="364">
+                    Height="300">
 
                     <ItemsControl 
-                        Name="storedContactsItemsControl">
+                        Name="_storedContactsItemsControl">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -297,7 +296,7 @@
                                             HorizontalAlignment="Left" 
                                             Width="230" 
                                             BorderThickness="0"
-                                            Text="{Binding FirstName}"                                       
+                                            Text="{Binding FirstAndMiddleName}"                                       
                                             IsReadOnly="True"                                        
                                             />
                                         

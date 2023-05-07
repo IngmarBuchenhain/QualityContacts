@@ -1,102 +1,159 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.ServiceInterfaces.Models;
-using QualityContacts.ServiceInterfaces.ErrorHandling;
 using QualityContacts.ServiceInterfaces.Services;
 using QualityContacts.Services.ErrorHandling;
-using QualityContacts.Services.Models;
+using System.Text.RegularExpressions;
 
 namespace QualityContacts.Services
 {
+    /// <summary>
+    /// <inheritdoc cref="IContactValidator"/>
+    /// </summary>
     public partial class ContactValidator : IContactValidator
     {
-        public ContactValidator()
+        #region Members and Constructors
+
+        /// <summary>
+        /// Creates a new <see cref="ContactValidator"/> instance with a given repository.
+        /// </summary>
+        /// <param name="contactRepository">The repository to use for persistance.</param>
+        public ContactValidator(IContactRepository contactRepository)
         {
+            _contactRepository = contactRepository;
+
+            _genderServices = new GenderServices(contactRepository);
+            _salutationServices = new SalutationServices(contactRepository);
+            _titleServices = new TitleServices(contactRepository);
         }
 
+        private readonly IContactRepository _contactRepository;
 
+        private readonly GenderServices _genderServices;
+
+        private readonly SalutationServices _salutationServices;
+
+        private readonly TitleServices _titleServices;
+
+        // Regex to check for unusual characters.
+        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù., -]*$", RegexOptions.IgnoreCase)]
+        private static partial Regex ExpectedCharacters();
+
+        // Regex to check for unusual characters.
+        [GeneratedRegex("^[a-zäöüñáéíóúàèìòù -]*$", RegexOptions.IgnoreCase)]
+        private static partial Regex ExpectedContactCharacters();
+
+        #endregion Members and Constructors
+
+        #region Public Methods
 
         public IValidationResult Validate(string input)
         {
             HashSet<ValidationWarning> validationWarnings = new HashSet<ValidationWarning>();
 
-            if (!CheckForSpecialCharacters().IsMatch(input))
+            // Check whether unusual characters are present, to warn the user.
+            if (!ExpectedCharacters().IsMatch(input))
             {
                 validationWarnings.Add(ValidationWarning.UnusualCharacters);
             }
 
+            // Check whether to less words in input to split unambiguously.
+            if (input.Split(' ').Where(word => !string.IsNullOrEmpty(word)).ToArray().Length < 3)
+            {
+                validationWarnings.Add(ValidationWarning.Incomplete);
+            }
 
-            Console.WriteLine("Not implemented");
-            return new ValidationResult(true, false, null, null);
+            return new ValidationResult(new List<ValidationError>(), validationWarnings);
         }
 
         public IValidationResult Validate(IContact contact)
         {
-            bool isValid = true;
             var validationErrors = new HashSet<ValidationError>();
+            var validationWarnings = new HashSet<ValidationWarning>();
 
-            // Check each property of the contact individually
+            // Convenience to the user. Prepare for validation:
+            contact.Gender = contact.Gender.Trim();
+            contact.Salutation = contact.Salutation.Trim();
 
-            if (String.IsNullOrEmpty(contact.FirstName))
+            // Gender
+            if (String.IsNullOrEmpty(contact.Gender) || contact.Gender.Equals(_contactRepository.GetDefaultGender()))
+            {
+                contact.Gender = _contactRepository.GetDefaultGender();
+                validationWarnings.Add(ValidationWarning.GenderMissing);
+            }
+            if (!_genderServices.ConformsToRegisteredGenders(contact.Gender))
+            {
+                validationErrors.Add(ValidationError.GenderNotRegistered);
+            }
+
+            // Salutation
+            if (string.IsNullOrEmpty(contact.Salutation))
+            {
+                validationWarnings.Add(ValidationWarning.SalutationMissing);
+            }
+
+            if (!_salutationServices.ConformsToRegisteredSalutations(contact.Salutation))
+            {
+                validationErrors.Add(ValidationError.SalutationNotRegistered);
+            }
+
+            // Titles
+            string validationNewTitles = _titleServices.ExtractPossibleNewAcademicTitles(contact.Titles);
+
+            if (validationNewTitles.Length > 0)
+            {
+                validationWarnings.Add(ValidationWarning.TitleUnknown);
+            }
+
+            // First and middle names
+            if (String.IsNullOrEmpty(contact.FirstAndMiddleName.Trim()))
             {
                 validationErrors.Add(ValidationError.FirstNameMissing);
-                isValid = false;
+            }
+            else if (!ExpectedContactCharacters().IsMatch(contact.FirstAndMiddleName) || NameFieldContainsSalutation(contact.FirstAndMiddleName))
+            {
+                validationWarnings.Add(ValidationWarning.Ambiguous);
             }
 
-            if (String.IsNullOrEmpty(contact.LastName))
+            // Last name
+            if (String.IsNullOrEmpty(contact.LastName.Trim()))
             {
                 validationErrors.Add(ValidationError.LastNameMissing);
-                isValid = false;
             }
-            if (String.IsNullOrEmpty(contact.Gender))
+            else if (!ExpectedContactCharacters().IsMatch(contact.LastName) || NameFieldContainsSalutation(contact.LastName))
             {
-                validationErrors.Add(ValidationError.GenderMissing);
-                isValid = false;
+                validationWarnings.Add(ValidationWarning.Ambiguous);
             }
 
-            return new ValidationResult(isValid, false, validationErrors, null);
+            try
+            {
+                contact.LetterSalutation = _salutationServices.GenerateLetterSalutation(contact);
+            }
+            catch (Exception)
+            {
+                contact.LetterSalutation = "Es konnte keine Briefanrede generiert werden!";
+            }
+
+            return new ValidationResult(validationErrors, validationWarnings, validationNewTitles);
         }
 
-        private ValidationResult ValidateFirstName(string firstName, ValidationResult? priorValidation = null)
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private bool NameFieldContainsSalutation(string nameField)
         {
-            if(priorValidation == null)
+            foreach (string namePart in nameField.Split(' ').Where(word => !string.IsNullOrEmpty(word)))
             {
-                priorValidation = new ValidationResult();
+                if (_salutationServices.ConformsToRegisteredSalutations(namePart))
+                {
+                    return true;
+                }
             }
-            if (String.IsNullOrEmpty(firstName))
-            {
-                priorValidation.ValidationErrors.Append(ValidationError.FirstNameMissing);
-                priorValidation.IsValid = false;
-                return priorValidation;
-            }
-            if (!CheckForSpecialCharacters().IsMatch(firstName))
-            {
-                priorValidation.ValidationWarnings.Append(ValidationWarning.UnusualCharacters);
-                
-            }
-            return priorValidation;
+            return false;
         }
 
-        private ValidationResult ValidateGender(string genderCandidate, ValidationResult? priorValidation = null)
-        {
-            if (priorValidation == null)
-            {
-                priorValidation = new ValidationResult();
-            }
-            if (String.IsNullOrEmpty(genderCandidate))
-            {
-                priorValidation.ValidationWarnings.Append(ValidationWarning.GenderMissing);
-                priorValidation.HasWarnings = true;
-                return priorValidation;
-            }
+        #endregion Private Methods
 
-            // Check for allowed genders
-            // TODO: Implement
-            return priorValidation;
-        }
-
-        [GeneratedRegex("^[a-zA-Z. -]*$")]
-        private static partial Regex CheckForSpecialCharacters();
     }
 }
 
