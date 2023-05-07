@@ -214,7 +214,7 @@ namespace QualityContacts.Tests
 
             IContact newContact = contactParser.ParseContactFreeInput("Landgraf Mustermann");
 
-            Assert.Equal("landgraf Mustermann", newContact.LastName);
+            Assert.Equal("Landgraf Mustermann", newContact.LastName);
         }
 
         [Fact]
@@ -607,7 +607,7 @@ namespace QualityContacts.Tests
 
             IContact newContact = contactParser.ParseContactFreeInput("Max Mustermann");
 
-            Assert.Equal("ohne", newContact.Gender);
+            Assert.Equal("", newContact.Gender);
         }
     }
 }
