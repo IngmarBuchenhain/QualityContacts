@@ -42,7 +42,7 @@ Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 
 Weiterführende Dokumentation finden Sie unter:
 
-* [Ausführliche Release-Notes]()
+* [Ausführliche Release-Notes](https://github.com/IngmarBuchenhain/QualityContacts/blob/01472ce3d41946e3fa34575147105fe39406e675/Documentation/ReleaseNotes.md)
 
 * [Design/Architektur](https://github.com/IngmarBuchenhain/QualityContacts/blob/0b4c99dfb8cfdbb5aa530511bcdbec818ff41a1d/Documentation/Design.md)
 
