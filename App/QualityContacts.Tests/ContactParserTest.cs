@@ -587,7 +587,7 @@ namespace QualityContacts.Tests
 
             IContact newContact = contactParser.ParseContactFreeInput("Herr Max Mustermann");
 
-            Assert.Equal("mänlich", newContact.Gender);
+            Assert.Equal("männlich", newContact.Gender);
         }
 
         [Fact]
