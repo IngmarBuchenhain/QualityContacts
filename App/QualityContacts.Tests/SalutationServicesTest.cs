@@ -21,7 +21,7 @@ namespace QualityContacts.Tests
 
             string result = salutationServices.GenerateLetterSalutation(contact);
 
-            Assert.Equal("Sehr geehrter Herr Dr. Max Mustermann", result);
+            Assert.Equal("Sehr geehrte Damen und Herren", result);
         }
     }
 }
