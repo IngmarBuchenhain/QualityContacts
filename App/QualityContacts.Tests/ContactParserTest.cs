@@ -563,7 +563,7 @@ namespace QualityContacts.Tests
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
-            IContact newContact = contactParser.ParseContactFreeInput("M.S. Musterfrau");
+            IContact newContact = contactParser.ParseContactFreeInput("M.S. Olaf Herden");
 
             Assert.Equal("M.S.", newContact.Titles);
         }

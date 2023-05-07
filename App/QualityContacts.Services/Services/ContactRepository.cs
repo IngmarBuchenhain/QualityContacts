@@ -218,7 +218,7 @@ namespace QualityContacts.Services
 
         private static readonly HashSet<string> REGISTERED_NOBLE_PRE_SUFFIXES = new HashSet<string> { "von", "vom", "van", "de", "zu", "zur" };
 
-        private static readonly HashSet<string> REGISTERED_ACADEMIC_TITLES = new HashSet<string> { "Professorin", "Professor", "Prof.", "Dr.", "Dr.-Ing.", "rer.", "nat.", "mult.", "h.c.", "Dipl.-Ing.", "Dipl.", "Ing.", "B.S.", "M.S.", "B.A.", "M.A" };
+        private static readonly HashSet<string> REGISTERED_ACADEMIC_TITLES = new HashSet<string> { "Professorin", "Professor", "Prof.", "Dr.", "Dr.-Ing.", "rer.", "nat.", "mult.", "h.c.", "Dipl.-Ing.", "Dipl.", "Ing.", "B.S.", "M.S.", "B.A.", "M.A." };
 
         #endregion Dummy Data (from DB after prototyping phase)
     }
