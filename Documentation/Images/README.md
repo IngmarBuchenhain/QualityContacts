@@ -1,2 +1,2 @@
-# This folder contains images used in the documentation
+# Dieser Ordner enthält Bilder, die in der Dokumentation genutzt werden.
 
