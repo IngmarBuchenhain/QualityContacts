@@ -12,12 +12,12 @@ Dieser Ordner enthält die eigentlichen Projektdateien der App.
 
 ## Projekt-Richtlinien
 Bitte halte dich an die folgenden Richtlinien, wenn du dich am Projekt beteiligst:
-1. [C# Code style](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-2. Nur stabilen, lauffähigen Code mergen
+1. Nur stabilen, lauffähigen Code mergen
+2. [C# Code style](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 3. Programmieren, Code-Kommentare und Commit-Nachrichten in englischer Sprache.
 4. Commit-Nachrichten sollten sich an diesen Richtlinien orientieren:
-* [How to Write a Git Commit Message](https://cbea.ms/git-commit/) oder 
-* [robertpainsi/commit-message-guidelines.md](https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53) 
+	* [How to Write a Git Commit Message](https://cbea.ms/git-commit/) oder 
+	* [robertpainsi/commit-message-guidelines.md](https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53) 
 
 
 
