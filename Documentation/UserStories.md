@@ -1,6 +1,6 @@
 # User Stories
 
-## Eingeben von Namen mit Titel und Anrede
+## 1. Eingeben von Namen mit Titel und Anrede
 Der Anwender soll die Möglichkeit haben Namen mit Titel und Anrede einzugeben (z. B. von einer Visitenkarte), um seine Eingabe in ihre Bestandteile aufspalten zu lassen und so die einzelnen Kontakt-Informationen zu erhalten.
 * Prio: *hoch*
 * Akzeptanzkriterien:
@@ -12,14 +12,14 @@ Der Anwender soll die Möglichkeit haben Namen mit Titel und Anrede einzugeben (
 		* Vorname
 		* Nachname
 
-## Bestimmung des Geschlechts
+## 2. Bestimmung des Geschlechts
 Der Anwender soll die Möglichkeit haben, dass basierend auf der Anrede, die in der freien Eingabe erkannt wurde, das Geschlecht bestimmt wird. Dabei soll die Möglichkeit bestehen, dieses manuell anzupassen, um auch nicht-binären Menschen zu entsprechen.
 * Prio: *hoch*
 * Akzeptanzkriterium:
 	* Das Geschlecht kann aus der Eingabe-Anrede ermittelt werden und in die formale Briefanrede überführt werden.
 
 
-## Generierung von brieflichen Anreden
+## 3. Generierung von brieflichen Anreden
 Der Anwender möchte potenziellen neuen Kontakte Briefe schreiben, für die automatisiert eine Anrede generiert werden soll, basierend auf Anrede und Geschlecht.
 * Prio: *Mittel*
 * Akzeptanzkriterien:
@@ -27,7 +27,7 @@ Der Anwender möchte potenziellen neuen Kontakte Briefe schreiben, für die auto
 	* Die generierte Briefanrede kann manuell angepasst werden.
 
 
-## Definieren von weiteren Titeln
+## 4. Definieren von weiteren Titeln
 Der Anwender soll die Möglichkeit haben innerhalb der Sitzung weitere akademische Titel hinzufügen zu können, um diese bei der Aufspaltung erkennen zu lassen, um nicht von der Anwendungsentwicklung abhängig zu sein.
 * Prio: *mittel*
 * Akzeptanzkriterien:
@@ -35,7 +35,7 @@ Der Anwender soll die Möglichkeit haben innerhalb der Sitzung weitere akademisc
 	* Der gespeicherte Titel wird im weiteren Verlauf der Sitzung bei der Auftrennung erkannt.
 
  
-## Erkennung von Adels-Titeln
+## 5. Erkennung von Adels-Titeln
 Der Anwender soll die Möglichkeit haben, Adels-Titel in der freien Eingabe erkennen zu lassen, um diese nicht von Hand zu erfassen.
 * Prio: *niedrig*
 * Akzeptanzkriterium:
