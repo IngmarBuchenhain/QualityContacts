@@ -12,4 +12,4 @@ Dieser Ordner enthält eine ausführlichere Dokumentation. Sie können sie sich 
 
 * [Testdokumentation](../Documentation/Tests.md)
 
-Oder hier die [PDF-Version (WORD CURRENTLY)](https://github.com/IngmarBuchenhain/QualityContacts/blob/9f387e9593f5ae39865915a929b0e8ac0d5b57d1/Documentation/Projektdokumentation%20-%20Die%20Oldies.docx) laden.
+Oder hier die [PDF-Version](../Documentation/Projektdokumentation - Die Oldies.pdf) laden.
