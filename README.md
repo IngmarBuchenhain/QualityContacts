@@ -7,10 +7,11 @@ Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auft
 
 * Die ausführbare `QualityContacts.exe`-Datei finden Sie beim neuesten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases/tag/v1.0.0) unter `Assets`. 
   * Nach dem Download kann diese lokal ausgeführt werden. 
+  * Bitte beachten Sie die Systemvoraussetzungen. 
   * Ggf. warnt Windows, dass diese von unbekannten Entwicklern stammt.
   * Ggf. muss die Runtime durch Windows installiert werden, dies bitte bestätigen und durchführen. (Alternativ kann beim neuesten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases/tag/v1.0.0) unter `Assets` die ZIP-Datei `QualityContactsExecutable.zip` geladen werden. Die enthaltene `QualityContacts.exe` sollte ohne zusätzliche Runtime-Installation auskommen, solange die beiliegenden Libraries daneben liegen.)
+  
 <img src="https://github.com/IngmarBuchenhain/QualityContacts/blob/cde3c948ddc99dde262f60753136c93fab0f4dc7/Documentation/Images/Runtime_Prompt.png" width="300">
-  * Bitte beachten Sie die Systemvoraussetzungen. 
 
 * Im Ordner [Documentation](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/Documentation) finden Sie die Dokumentation im PDF-Format sowie als Markdown-Dateien für die Ansicht auf Github.
 * Im Ordner [App](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/App) finden Sie den Quellcode der Anwendung. Das Projekt wurde mit Visual Studio 2022 erstellt.
