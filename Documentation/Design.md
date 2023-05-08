@@ -2,6 +2,6 @@
 
 
 
-![Architektur](Documentation/Images/Hierarchische Software Architektur.png)
+![Architektur](../Documentation/Images/Hierarchische Software Architektur.png)
 
 
