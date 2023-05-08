@@ -1,7 +1,7 @@
 # QualityContacts
 Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auftrennen und eine Briefanrede generieren kann. Prüfungsaufgabe für die Vorlesung "Softwarequalität" an der DHBW Stuttgart Campus Horb SoSe 2023
 
-![Screenshot der Eingabe](https://github.com/IngmarBuchenhain/QualityContacts/blob/2289f96f5d3df126c42bebd0a36db0a41a8ea3f0/Documentation/Images/QualityContacts_0.png)
+![Screenshot der Eingabe](Documentation/Images/QualityContacts_0.png)
 
 ## Schnellstart
 
@@ -38,18 +38,18 @@ Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 * Hier können auch weitere Titel aufgenommen werden, sodass diese beim Parsen automatisch erkannt werden.
 * Falls bei der Kontaktbearbeitung in das Titel-Feld Titel aufgenommen werden, die nicht bekannt sind, werden diese als neuer Titel vorgeschlagen.
 
-![Screenshot mit Warnungen und Fehlern](Documentation/Images/QualityContacts_0.png)
+![Screenshot mit Warnungen und Fehlern](Documentation/Images/QualityContacts_1.png)
 
 ## Dokumentation
 
 Weiterführende Dokumentation finden Sie unter:
 
-* [Ausführliche Release-Notes](https://github.com/IngmarBuchenhain/QualityContacts/blob/01472ce3d41946e3fa34575147105fe39406e675/Documentation/ReleaseNotes.md)
+* [Ausführliche Release-Notes](Documentation/ReleaseNotes.md)
 
-* [Design/Architektur](https://github.com/IngmarBuchenhain/QualityContacts/blob/0b4c99dfb8cfdbb5aa530511bcdbec818ff41a1d/Documentation/Design.md)
+* [Design/Architektur](Documentation/Design.md)
 
-* [User Stories](https://github.com/IngmarBuchenhain/QualityContacts/blob/0b4c99dfb8cfdbb5aa530511bcdbec818ff41a1d/Documentation/UserStories.md)
+* [User Stories](Documentation/UserStories.md)
 
-* [Definition of Done](https://github.com/IngmarBuchenhain/QualityContacts/blob/0b4c99dfb8cfdbb5aa530511bcdbec818ff41a1d/Documentation/DefinitionOfDone.md)
+* [Definition of Done](Documentation/DefinitionOfDone.md)
 
-* [Testdokumentation](https://github.com/IngmarBuchenhain/QualityContacts/blob/0b4c99dfb8cfdbb5aa530511bcdbec818ff41a1d/Documentation/Tests.md)
+* [Testdokumentation](Documentation/Tests.md)
