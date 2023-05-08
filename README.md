@@ -31,7 +31,7 @@ Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 * Wenn keine Fehler vorliegen, kann über den Button `Speichern` der Kontakt für die laufende Sitzung gespeichert werden. 
 * Die erfassten Kontakte werden im unteren Bereich angezeigt.
 * Erlaubte Eingaben für Geschlecht: `ohne` (wird automatisch gesetzt wenn leer), `weiblich`, `männlich` und `divers`.
-* Für erlaubte Eingaben der anderen Felder schauen Sie bitte in der ausführlichen [Documentation](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/Documentation)
+* Für erlaubte Eingaben der anderen Felder schauen Sie bitte in der ausführlichen [Documentation](Documentation/ReleaseNotes.md)
 
 ### Titel
 * Im Bereich `Titel` werden bekannte akademische Titel angezeigt.
