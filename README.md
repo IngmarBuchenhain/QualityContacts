@@ -5,7 +5,7 @@ Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auft
 
 ## Schnellstart
 
-* Die ausführbare `QualityContacts.exe`-Datei finden Sie beim neusten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases) unter `Assets`. Nach dem Download kann diese lokal ausgeführt werden. Bitte beachten Sie die Systemvoraussetzungen.
+* Die ausführbare `QualityContacts.exe`-Datei finden Sie beim neusten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases/tag/v1.0.0) unter `Assets`. Nach dem Download kann diese lokal ausgeführt werden. Bitte beachten Sie die Systemvoraussetzungen.
 * Im Ordner [Documentation](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/Documentation) finden Sie die Dokumentation im PDF-Format sowie als Markdown-Dateien für die Ansicht auf Github.
 * Im Ordner [App](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/App) finden Sie den Quellcode der Anwendung. Das Projekt wurde mit Visual Studio 2022 erstellt.
 
@@ -36,7 +36,7 @@ Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 * Hier können auch weitere Titel aufgenommen werden, sodass diese beim Parsen automatisch erkannt werden.
 * Falls bei der Kontaktbearbeitung in das Titel-Feld Titel aufgenommen werden, die nicht bekannt sind, werden diese als neuer Titel vorgeschlagen.
 
-![Screenshot mit Warnungen und Fehlern](https://github.com/IngmarBuchenhain/QualityContacts/blob/3764a36c4ff2b6a709ba094e87c9b7d341ceaece/Documentation/Images/QualityContacts_1.png)
+![Screenshot mit Warnungen und Fehlern](Documentation/Images/QualityContacts_0.png)
 
 ## Dokumentation
 
