@@ -2,21 +2,23 @@
 
 ## Eingeben von Namen mit Titel und Anrede
 Der Anwender soll die Möglichkeit haben Namen mit Titel und Anrede einzugeben (z. B. von einer Visitenkarte), um seine Eingabe in ihre Bestandteile aufspalten zu lassen und so die einzelnen Kontakt-Informationen zu erhalten.
-* Prio: hoch
+* Prio: *hoch*
 * Akzeptanzkriterien:
-  *	Der Anwender kann eine freie Eingabe machen, die per Knopfdruck/Enter in einen Kontakt getrennt wird.
-  * Falls vorhanden wird die freie Eingabe in folgende Bestandteile zerlegt:
-    * Anrede
-    * Geschlecht
-    * Titel
-    * Vorname
-    * Nachname
+ *	Der Anwender kann eine freie Eingabe machen, die per Knopfdruck/Enter in einen Kontakt getrennt wird.
+ * Falls vorhanden wird die freie Eingabe in folgende Bestandteile zerlegt:
+  * Anrede
+  * Geschlecht
+  * Titel
+  * Vorname
+  * Nachname
 
-2.1.1	Story 4
-•	Der Anwender soll die Möglichkeit haben, dass basierend auf der Anrede, die in der freien Eingabe erkannt wurde, das Geschlecht bestimmt wird. Dabei soll die Möglichkeit bestehen, dieses manuell anzupassen, um auch nicht-binären Menschen zu entsprechen.
-•	Prio hoch
-2.1.1.1	Akzeptanzkriterium:
-•	Das Geschlecht kann aus der Eingabe-Anrede ermittelt werden und in die formale Briefanrede überführt werden.
+## Bestimmung des Geschlechts
+Der Anwender soll die Möglichkeit haben, dass basierend auf der Anrede, die in der freien Eingabe erkannt wurde, das Geschlecht bestimmt wird. Dabei soll die Möglichkeit bestehen, dieses manuell anzupassen, um auch nicht-binären Menschen zu entsprechen.
+* Prio: *hoch*
+* Akzeptanzkriterium:
+ * Das Geschlecht kann aus der Eingabe-Anrede ermittelt werden und in die formale Briefanrede überführt werden.
+
+
 US20.	Generierung von brieflichen Anreden
 Der Anwender möchte potenziellen neuen Kontakte Briefe schreiben, für die automatisiert eine Anrede generiert werden soll, basierend auf Anrede und Geschlecht.
 Prio: Mittel
