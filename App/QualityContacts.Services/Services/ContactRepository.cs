@@ -35,7 +35,7 @@ namespace QualityContacts.Services
 
         public void SaveNewTitle(string title)
         {
-            if (!string.IsNullOrEmpty(title))
+            if (!string.IsNullOrEmpty(title.Trim()))
             {
                 REGISTERED_ACADEMIC_TITLES.Add(title);
             }
