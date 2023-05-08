@@ -15,6 +15,12 @@ Zusätzlich wird ein manueller Testlauf mit den Beispielen des Kunden durchgefü
 
 ## Ergebnisse Unit Tests
 
+![Übersicht Testergebnisse](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_0.png)
+
+![Erster Teil Tests](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_1.png)
+
+![Zweiter Teil Tests](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_3.png)
+
 ## Ergebnisse manuelle Tests
 
 | Eingabe | Erwarteter Vorname | Erwarteter Nachname | Erwartete Titel | Erwartetes Geschlecht | Erwartete Anrede | Testergebnis |
