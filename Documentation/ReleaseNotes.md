@@ -6,6 +6,7 @@ Dieses Dokument enthält die momentan unterstützten Features, Einschränkungen 
 * Auftrennen einer freien Texteingabe in Kontaktinformationen.
 * Erkennung von Anrede, akademischen Titeln und Adelstitel.
 * Erkennung von umgedrehter Eingabe von Nachname und Vorname, wenn der Nachname mit `,` endet (z. B. `Mustermann, Max`).
+* Zusätzliche grundlegende Erkennung der Anreden in den Sprachen Englisch, Italienisch, Spanisch und Französisch.
 * Automatische Generierung einer Briefanrede.
 * Bearbeitungsmöglichkeit für Kontaktinformationen.
 * Möglichkeit neue akademische Titel temporär hinzuzufügen.
@@ -20,11 +21,13 @@ Dieses Dokument enthält die momentan unterstützten Features, Einschränkungen 
 	* Einzelnes Wort: Dieses wird als Nachname genommen, selbst, wenn es einer Anrede, Titel, usw. entspricht.
 	* Adelstitel werden dem Nachname zugeordnet.
 	* Falls Adels-Präfixe/Suffixe erkannt werden, werden alle folgenden Wörter dem Nachname zugeordnet, auch wenn Anrede, akademische Titel oder Komma-getrennter Nachname enthalten sind.
+	* Das letzte Wort wird als Nachname erkannt.
 	* Falls noch keine Anrede erkannt wurde, wird dies akademischen Titeln vorgezogen (falls ein Titel hinzugefügt wird, der einer Anrede entspricht.)
 	* Falls eine umgedrehte Eingabe erkannt wurde, wird eine weitere umgedrehte Eingabe als Vorname behandelt und eine Warnung angezeigt.
 * Registrierte Daten:
 	* Erlaubte Geschlechter:
 	* Erlaubte Anreden:
+		* Die englische Anrede `Mrs` wird zwar erkannt, aber in der Briefanrede in `Ms` gewandelt, da `Mrs` nicht mehr gebräuchlich ist.
 	* Erkannte akademische Titel: siehe App-Oberfläche
 	* Erkannte akademische Titel:
 	* Erkannte akademische Präfixe/Suffixe
