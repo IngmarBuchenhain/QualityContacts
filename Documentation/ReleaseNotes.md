@@ -25,12 +25,12 @@ Dieses Dokument enthält die momentan unterstützten Features, Einschränkungen 
 	* Falls noch keine Anrede erkannt wurde, wird dies akademischen Titeln vorgezogen (falls ein Titel hinzugefügt wird, der einer Anrede entspricht.)
 	* Falls eine umgedrehte Eingabe erkannt wurde, wird eine weitere umgedrehte Eingabe als Vorname behandelt und eine Warnung angezeigt.
 * Registrierte Daten:
-	* Erlaubte Geschlechter:
-	* Erlaubte Anreden:
+	* Erlaubte Geschlechter: `männlich`, `weiblich`, `divers`, `ohne`
+	* Erlaubte Anreden: `Herr`, `Frau`, `Mrs`, `Mr`, `Ms`, `Signora`, `Signor`, `Sig.`, `Mme`, `M`, `Señora`, `Señor`, ``
 		* Die englische Anrede `Mrs` wird zwar erkannt, aber in der Briefanrede in `Ms` gewandelt, da `Mrs` nicht mehr gebräuchlich ist.
-	* Erkannte akademische Titel: siehe App-Oberfläche
-	* Erkannte akademische Titel:
-	* Erkannte akademische Präfixe/Suffixe
+	* Erkannte akademische Titel: `Professorin`, `Professor`, `Prof.`, `Dr.`, `Dr.-Ing.`, `rer.`, `nat.`, `mult.`, `h.c.`, `Dipl.-Ing.`, `Dipl.`, `Ing.`, `B.S.`, `M.S.`, `B.A.`, `M.A.` und selbst hinzugefügte.
+	* Erkannte Adels-Titel: `Prinz`, `Prinzessin`, `Sir`, `Dame`, `Freiherrin`, `Freiherr`, `Baron`, `Baronesse`, `Ritter`, `Graf`, `Gräfin`, `Fürst`, `Fürstin`, `Markgraf`, `Pfalzgraf`, `Landgraf`, `Herzog`, `Herzogin`, `Kurfürst`, `Großherzog`, `Erzherzog`, `König`, `Königin`
+	* Erkannte akademische Präfixe/Suffixe: `von`, `vom`, `van`, `de`, `zu`, `zur`
 * Kontaktbearbeitung:
 	* Beim Auftrennen wird, falls eine Anrede erkannt wird, das Geschlecht bestimmt. Wenn die Anrede in den Kontaktinformationen bearbeitet wird, wird das Geschlecht nicht automatisch angepasst, um auch den Eintrag `divers` zu ermöglichen, da ohne Anrede standardmäßig ein leeres Geschlecht gesetzt wird.
 	* Bei der Briefanrede wird 

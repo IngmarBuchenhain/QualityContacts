@@ -3,16 +3,26 @@
 Getestet werden die öffentlichen Schnittstellen des Backends, da diese die eigentliche relevante Funktionalität kapseln. Zusätzlich wird die Schnittstelle für die Briefanreden-Generierung getestet, da diese hohe relevanz hat, diese ist jedoch Backend-Intern. Die Schnittstelle zum Daten-Repository wird nicht getestet, da diese nicht auf eine echte Datenschicht verweist, sondern während der Prototyping-Phase diese direkt implementiert, und anschließend getauscht wird (dort sollten dann Tests stattfinden).
 
 ## Unit Tests
+
 Getestet wird also:
 
-* ContactParser.
-* ContactValidator.
-* SalutationService.
+* ContactParser.ParseContactFreeInput(string contactCandidate)
+* ContactValidator.Validate(string input)
+* ContactValidator.Validate(IContact contact)
+* SalutationService.GenerateLetterSalutation(IContact contact)
+
+Als Testframework wird `xUnit`eingesetzt.
 
 ## Manuelle Tests
 Zusätzlich wird ein manueller Testlauf mit den Beispielen des Kunden durchgeführt.
 
 ## Ergebnisse Unit Tests
+
+![Übersicht Testergebnisse](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_0.png)
+
+![Erster Teil Tests](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_1.png)
+
+![Zweiter Teil Tests](https://github.com/IngmarBuchenhain/QualityContacts/blob/add74471a44128ecf19921147df897c76667f382/Documentation/Images/QualityContacts_Tests_3.png)
 
 ## Ergebnisse manuelle Tests
 
