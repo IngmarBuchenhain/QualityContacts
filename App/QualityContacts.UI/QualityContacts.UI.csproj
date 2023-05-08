@@ -9,6 +9,8 @@
     <FileVersion>1.0.0</FileVersion>
     <Version>1.0.0</Version>
     <ApplicationIcon>Resources\QualityContactsTransparentIcon.ico</ApplicationIcon>
+    <Authors>QualityContacts</Authors>
+    <Product>QualityContacts</Product>
   </PropertyGroup>
 
   <ItemGroup>
