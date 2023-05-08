@@ -40,6 +40,8 @@ Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 
 ![Screenshot mit Warnungen und Fehlern](Documentation/Images/QualityContacts_1.png)
 
+![Definition of Done](Documentation/DefinitionOfDone.md)
+
 ## Dokumentation
 
 Weiterführende Dokumentation finden Sie unter:
