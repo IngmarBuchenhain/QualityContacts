@@ -5,9 +5,10 @@ Getestet werden die öffentlichen Schnittstellen des Backends, da diese die eige
 ## Unit Tests
 Getestet wird also:
 
-* ContactParser.
-* ContactValidator.
-* SalutationService.
+* ContactParser.ParseContactFreeInput(string contactCandidate)
+* ContactValidator.Validate(string input)
+* ContactValidator.Validate(IContact contact)
+* SalutationService.GenerateLetterSalutation(IContact contact)
 
 ## Manuelle Tests
 Zusätzlich wird ein manueller Testlauf mit den Beispielen des Kunden durchgeführt.
