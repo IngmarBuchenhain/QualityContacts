@@ -24,6 +24,7 @@ Dieses Dokument enthält die momentan unterstützten Features, Einschränkungen 
 	* Das letzte Wort wird als Nachname erkannt.
 	* Falls noch keine Anrede erkannt wurde, wird dies akademischen Titeln vorgezogen (falls ein Titel hinzugefügt wird, der einer Anrede entspricht.)
 	* Falls eine umgedrehte Eingabe erkannt wurde, wird eine weitere umgedrehte Eingabe als Vorname behandelt und eine Warnung angezeigt.
+	* Titel werden nach Möglichkeit der Wichtigkeit nach geordnet. Das kann ggf. zu unerwünschten Ergebnissen führen, die von Hand korrigiert werden können.
 * Registrierte Daten:
 	* Erlaubte Geschlechter: `männlich`, `weiblich`, `divers`, `ohne`
 	* Erlaubte Anreden: `Herr`, `Frau`, `Mrs`, `Mr`, `Ms`, `Signora`, `Signor`, `Sig.`, `Mme`, `M`, `Señora`, `Señor`, ``
@@ -37,7 +38,7 @@ Dieses Dokument enthält die momentan unterstützten Features, Einschränkungen 
 		* ohne Geschlecht eine allgemeine Anrede verwendet, 
 		* bei `divers` eine Anrede mit Vorname und Nachname verwendet,
 		* bei `männlich` oder `weiblich` der Vorname weggelassen.
-		* bei Titeln versucht, den höchsten (ausgehend von den Standard-Titeln) zu verwenden und die restlichen wegzulassen. Falls das nicht den Wünschen entspricht, kann die Briefanrede von Hand bearbeitet werden.
+		* bei Titeln nur der erste verwendet.
 		* ACHTUNG: Sobald ein Feld in den Kontaktinformationen geändert wird, wird die Briefanrede neu generiert!
 * Speicherung:
 	* In diesem Prototyp werden die Daten nur temporär während der Laufzeit des Programms gespeichert.
