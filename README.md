@@ -25,7 +25,7 @@ Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auft
 In der Anwendung unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 
 ### Freie Kontakteingabe
-* Im Bereich `Kontakteingabe` kann ein freier Text eingegeben oder per Drag&Drop fallen gelassen werden.
+* Im Bereich `Kontakteingabe` kann ein freier Text eingegeben oder per Drag & Drop fallen gelassen werden.
 * Falls das Programm schwierige Eingaben erkennt, werden Warnungen unterhalb des Eingabefeldes angezeigt.
 * Durch `Enter` oder den Button `Kontakt splitten` wird versucht die Eingabe zu parsen und Kontakt-Informationen zu extrahieren, die im Bearbeitungsbereich angezeigt werden.
 
@@ -36,7 +36,7 @@ In der Anwendung unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 * Wenn keine Fehler vorliegen, kann über den Button `Speichern` der Kontakt für die laufende Sitzung gespeichert werden. 
 * Die erfassten Kontakte werden im unteren Bereich angezeigt.
 * Erlaubte Eingaben für Geschlecht: `ohne` (wird automatisch gesetzt wenn leer), `weiblich`, `männlich` und `divers`.
-* Für erlaubte Eingaben der anderen Felder schauen Sie bitte in der ausführlichen [Documentation](Documentation/ReleaseNotes.md)
+* Für erlaubte Eingaben der anderen Felder schauen Sie bitte in der ausführlichen [Dokumentation](Documentation/ReleaseNotes.md)
 
 ### Titel
 * Im Bereich `Titel` werden bekannte akademische Titel angezeigt.
