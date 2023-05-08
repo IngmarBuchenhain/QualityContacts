@@ -5,7 +5,7 @@ Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auft
 
 ## Schnellstart
 
-* Die ausführbare `QualityContacts.exe`-Datei finden Sie beim neusten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases/tag/v1.0.0) unter `Assets`. Nach dem Download kann diese lokal ausgeführt werden. Bitte beachten Sie die Systemvoraussetzungen. Ggf. muss die Runtime durch Windows installiert werden 
+* Die ausführbare `QualityContacts.exe`-Datei finden Sie beim neusten [Release](https://github.com/IngmarBuchenhain/QualityContacts/releases/tag/v1.0.0) unter `Assets`. Nach dem Download kann diese lokal ausgeführt werden. Bitte beachten Sie die Systemvoraussetzungen. Ggf. muss die Runtime durch Windows installiert werden, dies bitte bestätigen. 
 <img src="https://github.com/IngmarBuchenhain/QualityContacts/blob/cde3c948ddc99dde262f60753136c93fab0f4dc7/Documentation/Images/Runtime_Prompt.png" width="300">
 
 * Im Ordner [Documentation](https://github.com/IngmarBuchenhain/QualityContacts/tree/main/Documentation) finden Sie die Dokumentation im PDF-Format sowie als Markdown-Dateien für die Ansicht auf Github.
