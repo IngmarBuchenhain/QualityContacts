@@ -22,7 +22,7 @@ Einfacher Kontaktsplitter, der einen Namen mit Anrede in seine Bestandteile auft
 
 ## Betrieb
 
-Unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
+In der Anwendung unter `Hilfe und Beschreibung` gibt es eine kurze Erklärung.
 
 ### Freie Kontakteingabe
 * Im Bereich `Kontakteingabe` kann ein freier Text eingegeben oder per Drag&Drop fallen gelassen werden.
