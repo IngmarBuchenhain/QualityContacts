@@ -1,5 +1,4 @@
-﻿using QualityContacts.ServiceInterfaces.ErrorHandling;
-using QualityContacts.Services;
+﻿using QualityContacts.Services;
 using QualityContacts.Services.Models;
 
 namespace QualityContacts.Tests

@@ -14,7 +14,7 @@ namespace QualityContacts.Tests
 
             IValidationResult result = contactValidator.Validate("Mustermann; Max");
 
-            Assert.Equal(true, result.HasWarnings);
+            Assert.True(result.HasWarnings);
         }
 
         [Fact]

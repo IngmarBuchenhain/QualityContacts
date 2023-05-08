@@ -297,7 +297,7 @@ namespace QualityContacts.Tests
             Assert.Equal("Mustermann-Schnarrenberger", newContact.LastName);
         }
 
-        // ### Surename tests ###
+        // ### Firstname tests ###
 
         [Theory]
         [InlineData("Max Mustermann")]
@@ -377,7 +377,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetMaleSalutationSpanish()
+        public void GetMaleSalutationItalian()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 
@@ -387,7 +387,7 @@ namespace QualityContacts.Tests
         }
 
         [Fact]
-        public void GetFemaleSalutationSpanish()
+        public void GetFemaleSalutationItalian()
         {
             ContactParser contactParser = new ContactParser(new ContactRepository());
 

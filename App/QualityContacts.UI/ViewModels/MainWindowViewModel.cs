@@ -521,7 +521,7 @@ namespace QualityContacts.UI
             {
                 ValidationWarning.UnusualCharacters => "Eingabe enthält ungewöhnliche Zeichen.",
                 ValidationWarning.Incomplete => "Eingabe enthält zu wenig Wörter, um gültig aufgetrennt zu werden.",
-                ValidationWarning.Ambiguous => "Eingabe/Kontakt konnte nicht eindeutig getrennt werden.",
+                ValidationWarning.Ambiguous => "Eingabe/Kontakt konnte nicht eindeutig getrennt werden, enthält ungewöhnliche Zeichen oder Wörter. Bitte prüfen!",
                 ValidationWarning.GenderMissing => "Es wurde kein Geschlecht angegeben.",
                 ValidationWarning.SalutationMissing => "Es wurde keine Anrede angegeben.",
                 ValidationWarning.TitleUnknown => "Es wurde ein unbekannter Titel verwendet. Dieser kann in die Datenbank aufgenommen werden.",
